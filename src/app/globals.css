@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens from the Favolist 4.0 Figma (see the v1 spec, "Design tokens").
+ * Tailwind v4 reads these straight from CSS: `--color-primary-500` becomes
+ * `bg-primary-500`, `--text-h4` becomes `text-h4`, and so on.
+ */
+@theme {
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+
+  /* Primary (indigo) */
+  --color-primary-500: #6366f1; /* buttons, active tab, links */
+  --color-primary-600: #4f46e5; /* hover and pressed */
+  --color-accent: #725feb; /* accent surfaces, OG image background */
+
+  /* Neutral ramp */
+  --color-neutral-50: #fafafa; /* page background */
+  --color-neutral-100: #f5f5f5; /* card backgrounds */
+  --color-neutral-200: #e5e5e5; /* dividers */
+  --color-neutral-300: #d4d4d4; /* borders */
+  --color-neutral-400: #a3a3a3; /* placeholders, disabled */
+  --color-neutral-500: #737373; /* captions, metadata */
+  --color-neutral-700: #404040; /* secondary text */
+  --color-neutral-900: #171717; /* headings, body text */
+
+  /* Dark tint over tiled list covers so the title reads */
+  --color-cover-overlay: #19070c;
+
+  /* Type scale. Figma's "-2" letter spacing is -2%, i.e. -0.02em. */
+  --tracking-heading: -0.02em;
+
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1;
+  --text-h3--font-weight: 700;
+  --text-h3--letter-spacing: -0.02em;
+
+  --text-h4: 1.5rem;
+  --text-h4--line-height: 2rem;
+  --text-h4--font-weight: 700;
+  --text-h4--letter-spacing: -0.02em;
+
+  --text-h5: 1.25rem;
+  --text-h5--line-height: 1.75rem;
+  --text-h5--font-weight: 600;
+  --text-h5--letter-spacing: -0.02em;
+
+  --text-h6: 1.125rem;
+  --text-h6--line-height: 1.5rem;
+  --text-h6--font-weight: 500;
+  --text-h6--letter-spacing: -0.02em;
+
+  --text-p-m: 1rem;
+  --text-p-m--line-height: 1.5rem;
+
+  --text-p-s: 0.875rem;
+  --text-p-s--line-height: 1.25rem;
+
+  --text-p-xs: 0.75rem;
+  --text-p-xs--line-height: 1.25rem;
+  --text-p-xs--font-weight: 500;
+
+  /* List card title overlay (List block large - desktop) */
+  --text-cover-title: 2.25rem;
+  --text-cover-title--line-height: 2.75rem;
+  --text-cover-title--font-weight: 700;
+  --text-cover-title--letter-spacing: -0.02em;
+
+  --text-cover-count: 1.25rem;
+  --text-cover-count--line-height: 1.75rem;
+  --text-cover-count--font-weight: 600;
+  --text-cover-count--letter-spacing: -0.02em;
+}
+
+body {
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-900);
+}

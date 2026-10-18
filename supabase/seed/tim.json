@@ -1,0 +1,236 @@
+{
+  "handle": "tim",
+  "name": "Tim",
+  "avatar": "avatar.jpg",
+  "bio": "Entrepreneur, self-experimenter, recovering workaholic.",
+  "about": "I test routines on myself for months before I recommend them. These are the protocols that survived: what I train with, eat, take and sleep on. Every item has a note on why it's here and how I use it. Nothing is sponsored; where there's a referral code, it's marked.",
+  "social_links": [
+    { "platform": "podcast", "url": "https://example.com/tim/podcast" },
+    { "platform": "youtube", "url": "https://example.com/tim/youtube" },
+    { "platform": "instagram", "url": "https://example.com/tim/instagram" },
+    { "platform": "x", "url": "https://example.com/tim/x" },
+    { "platform": "newsletter", "url": "https://example.com/tim/newsletter" }
+  ],
+  "lists": [
+    {
+      "slug": "fitness-equipment",
+      "title": "Fitness Equipment",
+      "description": "A friend asked me for a cheat sheet to get back in shape with a busy calendar, a bunch of kids and no gym. This is what I sent him. Everything here earns its floor space: two pieces I use daily, the rest weekly. Start with the kettlebell routine and the ring, and add the rest only once you know you'll use it.",
+      "items": [
+        {
+          "kind": "product",
+          "title": "Ascent Plant Protein",
+          "image": "fitness-1.jpg",
+          "url": "https://ascentprotein.com",
+          "source": "ascentprotein.com",
+          "price": "$40",
+          "review": "The only plant protein that doesn't taste like a lawn. One scoop after training, mixed with cold water and a pinch of salt.",
+          "description": "Plant-based protein powder with 20g of protein per serving."
+        },
+        {
+          "kind": "product",
+          "title": "Hydrow Rower",
+          "image": "fitness-2.jpg",
+          "url": "https://hydrow.com",
+          "source": "hydrow.com",
+          "price": "$2,199",
+          "review": "Twenty minutes, full body, zero impact on the knees. Expensive, but it's the one machine that has never turned into a coat rack.",
+          "description": "Connected rowing machine with on-water classes."
+        },
+        {
+          "kind": "product",
+          "title": "FluidStance Balance Board",
+          "image": "fitness-3.jpg",
+          "url": "https://fluidstance.com",
+          "source": "fluidstance.com",
+          "price": "$299",
+          "review": "Lives under my standing desk. The small constant movement keeps my lower back quiet on long writing days.",
+          "description": "Standing-desk balance board with a hardwood deck."
+        },
+        {
+          "kind": "product",
+          "title": "Oura Ring",
+          "image": "fitness-4.jpg",
+          "url": "https://ouraring.com",
+          "source": "ouraring.com",
+          "price": "$349",
+          "review": "I don't train hard on days my HRV is down. This ring is how I know, without wearing a watch to bed.",
+          "description": "Sleep, readiness and activity tracking in a titanium ring.",
+          "referral": {
+            "code": "TIMTESTS",
+            "url": "https://ouraring.com",
+            "pitch": "$40 off your first ring."
+          }
+        },
+        {
+          "kind": "product",
+          "title": "Pso-Rite",
+          "image": "fitness-5.jpg",
+          "url": "https://pso-rite.com",
+          "source": "pso-rite.com",
+          "price": "$60",
+          "review": "Two minutes on this undoes a day of sitting. Weird-looking, and nothing else reaches the psoas like it.",
+          "description": "Self-massage tool for the psoas and hip flexors."
+        },
+        {
+          "kind": "product",
+          "title": "Theragun Pro",
+          "image": "fitness-6.jpg",
+          "url": "https://therabody.com",
+          "source": "therabody.com",
+          "price": "$599",
+          "review": "Calves and forearms after kettlebell days. The app routines are actually useful if you're new to this.",
+          "description": "Percussive therapy device with app-guided routines.",
+          "referral": {
+            "url": "https://therabody.com",
+            "pitch": "Free shipping and an extra attachment."
+          }
+        },
+        {
+          "kind": "product",
+          "title": "Fliteboard eFoil",
+          "image": "fitness-7.jpg",
+          "url": "https://fliteboard.com",
+          "source": "fliteboard.com",
+          "price": "$12,000",
+          "review": "The splurge on this list. A full-body balance workout that feels like play, which is the only kind of cardio I'll do for an hour.",
+          "description": "Electric hydrofoil board."
+        },
+        {
+          "kind": "product",
+          "title": "Spiky Massage Ball",
+          "image": "fitness-8.jpg",
+          "url": "https://example.com/spiky-ball",
+          "source": "Amazon",
+          "price": "$9",
+          "review": "Under the foot while on calls, between the shoulder blades against a wall. Best $9 on this page.",
+          "description": "Firm textured ball for trigger points."
+        },
+        {
+          "kind": "product",
+          "title": "Rad Power RadRover",
+          "image": "fitness-9.jpg",
+          "url": "https://radpowerbikes.com",
+          "source": "radpowerbikes.com",
+          "price": "$1,899",
+          "review": "Replaced most of my short car trips. Fat tyres mean beach and gravel are fair game.",
+          "description": "Fat-tyre electric bike."
+        },
+        {
+          "kind": "step",
+          "title": "Kettlebell swings, 75 reps twice a week",
+          "review": "If you only do one thing from this list, do this. 75 two-handed swings, rest as needed, done in under ten minutes. Start lighter than your ego wants.",
+          "description": "Sets of 15 to 25. Hips drive the bell, arms just hold on."
+        }
+      ]
+    },
+    {
+      "slug": "low-carb-nutrition",
+      "title": "Low Carb Nutrition",
+      "description": "Low-carb, high-nutrient, nothing artificial. Most of the results come from two habits, not from products, so the habits are here too. Expect to feel the difference in two weeks if you hold to it.",
+      "items": [
+        {
+          "kind": "product",
+          "title": "Pique Fermented Pu'er",
+          "image": "lowcarb-1.jpg",
+          "url": "https://piquelife.com",
+          "source": "piquelife.com",
+          "price": "$38",
+          "review": "Replaced my second coffee. Dissolves in cold water, no crash, and it seems to help with digestion on heavy meal days.",
+          "description": "Fermented pu'er tea crystals, black and green."
+        },
+        {
+          "kind": "step",
+          "title": "30g of protein within 30 minutes of waking",
+          "review": "The single habit that made the rest of the day easy. Eggs, lentils and spinach is my default; a shake on travel days.",
+          "description": "Eat it before coffee if you can."
+        },
+        {
+          "kind": "step",
+          "title": "One cheat day a week",
+          "review": "Saturday, anything goes. It's what makes the other six days sustainable, and it keeps the plan from feeling like a diet.",
+          "description": "Same day every week, so you're not negotiating with yourself."
+        }
+      ]
+    },
+    {
+      "slug": "health-hacks-supplements",
+      "title": "Health Hacks & Supplements",
+      "description": "Everything biohacking: longevity, metabolism and recovery. Carefully curated, but talk to a medical professional before you take anything new. Some of these will not suit your biology.",
+      "items": [
+        { "kind": "product", "title": "Blue Bottle Coffee Subscription", "image": "health-1.jpg", "url": "https://bluebottlecoffee.com", "source": "bluebottlecoffee.com", "price": "$22", "review": "Fresh beans every two weeks so I never buy stale supermarket coffee in a panic." },
+        { "kind": "product", "title": "Magic Spoon Cereal", "image": "health-2.jpg", "url": "https://magicspoon.com", "source": "magicspoon.com", "price": "$39", "review": "Cereal for people who quit cereal. High protein, almost no carbs, and my kids think it's a treat." },
+        { "kind": "product", "title": "UCAN Energy", "image": "health-3.jpg", "url": "https://ucan.co", "source": "ucan.co", "price": "$45", "review": "Steady energy for long training sessions without a sugar spike. Tropical orange is the good one." },
+        { "kind": "product", "title": "Ascent Plant Protein", "image": "health-4.jpg", "url": "https://ascentprotein.com", "source": "ascentprotein.com", "price": "$40", "review": "Same tub as in the fitness list. It's here too because it's the easiest way to hit my protein target." },
+        { "kind": "product", "title": "AG1", "image": "health-5.jpg", "url": "https://drinkag1.com", "source": "drinkag1.com", "price": "$79", "review": "Insurance, not magic. One scoop in the morning covers the days I eat badly while travelling." },
+        { "kind": "product", "title": "Pique Fermented Pu'er", "image": "health-6.jpg", "url": "https://piquelife.com", "source": "piquelife.com", "price": "$38", "review": "My afternoon drink. Caffeine without the jitters." },
+        { "kind": "product", "title": "Nordic Naturals ProOmega", "image": "health-7.jpg", "url": "https://nordic.com", "source": "nordic.com", "price": "$50", "review": "Clean fish oil with no fishy burps, tested by a third party. Two with breakfast." },
+        { "kind": "product", "title": "Dry Farm Wines", "image": "health-8.jpg", "url": "https://dryfarmwines.com", "source": "dryfarmwines.com", "price": "$159", "review": "If I'm drinking, it's this: low sugar, lower alcohol, and no headache the next morning." },
+        { "kind": "product", "title": "Pre-workout Powder", "image": "health-9.jpg", "url": "https://example.com/pre-workout", "source": "example.com", "price": "$45", "review": "Half a scoop on heavy days only. Anything more and I'm awake at 2 a.m." },
+        { "kind": "product", "title": "ButcherBox", "image": "health-10.jpg", "url": "https://butcherbox.com", "source": "butcherbox.com", "price": "$169", "review": "Grass-fed beef and wild salmon delivered monthly. Removes the 'what's for dinner' decision." },
+        { "kind": "product", "title": "Bragg Apple Cider Vinegar", "image": "health-11.jpg", "url": "https://bragg.com", "source": "bragg.com", "price": "$6", "review": "A tablespoon in water before carb-heavy meals. Cheap, easy and possibly the best value here." },
+        { "kind": "product", "title": "Four Sigmatic Mushroom Coffee", "image": "health-12.jpg", "url": "https://foursigmatic.com", "source": "foursigmatic.com", "price": "$18", "review": "Half the caffeine, with lion's mane. My go-to on writing days." },
+        { "kind": "tool", "title": "AeroPress", "image": "health-13.jpg", "url": "https://aeropress.com", "source": "aeropress.com", "price": "$40", "review": "Two minutes, one cup, no cleanup. Travels in my carry-on." },
+        { "kind": "product", "title": "Herb Pharm California Poppy", "image": "health-14.jpg", "url": "https://herb-pharm.com", "source": "herb-pharm.com", "price": "$16", "review": "A few drops on nights my brain won't switch off. Mild, but it works for me." },
+        { "kind": "tool", "title": "Wooden Gymnastic Rings", "image": "health-15.jpg", "url": "https://example.com/gymnastic-rings", "source": "example.com", "price": "$35", "review": "Hang them from a tree or a door frame. Ring rows and dips are the best upper-body work per dollar." },
+        { "kind": "product", "title": "NOW Alpha Lipoic Acid", "image": "health-16.jpg", "url": "https://nowfoods.com", "source": "nowfoods.com", "price": "$20", "review": "Taken with my biggest meal. The research is promising, not conclusive; I'm keeping it while I measure." },
+        { "kind": "book", "title": "Outlive by Peter Attia", "url": "https://example.com/outlive", "source": "Book", "review": "The best single book on longevity I've read. The exercise chapters alone justify it." },
+        { "kind": "tool", "title": "Levels", "url": "https://levels.com", "source": "levels.com", "review": "Two weeks with a glucose monitor taught me more about my diet than a year of reading. Do it once." },
+        { "kind": "step", "title": "Finish every shower with 2 minutes cold", "review": "Miserable for a week, then it's the most awake I feel all day. Start with 30 seconds." },
+        { "kind": "step", "title": "10 minutes of morning sunlight", "review": "Before screens, outside, no sunglasses. My sleep got noticeably better within a week." }
+      ]
+    },
+    {
+      "slug": "sleep-enhancers",
+      "title": "Sleep Enhancers",
+      "description": "From creating the right sleep environment to sleeping well on planes. Most of my bad nights happen on the road, so this list leans towards travel. Don't forget the referral codes.",
+      "items": [
+        {
+          "kind": "product",
+          "title": "Manta Sleep Mask",
+          "image": "sleep-1.jpg",
+          "url": "https://mantasleep.com",
+          "source": "mantasleep.com",
+          "price": "$35",
+          "review": "Total darkness with zero pressure on the eyes. I sleep in it at home too, not just on planes.",
+          "description": "Adjustable eye cups, fully blackout.",
+          "referral": {
+            "code": "TIMSLEEPS",
+            "url": "https://mantasleep.com",
+            "pitch": "10% off any mask."
+          }
+        },
+        {
+          "kind": "product",
+          "title": "Packable Travel Jacket",
+          "image": "sleep-2.jpg",
+          "url": "https://example.com/travel-jacket",
+          "source": "example.com",
+          "price": "$120",
+          "review": "Doubles as a pillow on red-eyes. Hidden pockets mean my phone and passport stay put while I sleep.",
+          "description": "Lightweight jacket with inner zip pockets."
+        },
+        {
+          "kind": "product",
+          "title": "Nomatic Travel Pack",
+          "image": "sleep-3.jpg",
+          "url": "https://nomatic.com",
+          "source": "nomatic.com",
+          "price": "$300",
+          "review": "Everything for sleeping on the road fits in the top pocket, so it's reachable without getting up.",
+          "description": "Carry-on backpack with modular compartments."
+        },
+        {
+          "kind": "product",
+          "title": "Packable Travel Blanket",
+          "image": "sleep-4.jpg",
+          "url": "https://example.com/travel-blanket",
+          "source": "example.com",
+          "price": "$45",
+          "review": "Planes are always too cold. Packs down to the size of a water bottle.",
+          "description": "Insulated blanket with its own stuff sack."
+        }
+      ]
+    }
+  ]
+}
