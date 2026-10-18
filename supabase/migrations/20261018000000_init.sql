@@ -9,7 +9,9 @@ create type public.item_kind as enum ('product', 'tool', 'book', 'step');
 create table public.users (
   id            uuid primary key default gen_random_uuid(),
   auth_user_id  uuid unique references auth.users (id) on delete set null,
-  handle        citext not null unique check (handle ~ '^[a-z0-9_]{2,30}$'),
+  -- citext makes lookups case-insensitive; the ::text cast keeps the check
+  -- case-sensitive so handles are stored lowercase.
+  handle        citext not null unique check (handle::text ~ '^[a-z0-9_]{2,30}$'),
   name          text not null,
   avatar_url    text,
   bio           text,          -- one line
@@ -113,6 +115,9 @@ alter table public.items     enable row level security;
 alter table public.referrals enable row level security;
 
 -- users: profiles are public; a creator edits their own.
+-- Anonymous readers never need the auth id. Column privileges hide it from
+-- them (selecting `*` on users as anon will fail; always name columns).
+revoke select (auth_user_id) on public.users from anon;
 create policy "users are public" on public.users
   for select using (true);
 create policy "creators insert themselves" on public.users

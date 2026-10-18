@@ -9,7 +9,9 @@ export type SocialPlatform =
   | "newsletter"
   | "website";
 
-export type SocialLink = { platform: SocialPlatform; url: string };
+// `platform` comes from a jsonb column, so unknown values must still type-check;
+// SocialLinks renders those with a generic icon.
+export type SocialLink = { platform: SocialPlatform | (string & {}); url: string };
 
 // A list as it appears on a profile: enough for the card, not the full items.
 export type ListSummary = {

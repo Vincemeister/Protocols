@@ -27,8 +27,6 @@
   --color-cover-overlay: #19070c;
 
   /* Type scale. Figma's "-2" letter spacing is -2%, i.e. -0.02em. */
-  --tracking-heading: -0.02em;
-
   --text-h3: 1.5rem;
   --text-h3--line-height: 1;
   --text-h3--font-weight: 700;

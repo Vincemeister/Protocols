@@ -24,7 +24,8 @@ brand name anywhere; use a single `APP_NAME` constant.
   The file opens on an empty "Stylesheet" page. The real frames are on the
   mobile page (node 5-14) and the desktop page (node 120-7363). On desktop,
   "User lists" is 185:27484, "User profile" is 367:17191, and the Cards
-  section is 405:17107.
+  section is 405:17107. The mobile page is too large for the Figma MCP to
+  return its metadata; ask Vini for a node link to a specific mobile frame.
 - **Old codebase (reference only, do not copy code):**
   https://github.com/Vincemeister/Favolist_4.0
 

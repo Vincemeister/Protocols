@@ -15,7 +15,13 @@ export async function generateMetadata({ params }: PageProps<"/[handle]">): Prom
 
   const title = `${profile.name} (@${profile.handle}) · ${APP_NAME}`;
   const description = profile.bio ?? `${profile.name}'s lists on ${APP_NAME}`;
-  return { title, description, openGraph: { title, description, type: "profile" } };
+  return {
+    title,
+    description,
+    // /Tim and /tim both resolve; tell crawlers which one is the page.
+    alternates: { canonical: `/${profile.handle}` },
+    openGraph: { title, description, type: "profile" },
+  };
 }
 
 // The page itself never awaits `params`. It hands the promise to
@@ -47,11 +53,9 @@ async function ProfileContent({ params }: Pick<PageProps<"/[handle]">, "params">
         <Avatar src={profile.avatarUrl} name={profile.name} size="hero" priority />
         <h1 className="mt-4 text-h4 text-neutral-900">{profile.name}</h1>
         {profile.bio && <p className="mt-1 max-w-sm text-p-m text-neutral-700">{profile.bio}</p>}
-        <div className="mt-5">
-          <SocialLinks links={profile.socialLinks} />
-        </div>
       </header>
 
+      {/* Spec order: bio, about, then social links. */}
       {profile.about && (
         <section aria-labelledby="about-heading" className="rounded-2xl bg-white p-5 ring-1 ring-neutral-200">
           <h2 id="about-heading" className="text-h6 text-neutral-900">
@@ -60,6 +64,10 @@ async function ProfileContent({ params }: Pick<PageProps<"/[handle]">, "params">
           <p className="mt-2 text-p-m text-neutral-700">{profile.about}</p>
         </section>
       )}
+
+      <div className="mt-6">
+        <SocialLinks links={profile.socialLinks} />
+      </div>
 
       <section aria-labelledby="lists-heading" className="mt-10">
         <div className="mb-4 flex items-baseline justify-between">
@@ -94,13 +102,13 @@ function ProfileSkeleton() {
         <div className="size-24 rounded-full bg-neutral-200" />
         <div className="mt-4 h-7 w-32 rounded bg-neutral-200" />
         <div className="mt-2 h-5 w-64 rounded bg-neutral-100" />
-        <div className="mt-5 flex gap-2">
-          {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="size-10 rounded-full bg-neutral-100" />
-          ))}
-        </div>
       </div>
       <div className="h-32 rounded-2xl bg-neutral-100" />
+      <div className="mt-6 flex justify-center gap-2">
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={i} className="size-10 rounded-full bg-neutral-100" />
+        ))}
+      </div>
       <div className="mt-10 aspect-square w-full bg-neutral-100" />
     </div>
   );

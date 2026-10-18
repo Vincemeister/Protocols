@@ -36,7 +36,7 @@ function LineIcon({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PlatformIcon({ platform }: { platform: SocialPlatform }) {
+function PlatformIcon({ platform }: { platform: string }) {
   switch (platform) {
     case "instagram":
       return <BrandIcon path={siInstagram.path} />;
@@ -81,7 +81,7 @@ export function SocialLinks({ links }: { links: SocialLink[] }) {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer me"
-            aria-label={LABELS[link.platform] ?? link.platform}
+            aria-label={LABELS[link.platform as SocialPlatform] ?? link.platform}
             className="grid size-10 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-900 transition-colors hover:border-primary-500 hover:text-primary-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
           >
             <PlatformIcon platform={link.platform} />

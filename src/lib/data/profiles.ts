@@ -8,6 +8,9 @@ import { fixtureProfile } from "./fixture";
 // across requests, so public profiles render from cache instead of hitting
 // Postgres on every bio-link tap. Creator edits will call
 // revalidateTag(`profile:<handle>`) to refresh it.
+//
+// A miss (null) is cached too, so a handle that 404ed stays 404 for up to
+// `cacheLife` after someone claims it. Sign-up must revalidate the tag.
 export async function getProfile(handle: string): Promise<Profile | null> {
   "use cache";
   cacheTag(`profile:${handle.toLowerCase()}`);
