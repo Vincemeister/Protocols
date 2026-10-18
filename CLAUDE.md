@@ -19,17 +19,27 @@ brand name anywhere; use a single `APP_NAME` constant.
   https://claude.ai/code/artifact/469c26a1-f930-407c-bed9-49533daf7ae2
 - **Background (what the old code, pitch deck and Figma taught us):**
   https://claude.ai/code/artifact/e5f81046-072b-4b30-aded-5e15dcaa4fd8
-- **Figma (design reference, view-only):**
+- **Visual styling (colors, fonts, spacing, component styles): the old
+  codebase.** https://github.com/Vincemeister/Favolist_4.0, cloned read-only
+  at `../Favolist_4.0`. It is newer than the Figma (last commit Dec 2024) and
+  is what actually shipped. Tokens live in `app/assets/stylesheets/config/`
+  (`_colors.scss`, `_fonts.scss`) and components in
+  `app/assets/stylesheets/components/`. Reference only: read the SCSS, do not
+  copy Rails code.
+- **Screen layout only: the Figma (view-only).**
   https://www.figma.com/design/VpIdHAUzzSP0mezojWdRfM/Favolist-4.0
-  The file opens on an empty "Stylesheet" page. The real frames are on the
-  mobile page (node 5-14) and the desktop page (node 120-7363). On desktop,
-  "User lists" is 185:27484, "User profile" is 367:17191, and the Cards
-  section is 405:17107. The mobile page is too large for the Figma MCP to
-  return its metadata; ask Vini for a node link to a specific mobile frame.
-- **Old codebase (reference only, do not copy code):**
-  https://github.com/Vincemeister/Favolist_4.0
+  Use it for how a screen is arranged and for anything the code never built.
+  Where the Figma and the code disagree on a color, font or component style,
+  the code wins (the Figma's indigo is an earlier design stage; the shipped
+  primary is pink). The file opens on an empty "Stylesheet" page; the real
+  frames are on the mobile page (node 5-14) and the desktop page (node
+  120-7363). On desktop, "User lists" is 185:27484, "User profile" is
+  367:17191, and the Cards section is 405:17107. The mobile page is too large
+  for the Figma MCP to return its metadata; ask Vini for a node link.
 
 If the spec and this file disagree, the spec wins. Update this file.
+(As of 2026-10-18 the spec's token table still shows the Figma indigo; Vini
+is updating it to match the code.)
 
 ## Stack
 
@@ -57,9 +67,14 @@ Public read on published lists/items via RLS; creators write their own rows.
 
 ## Design rules
 
-- Tokens come from the Figma, not from memory. Primary `#6366F1`, hover
-  `#4F46E5`, neutral ramp 50–900 per the spec, cover overlay `#19070C`.
-- Outfit everywhere. Headings use letter-spacing -2.
+- Tokens come from `../Favolist_4.0/app/assets/stylesheets/config/`, not from
+  memory or the Figma. Primary pink `#FC467D` (hover: darken 5%), its 50–900
+  ramp, the code's neutral ramp (`50 #F2F2F2` … `900 #171717`), white page
+  background, 2px corner radius on buttons and inputs, cover overlay black at
+  44%. They are all in `src/app/globals.css`; add there, never inline a hex.
+- Outfit everywhere, weights 300–700. Headings use letter-spacing -0.02em and
+  step up one size at 768px (`text-h5 md:text-h5-lg`). Long creator prose
+  (reviews, about) is weight 300 at line-height 1.75 (`prose-creator`).
 - The public pages carry the design effort. Creator screens can be plain.
 - Tiled list covers are CSS/SVG grids (1, 2x2, 3x3, 4x4 by item count), never
   server-side image processing.

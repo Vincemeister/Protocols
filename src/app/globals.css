@@ -1,51 +1,100 @@
 @import "tailwindcss";
 
 /*
- * Design tokens from the Favolist 4.0 Figma (see the v1 spec, "Design tokens").
- * Tailwind v4 reads these straight from CSS: `--color-primary-500` becomes
- * `bg-primary-500`, `--text-h4` becomes `text-h4`, and so on.
+ * Design tokens, taken from the Favolist 4.0 code (the shipped app), not the
+ * Figma: ../Favolist_4.0/app/assets/stylesheets/config/_colors.scss and
+ * _fonts.scss. Tailwind v4 reads these straight from CSS: `--color-primary`
+ * becomes `bg-primary`, `--text-h5` becomes `text-h5`, and so on.
  */
 @theme {
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
 
-  /* Primary (indigo) */
-  --color-primary-500: #6366f1; /* buttons, active tab, links */
-  --color-primary-600: #4f46e5; /* hover and pressed */
-  --color-accent: #725feb; /* accent surfaces, OG image background */
+  /* Primary (pink). `$primary` in the old code sits between 400 and 500. */
+  --color-primary: #fc467d;
+  --color-primary-hover: #fc2d6b; /* darken($primary, 5%) */
+  --color-primary-50: #ffedf2;
+  --color-primary-100: #eed8fb;
+  --color-primary-200: #feb5cb;
+  --color-primary-300: #fd90b1;
+  --color-primary-400: #fd6b97;
+  --color-primary-500: #ca3864;
+  --color-primary-600: #972a4b;
+  --color-primary-700: #651c32;
+  --color-primary-800: #320e19;
+  --color-primary-900: #19070c;
 
-  /* Neutral ramp */
-  --color-neutral-50: #fafafa; /* page background */
-  --color-neutral-100: #f5f5f5; /* card backgrounds */
-  --color-neutral-200: #e5e5e5; /* dividers */
-  --color-neutral-300: #d4d4d4; /* borders */
-  --color-neutral-400: #a3a3a3; /* placeholders, disabled */
-  --color-neutral-500: #737373; /* captions, metadata */
-  --color-neutral-700: #404040; /* secondary text */
+  /* Grayscale */
+  --color-neutral-50: #f2f2f2;
+  --color-neutral-100: #e6e6e6; /* hairlines, dividers */
+  --color-neutral-200: #cccccc; /* button borders */
+  --color-neutral-300: #b3b3b3;
+  --color-neutral-400: #999999; /* muted text */
+  --color-neutral-500: #7b7b7b; /* captions, metadata */
+  --color-neutral-600: #5c5c5c;
+  --color-neutral-700: #3f3f3f; /* secondary text, tab labels */
+  --color-neutral-800: #2d2d2d;
   --color-neutral-900: #171717; /* headings, body text */
 
-  /* Dark tint over tiled list covers so the title reads */
-  --color-cover-overlay: #19070c;
+  /* Destructive */
+  --color-danger: #ef4444;
+  --color-danger-600: #dc2626;
 
-  /* Type scale. Figma's "-2" letter spacing is -2%, i.e. -0.02em. */
-  --text-h3: 1.5rem;
-  --text-h3--line-height: 1;
-  --text-h3--font-weight: 700;
+  /* Tint over tiled list covers so the title reads (rgba(0,0,0,.44) in the old code) */
+  --color-cover-overlay: #000000;
+
+  /* Buttons and inputs: 2px corners everywhere */
+  --radius-ui: 2px;
+
+  /*
+   * Type. Outfit throughout. Headings step up at 768px: `text-h5 md:text-h5-lg`.
+   * The old SCSS writes heading line heights without units; they are read
+   * here as rem, which is what the values make sense as.
+   */
+  --text-h1: 2.25rem;
+  --text-h1--line-height: 2.75rem;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1-lg: 2.5rem;
+  --text-h1-lg--line-height: 3rem;
+  --text-h1-lg--letter-spacing: -0.02em;
+
+  --text-h2: 2rem;
+  --text-h2--line-height: 2.5rem;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2-lg: 2.25rem;
+  --text-h2-lg--line-height: 2.75rem;
+  --text-h2-lg--letter-spacing: -0.02em;
+
+  --text-h3: 1.75rem;
+  --text-h3--line-height: 2.25rem;
   --text-h3--letter-spacing: -0.02em;
+  --text-h3-lg: 2rem;
+  --text-h3-lg--line-height: 2.5rem;
+  --text-h3-lg--letter-spacing: -0.02em;
 
   --text-h4: 1.5rem;
   --text-h4--line-height: 2rem;
-  --text-h4--font-weight: 700;
   --text-h4--letter-spacing: -0.02em;
+  --text-h4-lg: 1.75rem;
+  --text-h4-lg--line-height: 2.25rem;
+  --text-h4-lg--letter-spacing: -0.02em;
 
   --text-h5: 1.25rem;
   --text-h5--line-height: 1.75rem;
-  --text-h5--font-weight: 600;
   --text-h5--letter-spacing: -0.02em;
+  --text-h5-lg: 1.5rem;
+  --text-h5-lg--line-height: 2rem;
+  --text-h5-lg--letter-spacing: -0.02em;
 
   --text-h6: 1.125rem;
   --text-h6--line-height: 1.5rem;
-  --text-h6--font-weight: 500;
   --text-h6--letter-spacing: -0.02em;
+  --text-h6-lg: 1.25rem;
+  --text-h6-lg--line-height: 1.75rem;
+  --text-h6-lg--letter-spacing: -0.02em;
+
+  /* Paragraph large / medium / small / extra small */
+  --text-p-l: 1.125rem;
+  --text-p-l--line-height: 1.75rem;
 
   --text-p-m: 1rem;
   --text-p-m--line-height: 1.5rem;
@@ -55,21 +104,27 @@
 
   --text-p-xs: 0.75rem;
   --text-p-xs--line-height: 1.25rem;
-  --text-p-xs--font-weight: 500;
 
-  /* List card title overlay (List block large - desktop) */
-  --text-cover-title: 2.25rem;
-  --text-cover-title--line-height: 2.75rem;
-  --text-cover-title--font-weight: 700;
-  --text-cover-title--letter-spacing: -0.02em;
+  /* `.overline`: tab labels and section labels */
+  --text-overline: 0.875rem;
+  --text-overline--line-height: 1.25rem;
+  --text-overline--font-weight: 500;
+  --text-overline--letter-spacing: 0.02em;
 
-  --text-cover-count: 1.25rem;
-  --text-cover-count--line-height: 1.75rem;
-  --text-cover-count--font-weight: 600;
-  --text-cover-count--letter-spacing: -0.02em;
+  /* Button text */
+  --text-button: 0.875rem;
+  --text-button--line-height: 1.25rem;
+  --text-button--font-weight: 500;
 }
 
 body {
-  background: var(--color-neutral-50);
+  background: #ffffff;
   color: var(--color-neutral-900);
+}
+
+/* `.content-text` / `.about-text` in the old code: long-form creator prose */
+@utility prose-creator {
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--color-neutral-700);
 }

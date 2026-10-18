@@ -82,7 +82,8 @@ export function SocialLinks({ links }: { links: SocialLink[] }) {
             target="_blank"
             rel="noopener noreferrer me"
             aria-label={LABELS[link.platform as SocialPlatform] ?? link.platform}
-            className="grid size-10 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-900 transition-colors hover:border-primary-500 hover:text-primary-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+            // `.button-tertiary` from the old code: hairline border, 2px corners
+            className="grid size-10 place-items-center rounded-ui border border-neutral-200 bg-white text-neutral-700 transition-colors hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             <PlatformIcon platform={link.platform} />
           </a>

@@ -16,9 +16,8 @@ export function TiledCover({
   const size = coverGridSize(images.length);
 
   if (size === 0) {
-    return (
-      <div className="absolute inset-0 bg-gradient-to-br from-accent to-primary-600" />
-    );
+    // No item images yet: a plain tint, as the old `list_fallback_image` did.
+    return <div className="absolute inset-0 bg-primary-700" />;
   }
 
   return (

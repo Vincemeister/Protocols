@@ -6,13 +6,14 @@ import { APP_NAME } from "@/lib/config";
 export default function Home() {
   return (
     <main className="mx-auto flex w-full max-w-[550px] flex-1 flex-col items-center justify-center px-4 py-24 text-center">
-      <h1 className="text-h3">{APP_NAME}</h1>
-      <p className="mt-3 text-p-m text-neutral-700">
+      <h1 className="text-h3 font-bold md:text-h3-lg">{APP_NAME}</h1>
+      <p className="prose-creator mt-3 text-p-m">
         The tools, products and routines trusted people actually use, with a note on every one.
       </p>
+      {/* `.button.button-primary` from the old code */}
       <Link
         href="/tim"
-        className="mt-8 rounded-lg bg-primary-500 px-5 py-2.5 text-p-m font-medium text-white hover:bg-primary-600"
+        className="mt-8 rounded-ui bg-primary px-5 py-3 text-button text-white hover:bg-primary-hover"
       >
         See an example profile
       </Link>

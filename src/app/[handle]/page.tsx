@@ -34,7 +34,7 @@ export default function ProfilePage({ params }: PageProps<"/[handle]">) {
         <ProfileContent params={params} />
       </Suspense>
       <footer className="mt-16 text-center text-p-xs text-neutral-500">
-        <Link href="/" className="hover:text-primary-500">
+        <Link href="/" className="hover:text-primary">
           Made with {APP_NAME}
         </Link>
       </footer>
@@ -42,6 +42,8 @@ export default function ProfilePage({ params }: PageProps<"/[handle]">) {
   );
 }
 
+// Layout follows the Figma "User profile" frame; the styling of each part
+// follows `_user_card.scss` (.user-card-show-page, .intro, .about-text).
 async function ProfileContent({ params }: Pick<PageProps<"/[handle]">, "params">) {
   const { handle } = await params;
   const profile = await getProfile(handle);
@@ -49,42 +51,38 @@ async function ProfileContent({ params }: Pick<PageProps<"/[handle]">, "params">
 
   return (
     <>
-      <header className="flex flex-col items-center pt-10 pb-8 text-center">
-        <Avatar src={profile.avatarUrl} name={profile.name} size="hero" priority />
-        <h1 className="mt-4 text-h4 text-neutral-900">{profile.name}</h1>
-        {profile.bio && <p className="mt-1 max-w-sm text-p-m text-neutral-700">{profile.bio}</p>}
+      <header className="flex flex-col items-center gap-4 border-b border-neutral-100 py-6 text-center">
+        <Avatar src={profile.avatarUrl} name={profile.name} size="xl" priority />
+        <h1 className="text-h5 font-medium md:text-h5-lg">{profile.name}</h1>
+        {profile.bio && <p className="max-w-sm text-p-s text-neutral-700">{profile.bio}</p>}
       </header>
 
-      {/* Spec order: bio, about, then social links. */}
       {profile.about && (
-        <section aria-labelledby="about-heading" className="rounded-2xl bg-white p-5 ring-1 ring-neutral-200">
-          <h2 id="about-heading" className="text-h6 text-neutral-900">
+        <section aria-labelledby="about-heading" className="border-b border-neutral-100 px-4 py-8 text-center">
+          <h2 id="about-heading" className="text-h6 font-medium md:text-h6-lg">
             About
           </h2>
-          <p className="mt-2 text-p-m text-neutral-700">{profile.about}</p>
+          <p className="prose-creator mt-3 text-p-m">{profile.about}</p>
         </section>
       )}
 
-      <div className="mt-6">
+      <div className="border-b border-neutral-100 py-6">
         <SocialLinks links={profile.socialLinks} />
       </div>
 
-      <section aria-labelledby="lists-heading" className="mt-10">
-        <div className="mb-4 flex items-baseline justify-between">
-          <h2 id="lists-heading" className="text-h5 text-neutral-900">
-            Lists
-          </h2>
-          <span className="text-p-s text-neutral-500">
-            {profile.lists.length} {profile.lists.length === 1 ? "list" : "lists"}
-          </span>
-        </div>
+      <section aria-labelledby="lists-heading" className="mt-6">
+        {/* `.overline` + `.custom-nav-link-count`: the old profile's tab label */}
+        <h2 id="lists-heading" className="mb-4 text-overline text-neutral-700">
+          <span className="font-semibold text-primary-500">{profile.lists.length}</span>{" "}
+          {profile.lists.length === 1 ? "List" : "Lists"}
+        </h2>
 
         {profile.lists.length === 0 ? (
-          <p className="rounded-2xl bg-neutral-100 p-6 text-center text-p-s text-neutral-500">
+          <p className="bg-neutral-50 p-6 text-center text-p-s text-neutral-500">
             No published lists yet.
           </p>
         ) : (
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-8">
             {profile.lists.map((list, i) => (
               <ListCard key={list.slug} handle={profile.handle} list={list} priority={i === 0} />
             ))}
@@ -98,18 +96,22 @@ async function ProfileContent({ params }: Pick<PageProps<"/[handle]">, "params">
 function ProfileSkeleton() {
   return (
     <div aria-hidden className="animate-pulse">
-      <div className="flex flex-col items-center pt-10 pb-8">
-        <div className="size-24 rounded-full bg-neutral-200" />
-        <div className="mt-4 h-7 w-32 rounded bg-neutral-200" />
-        <div className="mt-2 h-5 w-64 rounded bg-neutral-100" />
+      <div className="flex flex-col items-center gap-4 border-b border-neutral-100 py-6">
+        <div className="size-[72px] rounded-full bg-neutral-100" />
+        <div className="h-6 w-28 rounded-ui bg-neutral-100" />
+        <div className="h-4 w-56 rounded-ui bg-neutral-50" />
       </div>
-      <div className="h-32 rounded-2xl bg-neutral-100" />
-      <div className="mt-6 flex justify-center gap-2">
+      <div className="border-b border-neutral-100 px-4 py-8">
+        <div className="mx-auto h-5 w-16 rounded-ui bg-neutral-100" />
+        <div className="mx-auto mt-3 h-20 max-w-sm rounded-ui bg-neutral-50" />
+      </div>
+      <div className="flex justify-center gap-2 border-b border-neutral-100 py-6">
         {Array.from({ length: 4 }, (_, i) => (
-          <div key={i} className="size-10 rounded-full bg-neutral-100" />
+          <div key={i} className="size-10 rounded-ui bg-neutral-50" />
         ))}
       </div>
-      <div className="mt-10 aspect-square w-full bg-neutral-100" />
+      <div className="mt-6 h-4 w-14 rounded-ui bg-neutral-100" />
+      <div className="mt-4 aspect-square w-full bg-neutral-50" />
     </div>
   );
 }
