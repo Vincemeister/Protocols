@@ -1,0 +1,15 @@
+/* Layout for the components page only. Tokens throughout; no new values. */
+.dev-page { max-width: var(--page-max); margin: 0 auto; padding: var(--space-6) var(--space-4) var(--space-20); }
+.dev-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; padding-bottom: var(--space-6); border-bottom: 1px solid var(--line); }
+.dev-head h1 { margin: 0 0 var(--space-1); }
+.dev-head p { margin: 0; }
+.dev-muted { color: var(--ink-muted); }
+.dev-group { padding-top: var(--space-8); }
+.dev-card { padding: var(--space-4) 0 var(--space-8); }
+.dev-card h3 { margin: 0 0 var(--space-3); }
+.dev-card h3 a { color: var(--ink); text-decoration: none; }
+.dev-card h3 a:hover { color: var(--accent); }
+.dev-pair { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+.dev-panel { background: var(--surface); color: var(--ink); border: 1px solid var(--line); min-width: 0; overflow: hidden; }
+.dev-solo { min-height: 100vh; background: var(--surface); color: var(--ink); }
+@media (min-width: 992px) { .dev-page { padding: var(--space-8) var(--space-6) var(--space-20); } .dev-pair { grid-template-columns: 1fr 1fr; } }

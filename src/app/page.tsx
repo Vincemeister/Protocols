@@ -1,22 +1,18 @@
-import Link from "next/link";
+import { Button, Mark } from "@/components/ui";
 import { APP_NAME } from "@/lib/config";
 
-// Placeholder until the Landing screen is built (spec: one sentence, three
-// example profiles, sign-in).
+// Placeholder until the landing page (A8) is built in phase 5.
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-[550px] flex-1 flex-col items-center justify-center px-4 py-24 text-center">
-      <h1 className="text-h3 font-bold md:text-h3-lg">{APP_NAME}</h1>
-      <p className="prose-creator mt-3 text-p-m">
-        The tools, products and routines trusted people actually use, with a note on every one.
+    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "var(--space-4)", padding: "var(--space-6)", textAlign: "center" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
+        <span style={{ width: 32, height: 32, display: "block" }} className="fv-mark-box"><Mark /></span>
+        <span className="heading-3">{APP_NAME}</span>
+      </div>
+      <p className="body" style={{ margin: 0, color: "var(--ink-muted)", maxWidth: 360 }}>
+        The products people actually use, reviewed in their own words.
       </p>
-      {/* `.button.button-primary` from the old code */}
-      <Link
-        href="/tim"
-        className="mt-8 rounded-ui bg-primary px-5 py-3 text-button text-white hover:bg-primary-hover"
-      >
-        See an example profile
-      </Link>
+      <Button variant="primary" size="lg" href="/sign-in" label="Sign in" />
     </main>
   );
 }
