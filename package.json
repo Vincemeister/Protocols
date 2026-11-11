@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "tokens": "node scripts/build-tokens.mjs",
+    "tokens": "node scripts/build-tokens.mjs && node scripts/build-icons.mjs",
     "predev": "npm run tokens",
     "dev": "next dev",
     "prebuild": "npm run tokens",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "compare": "node scripts/compare-components.mjs"
   },
   "dependencies": {
     "@fontsource-variable/outfit": "^5.3.0",

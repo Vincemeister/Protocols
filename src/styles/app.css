@@ -18,5 +18,14 @@ a:hover { color: var(--accent-hover); }
 
 .fv-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* A sized box for the theme-following mark outside the rail and top bar. */
+/* The theme-following mark (<Mark />). bundle.css hides the dark-surface file
+   with .fv-mark-dark, but `.fv-rail-brand img { display: block }` outranks
+   that rule, so in the light theme both files show side by side. Until that
+   is fixed in the design system, the nearest theme decides here. */
+:root, [data-theme="light"] { --fv-mark-on-light: block; --fv-mark-on-dark: none; }
+[data-theme="dark"] { --fv-mark-on-light: none; --fv-mark-on-dark: block; }
+img.fv-mark-light { display: var(--fv-mark-on-light) !important; }
+img.fv-mark-dark { display: var(--fv-mark-on-dark) !important; }
+
+/* A sized box for the mark outside the rail and top bar. */
 .fv-mark-box img { width: 100%; height: 100%; }

@@ -178,7 +178,7 @@ export const PREVIEWS: Preview[] = [
     name: "TopBar", group: "Navigation",
     render: () => (
       <>
-        <div><TopBar brand mark="/brand/favolist-mark.svg" action={{ icon: "bell", label: "Notifications", badge: true }} /></div>
+        <div><TopBar brand action={{ icon: "bell", label: "Notifications", badge: true }} /></div>
         <div style={{ height: 16 }} />
         <div><TopBar title="Camera bag essentials" action={{ icon: "share", label: "Share" }} /></div>
       </>
