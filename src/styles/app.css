@@ -1,0 +1,22 @@
+/* App-level glue around the design system. No colours, sizes or radii are
+   defined here: everything visual comes from tokens.css and bundle.css. */
+
+/* next/font serves Outfit under a generated family name; point the design
+   system's --font-sans at it and keep the system's own fallbacks. */
+:root {
+  --font-sans: var(--font-outfit), "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+[data-theme="dark"] { color-scheme: dark; }
+
+html, body { min-height: 100%; }
+html { background: var(--surface); }
+
+/* Same link rule the designed screens carry in their <helmet>. */
+a { color: var(--accent); }
+a:hover { color: var(--accent-hover); }
+
+.fv-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* A sized box for the theme-following mark outside the rail and top bar. */
+.fv-mark-box img { width: 100%; height: 100%; }
