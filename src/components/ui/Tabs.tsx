@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncedState } from "./useSyncedState";
 
 export interface TabItem { id: string; label: string; count?: number }
 
@@ -11,8 +11,7 @@ export interface TabsProps {
 }
 
 export function Tabs({ items, selected, onChange }: TabsProps) {
-  const [current, setCurrent] = useState(selected);
-  useEffect(() => setCurrent(selected), [selected]);
+  const [current, setCurrent] = useSyncedState(selected);
   return (
     <div className="fv-tabs" role="tablist">
       {items.map((it) => (

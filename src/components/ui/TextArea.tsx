@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useId } from "react";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { cx } from "./cx";
 import { FieldShell, type FieldProps } from "./Field";
 import { Icon } from "./Icon";
+import { useSyncedState } from "./useSyncedState";
 
 export interface TextAreaProps extends FieldProps {
   value?: string;
@@ -31,10 +32,8 @@ export function TextArea(props: TextAreaProps) {
   const { value = "", placeholder, rows = 4, voice, recording = false, recordingTime, tidied, onChange, onRecord, onRevert, ...field } = props;
   const auto = useId();
   const id = field.id || auto;
-  const [text, setText] = useState(value);
-  const [on, setOn] = useState(recording);
-  useEffect(() => setText(value), [value]);
-  useEffect(() => setOn(recording), [recording]);
+  const [text, setText] = useSyncedState(value);
+  const [on, setOn] = useSyncedState(recording);
 
   const control = (
     <textarea

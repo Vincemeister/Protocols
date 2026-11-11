@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncedState } from "./useSyncedState";
 import { cx } from "./cx";
 
 export interface FollowButtonProps {
@@ -11,8 +11,7 @@ export interface FollowButtonProps {
 
 /** Follow that morphs into Following in place: the fill drains, the label crossfades, the width never changes. */
 export function FollowButton({ following = false, size, onToggle }: FollowButtonProps) {
-  const [on, setOn] = useState(following);
-  useEffect(() => setOn(following), [following]);
+  const [on, setOn] = useSyncedState(following);
   return (
     <button
       type="button"
