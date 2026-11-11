@@ -1,0 +1,16 @@
+<!-- @dsCard group="Feedback" height=200 width=480 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Skeleton — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-stage-col" id="s"><div style="display:flex;gap:12px;align-items:center" id="row"></div><div id="img"></div><div id="t1"></div><div id="t2"></div></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('row').appendChild(F.Skeleton({width:40,height:40,round:true})); $('row').appendChild(F.Skeleton({width:140,height:14,text:true}));
+$('img').appendChild(F.Skeleton({height:80}));
+$('t1').appendChild(F.Skeleton({width:'70%',text:true})); $('t2').appendChild(F.Skeleton({width:'45%',text:true}));
+
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!-- @dsCard group="Actions" height=120 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Follow button — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"></head>
+<body>
+<div class="fv-stage" id="s"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+var a = F.FollowButton({}); var b = F.FollowButton({following:true}); var c = F.FollowButton({size:'sm'});
+$('s').appendChild(a); $('s').appendChild(b); $('s').appendChild(c);
+setInterval(function () { a.click(); }, 2400);
+
+</script>
+</body>
+</html>

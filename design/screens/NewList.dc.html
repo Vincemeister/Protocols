@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New list</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/favolist/tokens.css">
+<link rel="stylesheet" href="ds/favolist/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; }
+a { color: var(--accent); } a:hover { color: var(--accent-hover); }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: var(--surface); color: var(--ink); font-family: var(--font-sans);">
+
+  <header class="fv-topbar" style="position: static; flex: none;">
+    <a class="fv-icon-btn" href="Main.dc.html" aria-label="Close" style="width: 48px; height: 48px; justify-content: center; color: var(--ink);">
+      <svg class="fv-icon fv-icon-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </a>
+    <h1 class="fv-topbar-title">New list</h1>
+    <span></span>
+  </header>
+
+  <main style="flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 20px; padding: 24px 16px 16px;">
+
+    <button class="fv-uploader fv-uploader-wide" type="button" aria-label="Add a cover">
+      <svg class="fv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+      <span>Add a cover</span>
+      <span>Or we'll use your first product's picture</span>
+    </button>
+
+    <div class="fv-field">
+      <label class="fv-label" for="name">List name</label>
+      <input class="fv-input" id="name" type="text" placeholder="Camera bag essentials" maxlength="60">
+      <div class="fv-help"><span>Say what it's for, not just what's in it.</span><span class="fv-count">0 / 60</span></div>
+    </div>
+
+    <div class="fv-field">
+      <label class="fv-label" for="desc">Intro <span class="fv-optional">Optional</span></label>
+      <textarea class="fv-textarea" id="desc" rows="3" placeholder="One or two sentences at the top of the list." style="min-height: 88px;"></textarea>
+    </div>
+
+    <div style="display: flex; flex-direction: column; border-top: 1px solid var(--line);">
+      <label class="fv-choice">
+        <span class="fv-choice-text">Show on my profile<span class="fv-choice-help">Off keeps it as a draft only you can see.</span></span>
+        <input class="fv-toggle" type="checkbox" role="switch" checked>
+      </label>
+      <label class="fv-choice">
+        <span class="fv-choice-text">Number the products<span class="fv-choice-help">01, 02, 03 — for ranked or "in this order" lists.</span></span>
+        <input class="fv-toggle" type="checkbox" role="switch">
+      </label>
+    </div>
+
+    <div style="margin-top: auto;">
+      <a class="fv-btn fv-btn-primary fv-btn-lg fv-btn-block" href="AddSource.dc.html">Create and add a product</a>
+    </div>
+
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return { theme: this.props.theme ?? 'light' }; }
+}
+</script>
+</body>
+</html>

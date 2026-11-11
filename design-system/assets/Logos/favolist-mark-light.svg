@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Favolist mark">
+<rect x="0" y="0" width="60" height="60" fill="#f7eff1"></rect>
+<rect x="68" y="0" width="60" height="60" fill="#f7eff1"></rect>
+<rect x="0" y="68" width="60" height="60" fill="#f7eff1"></rect>
+<rect x="68" y="68" width="26" height="26" fill="#f7eff1"></rect>
+<rect x="102" y="68" width="26" height="26" fill="#f7eff1"></rect>
+<rect x="68" y="102" width="26" height="26" fill="#fc467d"></rect>
+<rect x="102" y="102" width="26" height="26" fill="#fc467d"></rect>
+</svg>

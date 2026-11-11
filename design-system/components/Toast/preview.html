@@ -1,0 +1,15 @@
+<!-- @dsCard group="Feedback" height=160 width=560 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Toast — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-stage-col" id="s" style="align-items:flex-start"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(F.Toast({tone:'success', message:'Saved to Camera bag essentials.', action:{label:'View'}, duration:0}));
+$('s').appendChild(F.Toast({tone:'danger', message:"Couldn't copy the code.", action:{label:'Retry'}, duration:0}));
+
+</script>
+</body>
+</html>

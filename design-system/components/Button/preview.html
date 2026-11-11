@@ -1,0 +1,16 @@
+<!-- @dsCard group="Actions" height=168 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Button — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"></head>
+<body>
+<div class="fv-stage-col"><div class="fv-stage" id="row1" style="padding:0"></div><div class="fv-stage" id="row2" style="padding:0"></div></div>
+<script>
+  var F = window.Favolist;
+  var r1 = document.getElementById('row1'), r2 = document.getElementById('row2');
+  [ { variant: 'primary', icon: 'plus', label: 'Create a list' }, { variant: 'secondary', label: 'Follow' }, { variant: 'tertiary', label: 'Edit profile' },
+    { variant: 'link', label: 'View all' }, { variant: 'danger', label: 'Delete list' } ].forEach(function (p) { r1.appendChild(F.Button(p)); });
+  [ { variant: 'primary', size: 'lg', label: 'Save to list' }, { variant: 'tertiary', size: 'sm', icon: 'copy', label: 'Copy code' },
+    { variant: 'secondary', size: 'sm', label: 'Following' }, { variant: 'primary', label: 'Saving…', disabled: true } ].forEach(function (p) { r2.appendChild(F.Button(p)); });
+</script>
+</body>
+</html>

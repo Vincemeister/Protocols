@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Creator profile — Lists</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/favolist/tokens.css">
+<link rel="stylesheet" href="ds/favolist/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; }
+a { color: var(--accent); } a:hover { color: var(--accent-hover); }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: var(--surface); color: var(--ink); font-family: var(--font-sans);">
+
+  <header class="fv-topbar" style="position: static; flex: none; grid-template-columns: 1fr 48px;">
+    <a class="fv-topbar-brand" href="#" style="grid-column: 1;">
+      <img src="{{mark}}" alt="" style="width: 24px; height: 24px; display: block;">
+      <span>Favolist</span>
+    </a>
+    <button class="fv-icon-btn" type="button" aria-label="Share profile" style="width: 48px; height: 48px; justify-content: center;">
+      <svg class="fv-icon fv-icon-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+    </button>
+  </header>
+
+  <main style="flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column;">
+
+    <section class="fv-profile" style="padding: 20px 16px 16px; gap: 12px;">
+      <div class="fv-profile-top">
+        <span class="fv-avatar fv-avatar-72 fv-avatar-tone-1" role="img" aria-label="Vince Rehms"><span>VR</span></span>
+        <div class="fv-profile-actions">
+          <button class="fv-btn fv-btn-primary" type="button">Follow</button>
+        </div>
+      </div>
+      <div>
+        <h1 class="fv-profile-name">Vince Rehms</h1>
+        <p class="fv-profile-handle">@vince.rehms</p>
+      </div>
+      <p class="fv-profile-bio">Travel photographer in Bali. Everything here I own, use and would buy again.</p>
+      <div class="fv-profile-links">
+        <a class="fv-profile-link" href="https://youtube.com/@vince">
+          <svg class="fv-icon fv-icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+          @vince
+        </a>
+        <a class="fv-profile-link" href="https://instagram.com/vince.rehms">
+          <svg class="fv-icon fv-icon-sm" viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          @vince.rehms
+        </a>
+        <a class="fv-profile-link" href="https://vincerehms.com">
+          <svg class="fv-icon fv-icon-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          vincerehms.com
+        </a>
+      </div>
+      <ul class="fv-profile-counts">
+        <li><b>1.2k</b>followers</li>
+        <li><b>86</b>following</li>
+        <li><b>8</b>lists</li>
+      </ul>
+    </section>
+
+    <div class="fv-tabs" role="tablist" style="gap: 20px;">
+      <button class="fv-tab" role="tab" type="button" aria-selected="true">Lists <span class="fv-tab-count">8</span></button>
+      <button class="fv-tab" role="tab" type="button" aria-selected="false">Products <span class="fv-tab-count">64</span></button>
+      <button class="fv-tab" role="tab" type="button" aria-selected="false">Codes <span class="fv-tab-count">12</span></button>
+      <button class="fv-tab" role="tab" type="button" aria-selected="false">About</button>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 16px;">
+      <a class="fv-list-card fv-list-card-sm" href="#">
+        <div class="fv-cover" style="background: #6b5a5f;"></div>
+        <div class="fv-list-top"><span class="fv-avatar fv-avatar-24 fv-avatar-tone-1"><span>VR</span></span><div><div class="fv-name">vince.rehms</div></div></div>
+        <div class="fv-list-bottom"><h3 class="fv-list-title">Camera bag essentials</h3><p class="fv-list-count">12 products</p></div>
+      </a>
+      <a class="fv-list-card fv-list-card-sm" href="#">
+        <div class="fv-cover" style="background: #5a6b5e;"></div>
+        <div class="fv-list-top"><span class="fv-avatar fv-avatar-24 fv-avatar-tone-1"><span>VR</span></span><div><div class="fv-name">vince.rehms</div></div></div>
+        <div class="fv-list-bottom"><h3 class="fv-list-title">Desk setup</h3><p class="fv-list-count">7 products</p></div>
+      </a>
+      <a class="fv-list-card fv-list-card-sm" href="#">
+        <div class="fv-cover" style="background: #4f5a6b;"></div>
+        <div class="fv-list-top"><span class="fv-avatar fv-avatar-24 fv-avatar-tone-1"><span>VR</span></span><div><div class="fv-name">vince.rehms</div></div></div>
+        <div class="fv-list-bottom"><h3 class="fv-list-title">Bali travel kit</h3><p class="fv-list-count">9 products</p></div>
+      </a>
+      <a class="fv-list-card fv-list-card-sm" href="#">
+        <div class="fv-cover" style="background: #6b645a;"></div>
+        <div class="fv-list-top"><span class="fv-avatar fv-avatar-24 fv-avatar-tone-1"><span>VR</span></span><div><div class="fv-name">vince.rehms</div></div></div>
+        <div class="fv-list-bottom"><h3 class="fv-list-title">Coffee at home</h3><p class="fv-list-count">6 products</p></div>
+      </a>
+    </div>
+
+  </main>
+
+  <nav class="fv-bottombar" aria-label="Main" style="position: static; flex: none;">
+    <a class="fv-bottombar-item" href="#"><svg class="fv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    <a class="fv-bottombar-item" href="#"><svg class="fv-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search</a>
+    <a class="fv-bottombar-item" href="#"><svg class="fv-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>Create</a>
+    <a class="fv-bottombar-item" href="#"><svg class="fv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>Saved</a>
+    <a class="fv-bottombar-item" href="#"><svg class="fv-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a>
+  </nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var theme = this.props.theme ?? 'light';
+    return { theme: theme, mark: theme === 'dark' ? '/_blob/74240fcf591bd033e9c1156407bf24d5' : '/_blob/4e9ff76090b817b8b8b6959359fd7eda' };
+  }
+}
+</script>
+</body>
+</html>

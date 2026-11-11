@@ -1,0 +1,17 @@
+<!-- @dsCard group="Feedback" height=260 width=560 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Alert — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-stage-col" id="s"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(F.Alert({message:'Your profile is private. Only you can see it until you publish.'}));
+$('s').appendChild(F.Alert({tone:'success', title:'Published.', message:'Your list is live at favolist.com/vince.rehms.', dismissible:true}));
+$('s').appendChild(F.Alert({tone:'warning', message:'This product has no review yet, so it is hidden from your profile.'}));
+$('s').appendChild(F.Alert({tone:'danger', title:"We couldn't fetch that page.", message:'Check the link or add the product manually.'}));
+
+</script>
+</body>
+</html>

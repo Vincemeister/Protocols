@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add a product — couldn't fetch</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/favolist/tokens.css">
+<link rel="stylesheet" href="ds/favolist/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; }
+a { color: var(--accent); } a:hover { color: var(--accent-hover); }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: var(--surface); color: var(--ink); font-family: var(--font-sans);">
+
+  <header class="fv-topbar" style="position: static; flex: none;">
+    <a class="fv-icon-btn" href="AddSource.dc.html" aria-label="Back" style="width: 48px; height: 48px; justify-content: center; color: var(--ink);">
+      <svg class="fv-icon fv-icon-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <h1 class="fv-topbar-title">Add a product</h1>
+    <span style="font-size: 12px; line-height: 16px; font-weight: 500; color: var(--ink-muted); text-align: center;">1 of 3</span>
+  </header>
+
+  <main style="flex: 1 1 auto; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 24px; padding: 32px 16px 16px;">
+
+    <div class="fv-alert fv-alert-danger" role="alert">
+      <svg class="fv-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+      <div class="fv-alert-text"><b>We couldn't read that page.</b> Some stores block us. Check the link, or add the product by hand below; it takes a minute.</div>
+    </div>
+
+    <div class="fv-field is-error">
+      <label class="fv-label" for="url">Product link</label>
+      <input class="fv-input" id="url" type="url" value="https://www.somestore.id/p/9918-sling">
+      <div class="fv-help"><span><svg class="fv-icon" viewBox="0 0 24 24" aria-hidden="true" style="width: 14px; height: 14px; vertical-align: -2px; margin-right: 4px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>No product found at this address.</span></div>
+    </div>
+
+    <div style="display: flex; gap: 8px;">
+      <button class="fv-btn fv-btn-tertiary fv-btn-lg" type="button" style="flex: 1;">Try again</button>
+      <a class="fv-btn fv-btn-primary fv-btn-lg" href="AddDetails.dc.html" style="flex: 1;">Add it manually</a>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line);">
+      <h3 class="fv-overline" style="margin: 0;">What we need</h3>
+      <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted);">A name, one picture and the brand. Your review does the rest.</p>
+    </div>
+
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return { theme: this.props.theme ?? 'light' }; }
+}
+</script>
+</body>
+</html>

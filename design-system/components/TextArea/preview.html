@@ -1,0 +1,14 @@
+<!-- @dsCard group="Forms" height=560 width=480 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Text area — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"></head>
+<body>
+<div class="fv-stage-col" id="s"></div>
+<script>
+var F = window.Favolist, s = document.getElementById('s');
+s.appendChild(F.TextArea({label:'Intro', placeholder:'One or two sentences at the top of the list.', rows:3, optional:true}));
+s.appendChild(F.TextArea({label:'Your review', voice:true, recording:true, recordingTime:'0:14', value:"I've carried this through four countries and it still looks new, um, the strap is the reason I bought it", help:'Why did you buy it? What would you tell a friend?', maxLength:600}));
+s.appendChild(F.TextArea({label:'Your review', voice:true, tidied:true, value:"I've carried this through four countries and it still looks new. The strap is the reason I bought it.", help:'Why did you buy it? What would you tell a friend?', maxLength:600}));
+</script>
+</body>
+</html>

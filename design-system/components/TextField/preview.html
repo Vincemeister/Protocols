@@ -1,0 +1,16 @@
+<!-- @dsCard group="Forms" height=320 width=480 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Text field — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-stage-col" id="s"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(F.TextField({label:'Display name', value:'Vince Rehms', help:'Shown on your profile and cards.', maxLength:40}));
+$('s').appendChild(F.TextField({label:'Username', value:'vince rehms', error:'Usernames can only use letters, numbers, dots and underscores.'}));
+$('s').appendChild(F.TextField({label:'Website', optional:true, placeholder:'https://', disabled:true}));
+
+</script>
+</body>
+</html>

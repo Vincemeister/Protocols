@@ -1,0 +1,16 @@
+<!-- @dsCard group="Content" height=200 width=480 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Notification row — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div id="s"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(F.NotificationRow({actor:{name:'Mira Kusuma'}, message:'started following you.', time:'2 hours ago'}));
+$('s').appendChild(F.NotificationRow({actor:{name:'Alden Pratama'}, message:'saved your list Camera bag essentials.', time:'Yesterday', read:true}));
+$('s').appendChild(F.NotificationRow({actor:{name:'Ketut Arya'}, message:'started following you.', time:'3 days ago', read:true}));
+
+</script>
+</body>
+</html>

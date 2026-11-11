@@ -1,0 +1,15 @@
+<!-- @dsCard group="Navigation" height=140 width=480 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Search field — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-stage-col" id="s"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(F.SearchField({}));
+$('s').appendChild(F.SearchField({value:'camera', size:'lg'}));
+
+</script>
+</body>
+</html>

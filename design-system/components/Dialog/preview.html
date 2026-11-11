@@ -1,0 +1,16 @@
+<!-- @dsCard group="Feedback" height=360 width=720 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Dialog — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-dialog-stage" id="s" style="height:360px"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(Object.assign(document.createElement('div'), {className:'fv-scrim'}));
+$('s').appendChild(F.Dialog({title:"Delete 'Camera bag essentials'?", body:'This removes 12 products and their reviews. People who saved the list will lose it.', alert:true,
+  actions:[{variant:'tertiary', label:'Keep list'},{variant:'danger', label:'Delete list'}]}));
+
+</script>
+</body>
+</html>

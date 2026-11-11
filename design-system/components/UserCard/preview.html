@@ -1,0 +1,16 @@
+<!-- @dsCard group="Identity" height=200 width=400 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>User card — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-stage-col" id="s" style="gap:0"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(F.UserCard({name:'Mira Kusuma', handle:'@mira.makes', meta:'2.4k followers', lined:true}));
+$('s').appendChild(F.UserCard({name:'Alden Pratama', handle:'@alden', meta:'312 followers', following:true, lined:true}));
+$('s').appendChild(F.UserCard({name:'Vince Rehms', handle:'@vince.rehms', size:40, action:false}));
+
+</script>
+</body>
+</html>

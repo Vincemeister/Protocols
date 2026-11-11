@@ -1,0 +1,17 @@
+<!-- @dsCard group="Actions" height=72 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Code frame — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"></head>
+<body>
+<div class="fv-stage" id="s"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+var a = F.CodeFrame({label:'10% off with', code:'VINCE10'});
+var b = F.CodeFrame({label:'Code', code:'FAVO-ALDEN'});
+$('s').appendChild(a); $('s').appendChild(b);
+setInterval(function () { a.querySelector('.fv-icon-btn').click(); }, 3200);
+
+</script>
+</body>
+</html>

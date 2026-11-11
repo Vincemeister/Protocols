@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The design system is a contract, committed unchanged.
+    "design-system/**",
+    "design/**",
   ]),
 ]);
 

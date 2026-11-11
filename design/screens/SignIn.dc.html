@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in — the product wall</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/favolist/tokens.css">
+<link rel="stylesheet" href="ds/favolist/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; }
+a { color: var(--accent); } a:hover { color: var(--accent-hover); }
+.wall-track { display: flex; gap: 4px; width: max-content; animation: fv-drift 120s linear infinite; }
+.wall-row:nth-child(even) .wall-track { animation-direction: reverse; }
+@keyframes fv-drift { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .wall-track { animation: none; } }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: var(--surface); color: var(--ink); font-family: var(--font-sans);">
+
+  <div aria-hidden="true" style="position: absolute; inset: 0; display: grid; grid-template-rows: repeat(5, 1fr); gap: 4px; overflow: hidden;">
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track" style="animation-duration: 120s;">
+        <div style="width: 165px; height: 165px; background: #6b5a5f;"></div><div style="width: 165px; height: 165px; background: #c9bfb6;"></div><div style="width: 165px; height: 165px; background: #4f5a6b;"></div><div style="width: 165px; height: 165px; background: #e6dfd6;"></div><div style="width: 165px; height: 165px; background: #5a6b5e;"></div><div style="width: 165px; height: 165px; background: #b8a99a;"></div>
+        <div style="width: 165px; height: 165px; background: #6b5a5f;"></div><div style="width: 165px; height: 165px; background: #c9bfb6;"></div><div style="width: 165px; height: 165px; background: #4f5a6b;"></div><div style="width: 165px; height: 165px; background: #e6dfd6;"></div><div style="width: 165px; height: 165px; background: #5a6b5e;"></div><div style="width: 165px; height: 165px; background: #b8a99a;"></div>
+      </div>
+    </div>
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track" style="animation-duration: 95s;">
+        <div style="width: 165px; height: 165px; background: #d9d2cb;"></div><div style="width: 165px; height: 165px; background: #3f3a44;"></div><div style="width: 165px; height: 165px; background: #a4b0a6;"></div><div style="width: 165px; height: 165px; background: #6b645a;"></div><div style="width: 165px; height: 165px; background: #efe9e2;"></div><div style="width: 165px; height: 165px; background: #5f5a6b;"></div>
+        <div style="width: 165px; height: 165px; background: #d9d2cb;"></div><div style="width: 165px; height: 165px; background: #3f3a44;"></div><div style="width: 165px; height: 165px; background: #a4b0a6;"></div><div style="width: 165px; height: 165px; background: #6b645a;"></div><div style="width: 165px; height: 165px; background: #efe9e2;"></div><div style="width: 165px; height: 165px; background: #5f5a6b;"></div>
+      </div>
+    </div>
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track" style="animation-duration: 130s;">
+        <div style="width: 165px; height: 165px; background: #8c7f85;"></div><div style="width: 165px; height: 165px; background: #e2d8cf;"></div><div style="width: 165px; height: 165px; background: #2a1a20;"></div><div style="width: 165px; height: 165px; background: #c2c9c1;"></div><div style="width: 165px; height: 165px; background: #6b5a5a;"></div><div style="width: 165px; height: 165px; background: #f1ede8;"></div>
+        <div style="width: 165px; height: 165px; background: #8c7f85;"></div><div style="width: 165px; height: 165px; background: #e2d8cf;"></div><div style="width: 165px; height: 165px; background: #2a1a20;"></div><div style="width: 165px; height: 165px; background: #c2c9c1;"></div><div style="width: 165px; height: 165px; background: #6b5a5a;"></div><div style="width: 165px; height: 165px; background: #f1ede8;"></div>
+      </div>
+    </div>
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track" style="animation-duration: 105s;">
+        <div style="width: 165px; height: 165px; background: #4d3c43;"></div><div style="width: 165px; height: 165px; background: #cfc7bf;"></div><div style="width: 165px; height: 165px; background: #5a6b5e;"></div><div style="width: 165px; height: 165px; background: #e9e3dc;"></div><div style="width: 165px; height: 165px; background: #3a3f4d;"></div><div style="width: 165px; height: 165px; background: #b9b0a8;"></div>
+        <div style="width: 165px; height: 165px; background: #4d3c43;"></div><div style="width: 165px; height: 165px; background: #cfc7bf;"></div><div style="width: 165px; height: 165px; background: #5a6b5e;"></div><div style="width: 165px; height: 165px; background: #e9e3dc;"></div><div style="width: 165px; height: 165px; background: #3a3f4d;"></div><div style="width: 165px; height: 165px; background: #b9b0a8;"></div>
+      </div>
+    </div>
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track" style="animation-duration: 140s;">
+        <div style="width: 165px; height: 165px; background: #b8a99a;"></div><div style="width: 165px; height: 165px; background: #2f2a33;"></div><div style="width: 165px; height: 165px; background: #dcd4cc;"></div><div style="width: 165px; height: 165px; background: #6b5a5f;"></div><div style="width: 165px; height: 165px; background: #a9b4a7;"></div><div style="width: 165px; height: 165px; background: #ece6e8;"></div><div style="width: 165px; height: 165px; background: #4f5a6b;"></div><div style="width: 165px; height: 165px; background: #cfc7bf;"></div>
+        <div style="width: 165px; height: 165px; background: #b8a99a;"></div><div style="width: 165px; height: 165px; background: #2f2a33;"></div><div style="width: 165px; height: 165px; background: #dcd4cc;"></div><div style="width: 165px; height: 165px; background: #6b5a5f;"></div><div style="width: 165px; height: 165px; background: #a9b4a7;"></div><div style="width: 165px; height: 165px; background: #ece6e8;"></div><div style="width: 165px; height: 165px; background: #4f5a6b;"></div><div style="width: 165px; height: 165px; background: #cfc7bf;"></div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div aria-hidden="true" style="position: absolute; inset: 0; background: var(--scrim); opacity: var(--opacity-scrim);"></div>
+
+  <main style="position: absolute; left: 24px; right: 24px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; background: var(--surface-raised); box-shadow: var(--shadow-lg); border-radius: var(--radius-none);">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <img src="{{mark}}" alt="" style="width: 28px; height: 28px; display: block;">
+      <span style="font-size: 28px; line-height: 32px; font-weight: 700; letter-spacing: -0.02em;">Favolist</span>
+    </div>
+    <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--ink-muted);">The products people actually use, reviewed in their own words.</p>
+
+    <button class="fv-btn fv-btn-tertiary fv-btn-lg fv-btn-block" type="button">Continue with Google</button>
+
+    <div style="display: flex; align-items: center; gap: 12px; color: var(--ink-faint); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.06em;">
+      <span style="flex: 1; height: 1px; background: var(--line);"></span>OR<span style="flex: 1; height: 1px; background: var(--line);"></span>
+    </div>
+
+    <div class="fv-field">
+      <label class="fv-label" for="email">Email</label>
+      <input class="fv-input" id="email" type="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <a class="fv-btn fv-btn-primary fv-btn-lg fv-btn-block" href="CheckEmail.dc.html">Send me a link</a>
+    <p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--ink-muted);">No passwords. We'll email you a link that signs you in, new or returning.</p>
+
+    <div style="border-top: 1px solid var(--line); padding-top: 12px; display: flex; justify-content: center;">
+      <a class="fv-btn fv-btn-link fv-btn-sm" href="ProfileVisitor.dc.html">Just browsing? Explore creators</a>
+    </div>
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var theme = this.props.theme ?? 'light';
+    return { theme: theme, mark: theme === 'dark' ? '/_blob/74240fcf591bd033e9c1156407bf24d5' : '/_blob/4e9ff76090b817b8b8b6959359fd7eda' };
+  }
+}
+</script>
+</body>
+</html>

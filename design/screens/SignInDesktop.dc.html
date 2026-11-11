@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in — desktop, the product wall</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/favolist/tokens.css">
+<link rel="stylesheet" href="ds/favolist/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; }
+a { color: var(--accent); } a:hover { color: var(--accent-hover); }
+.wall-track { display: flex; gap: 6px; width: max-content; animation: fv-drift 150s linear infinite; }
+.wall-row:nth-child(even) .wall-track { animation-direction: reverse; }
+.wall-row:nth-child(2) .wall-track { animation-duration: 120s; }
+.wall-row:nth-child(3) .wall-track { animation-duration: 170s; }
+.wall-row:nth-child(4) .wall-track { animation-duration: 135s; }
+.wall-tile { width: 220px; height: 220px; flex: none; }
+@keyframes fv-drift { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .wall-track { animation: none; } }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="position: relative; min-height: 100vh; height: 900px; box-sizing: border-box; overflow: hidden; background: var(--surface); color: var(--ink); font-family: var(--font-sans);">
+
+  <div aria-hidden="true" style="position: absolute; inset: 0; display: grid; grid-template-rows: repeat(4, 1fr); gap: 6px; overflow: hidden;">
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track">
+        <div class="wall-tile" style="background: #6b5a5f;"></div><div class="wall-tile" style="background: #c9bfb6;"></div><div class="wall-tile" style="background: #4f5a6b;"></div><div class="wall-tile" style="background: #e6dfd6;"></div><div class="wall-tile" style="background: #5a6b5e;"></div><div class="wall-tile" style="background: #b8a99a;"></div><div class="wall-tile" style="background: #2f2a33;"></div><div class="wall-tile" style="background: #dcd4cc;"></div>
+        <div class="wall-tile" style="background: #6b5a5f;"></div><div class="wall-tile" style="background: #c9bfb6;"></div><div class="wall-tile" style="background: #4f5a6b;"></div><div class="wall-tile" style="background: #e6dfd6;"></div><div class="wall-tile" style="background: #5a6b5e;"></div><div class="wall-tile" style="background: #b8a99a;"></div><div class="wall-tile" style="background: #2f2a33;"></div><div class="wall-tile" style="background: #dcd4cc;"></div>
+      </div>
+    </div>
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track">
+        <div class="wall-tile" style="background: #d9d2cb;"></div><div class="wall-tile" style="background: #3f3a44;"></div><div class="wall-tile" style="background: #a4b0a6;"></div><div class="wall-tile" style="background: #6b645a;"></div><div class="wall-tile" style="background: #efe9e2;"></div><div class="wall-tile" style="background: #5f5a6b;"></div><div class="wall-tile" style="background: #c2c9c1;"></div><div class="wall-tile" style="background: #4d3c43;"></div>
+        <div class="wall-tile" style="background: #d9d2cb;"></div><div class="wall-tile" style="background: #3f3a44;"></div><div class="wall-tile" style="background: #a4b0a6;"></div><div class="wall-tile" style="background: #6b645a;"></div><div class="wall-tile" style="background: #efe9e2;"></div><div class="wall-tile" style="background: #5f5a6b;"></div><div class="wall-tile" style="background: #c2c9c1;"></div><div class="wall-tile" style="background: #4d3c43;"></div>
+      </div>
+    </div>
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track">
+        <div class="wall-tile" style="background: #8c7f85;"></div><div class="wall-tile" style="background: #e2d8cf;"></div><div class="wall-tile" style="background: #2a1a20;"></div><div class="wall-tile" style="background: #c2c9c1;"></div><div class="wall-tile" style="background: #6b5a5a;"></div><div class="wall-tile" style="background: #f1ede8;"></div><div class="wall-tile" style="background: #3a3f4d;"></div><div class="wall-tile" style="background: #cfc7bf;"></div>
+        <div class="wall-tile" style="background: #8c7f85;"></div><div class="wall-tile" style="background: #e2d8cf;"></div><div class="wall-tile" style="background: #2a1a20;"></div><div class="wall-tile" style="background: #c2c9c1;"></div><div class="wall-tile" style="background: #6b5a5a;"></div><div class="wall-tile" style="background: #f1ede8;"></div><div class="wall-tile" style="background: #3a3f4d;"></div><div class="wall-tile" style="background: #cfc7bf;"></div>
+      </div>
+    </div>
+    <div class="wall-row" style="overflow: hidden;">
+      <div class="wall-track">
+        <div class="wall-tile" style="background: #4d3c43;"></div><div class="wall-tile" style="background: #cfc7bf;"></div><div class="wall-tile" style="background: #5a6b5e;"></div><div class="wall-tile" style="background: #e9e3dc;"></div><div class="wall-tile" style="background: #3a3f4d;"></div><div class="wall-tile" style="background: #b9b0a8;"></div><div class="wall-tile" style="background: #ece6e8;"></div><div class="wall-tile" style="background: #6b5a5f;"></div>
+        <div class="wall-tile" style="background: #4d3c43;"></div><div class="wall-tile" style="background: #cfc7bf;"></div><div class="wall-tile" style="background: #5a6b5e;"></div><div class="wall-tile" style="background: #e9e3dc;"></div><div class="wall-tile" style="background: #3a3f4d;"></div><div class="wall-tile" style="background: #b9b0a8;"></div><div class="wall-tile" style="background: #ece6e8;"></div><div class="wall-tile" style="background: #6b5a5f;"></div>
+      </div>
+    </div>
+  </div>
+  <div aria-hidden="true" style="position: absolute; inset: 0; background: var(--scrim); opacity: var(--opacity-scrim);"></div>
+
+  <header style="position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; height: 72px; padding: 0 48px; color: var(--on-image);">
+    <a href="Landing.dc.html" style="display: flex; align-items: center; gap: 8px; color: var(--on-image); text-decoration: none;">
+      <img src="/_blob/74240fcf591bd033e9c1156407bf24d5" alt="" style="width: 24px; height: 24px; display: block;">
+      <span style="font-size: 24px; line-height: 24px; font-weight: 700; letter-spacing: -0.02em;">Favolist</span>
+    </a>
+    <a href="ProfileVisitor.dc.html" style="font-size: 14px; line-height: 20px; font-weight: 500; color: var(--on-image); text-decoration: none;">Just browsing? Explore creators</a>
+  </header>
+
+  <main style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 440px; max-width: calc(100% - 48px); display: flex; flex-direction: column; gap: 16px; padding: 32px; box-sizing: border-box; background: var(--surface-raised); box-shadow: var(--shadow-lg); border-radius: var(--radius-none);">
+    <div>
+      <h1 style="margin: 0 0 8px; font-size: 28px; line-height: 32px; font-weight: 700; letter-spacing: -0.02em;">Sign in or create your Favolist</h1>
+      <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--ink-muted);">The products people actually use, reviewed in their own words.</p>
+    </div>
+
+    <button class="fv-btn fv-btn-tertiary fv-btn-lg fv-btn-block" type="button">Continue with Google</button>
+
+    <div style="display: flex; align-items: center; gap: 12px; color: var(--ink-faint); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.06em;">
+      <span style="flex: 1; height: 1px; background: var(--line);"></span>OR<span style="flex: 1; height: 1px; background: var(--line);"></span>
+    </div>
+
+    <div class="fv-field">
+      <label class="fv-label" for="email">Email</label>
+      <input class="fv-input" id="email" type="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <a class="fv-btn fv-btn-primary fv-btn-lg fv-btn-block" href="CheckEmail.dc.html">Send me a link</a>
+    <p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--ink-muted);">No passwords. We'll email you a link that signs you in, new or returning.</p>
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return { theme: this.props.theme ?? 'light' }; }
+}
+</script>
+</body>
+</html>

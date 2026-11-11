@@ -1,0 +1,16 @@
+<!-- @dsCard group="Forms" height=240 width=480 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Image uploader — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-stage" id="s" style="align-items:flex-start"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(F.ImageUploader({label:'Add a cover', hint:'Square, at least 600px'}));
+var withImg = F.ImageUploader({src:'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10" fill="#6b5a5f"/><rect x="2" y="3" width="6" height="4" fill="#998a90"/></svg>')});
+$('s').appendChild(withImg);
+
+</script>
+</body>
+</html>

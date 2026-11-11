@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Favolist — landing</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/favolist/tokens.css">
+<link rel="stylesheet" href="ds/favolist/components/bundle.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&amp;display=swap" rel="stylesheet">
+<style>
+body { margin: 0; }
+a { color: var(--accent); } a:hover { color: var(--accent-hover); }
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="min-height: 100vh; box-sizing: border-box; background: var(--surface); color: var(--ink); font-family: var(--font-sans);">
+<div style="max-width: 1280px; margin: 0 auto; padding: 0 48px; box-sizing: border-box;">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 72px;">
+    <a href="#" style="display: flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none;">
+      <img src="{{mark}}" alt="" style="width: 24px; height: 24px; display: block;">
+      <span style="font-size: 24px; line-height: 24px; font-weight: 700; letter-spacing: -0.02em;">Favolist</span>
+    </a>
+    <nav aria-label="Site" style="display: flex; align-items: center; gap: 8px;">
+      <a class="fv-btn fv-btn-link" href="ProfileVisitor.dc.html">Explore creators</a>
+      <a class="fv-btn fv-btn-tertiary" href="SignIn.dc.html">Sign in</a>
+      <a class="fv-btn fv-btn-primary" href="SignIn.dc.html">Create your Favolist</a>
+    </nav>
+  </header>
+
+  <section style="display: flex; flex-wrap: wrap; align-items: center; gap: 48px; padding: 72px 0 80px;">
+    <div style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 24px; max-width: 560px;">
+      <h1 style="margin: 0; font-size: 56px; line-height: 60px; font-weight: 700; letter-spacing: -0.02em;">The products you actually use, in your own words.</h1>
+      <p style="margin: 0; font-size: 18px; line-height: 28px; color: var(--ink-muted); max-width: 48ch;">Favolist is one page for everything you'd recommend to a friend, with your review on every item and your codes where people are about to buy. Put it in your bio next to your other links.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+        <a class="fv-btn fv-btn-primary fv-btn-lg" href="SignIn.dc.html">Create your Favolist</a>
+        <a class="fv-btn fv-btn-tertiary fv-btn-lg" href="ProfileVisitor.dc.html">See a creator's page</a>
+      </div>
+      <p style="margin: 0; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--ink-muted);">Free for creators. No passwords, no ads, no marketplace.</p>
+    </div>
+    <div aria-hidden="true" style="flex: 1 1 420px; min-width: 0; display: flex; justify-content: flex-end;">
+      <div style="display: grid; grid-template-columns: repeat(3, 136px); grid-template-rows: repeat(2, 136px); gap: 8px;">
+        <div style="background: var(--ink);"></div>
+        <div style="background: #c9bfb6;"></div>
+        <div style="background: var(--accent-soft);"></div>
+        <div style="background: var(--accent-vivid);"></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 8px;"><span style="background: var(--ink);"></span><span style="background: var(--ink);"></span><span style="background: var(--accent-vivid);"></span><span style="background: var(--accent-vivid);"></span></div>
+        <div style="background: #5a6b5e;"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; padding: 48px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em;">Profile</h2>
+      <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted);">Lists of what you own and use, with a review on every single product. Nothing without one.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em;">Codes</h2>
+      <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted);">Your referral codes sit under your words, where someone is about to buy. One tap to copy.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em;">Search</h2>
+      <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted);">Find what people you trust use for the thing you need, instead of a wall of five-star strangers.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 style="margin: 0; font-size: 20px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em;">Home</h2>
+      <p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted);">New products from the people you follow, with their reasons, as they add them.</p>
+    </div>
+  </section>
+
+  <section style="display: flex; flex-wrap: wrap; align-items: center; gap: 48px; padding: 80px 0;">
+    <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; max-width: 520px;">
+      <p class="fv-overline" style="margin: 0;">Why a person</p>
+      <h2 style="margin: 0; font-size: 36px; line-height: 40px; font-weight: 700; letter-spacing: -0.02em;">Fake reviews are getting easier. A name on the review is the answer.</h2>
+      <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--ink-muted);">Every review on Favolist is written, or spoken, by a named creator with a face, a handle and a reputation to lose. We don't rank products, we don't sell ads, and we don't let anyone publish a product without saying why it's on their list.</p>
+    </div>
+    <div style="flex: 1 1 420px; min-width: 0; display: flex; justify-content: flex-end;">
+      <article class="fv-product" style="width: 400px; border: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+        <div class="fv-product-head">
+          <div class="fv-product-creator">
+            <span class="fv-avatar fv-avatar-40 fv-avatar-tone-1"><span>VR</span></span>
+            <div><div class="fv-name">vince.rehms</div><div class="fv-list">Camera bag essentials</div></div>
+          </div>
+          <span class="fv-brand-chip">PEAK DESIGN</span>
+        </div>
+        <h3 class="fv-product-title">Everyday Sling 6L</h3>
+        <p class="fv-product-review" style="-webkit-line-clamp: 4;">I've carried this through four countries and it still looks new. The strap is the reason I bought it: one pull and the bag swings to the front, and the magnetic latch has never once opened on its own in a crowd.</p>
+        <div class="fv-code-frame"><span class="fv-code-label">10% off with</span><code>VINCE10</code><button class="fv-icon-btn" type="button" aria-label="Copy code"><svg class="fv-icon fv-icon-sm" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg></button></div>
+      </article>
+    </div>
+  </section>
+
+  <section style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px; padding: 48px; background: var(--accent-soft);">
+    <div style="display: flex; flex-direction: column; gap: 8px; max-width: 640px;">
+      <h2 style="margin: 0; font-size: 28px; line-height: 32px; font-weight: 600; letter-spacing: -0.02em;">favolist.com/you, in your bio by tonight.</h2>
+      <p style="margin: 0; font-size: 16px; line-height: 24px; color: var(--ink-muted);">Sign in with your email, name your first list, add one product and say why. Speak the review if you'd rather not type.</p>
+    </div>
+    <a class="fv-btn fv-btn-primary fv-btn-lg" href="SignIn.dc.html">Create your Favolist</a>
+  </section>
+
+  <footer style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 40px 0 48px; font-size: 14px; line-height: 20px; color: var(--ink-muted);">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <img src="{{mark}}" alt="" style="width: 20px; height: 20px; display: block;">
+      <span>Favolist</span>
+    </div>
+    <nav aria-label="Footer" style="display: flex; gap: 24px;">
+      <a href="#" style="color: var(--ink-muted); text-decoration: none;">About</a>
+      <a href="#" style="color: var(--ink-muted); text-decoration: none;">Terms</a>
+      <a href="#" style="color: var(--ink-muted); text-decoration: none;">Privacy</a>
+      <a href="#" style="color: var(--ink-muted); text-decoration: none;">Contact</a>
+    </nav>
+  </footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":1280,"height":1400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var theme = this.props.theme ?? 'light';
+    return { theme: theme, mark: theme === 'dark' ? '/_blob/74240fcf591bd033e9c1156407bf24d5' : '/_blob/4e9ff76090b817b8b8b6959359fd7eda' };
+  }
+}
+</script>
+</body>
+</html>

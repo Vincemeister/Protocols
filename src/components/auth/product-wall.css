@@ -1,0 +1,40 @@
+/* The product wall and the card that floats on it. Tokens only. */
+.wall-screen { position: relative; min-height: 100vh; min-height: 100dvh; overflow: hidden; background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; padding: var(--space-6); box-sizing: border-box; }
+.wall { position: absolute; inset: 0; display: grid; grid-template-rows: repeat(5, 1fr); gap: var(--space-1); overflow: hidden; }
+.wall-row { overflow: hidden; min-height: 0; }
+.wall-track { display: flex; gap: var(--space-1); height: 100%; width: max-content; animation: fv-drift 120s linear infinite; }
+.wall-row:nth-child(even) .wall-track { animation-direction: reverse; }
+.wall-tile { height: 100%; aspect-ratio: 1 / 1; flex: none; }
+.wall-scrim { position: absolute; inset: 0; background: var(--scrim); opacity: var(--opacity-scrim); }
+/* One set of tiles is a third of the track (plus its share of the gaps). */
+@keyframes fv-drift { to { transform: translateX(calc(-100% / 3 - var(--space-1) / 3)); } }
+@media (prefers-reduced-motion: reduce) { .wall-track { animation: none; } }
+
+.wall-card { position: relative; width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-6); box-sizing: border-box; background: var(--surface-raised); box-shadow: var(--shadow-lg); border-radius: var(--radius-none); }
+.wall-card p { margin: 0; }
+.wall-card form { display: contents; }
+.wall-brand { display: flex; align-items: center; gap: var(--space-2); }
+.wall-brand .fv-mark-box { width: 28px; height: 28px; display: block; }
+.wall-or { display: flex; align-items: center; gap: var(--space-3); color: var(--ink-faint); letter-spacing: 0.06em; }
+.wall-or::before, .wall-or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.wall-foot { border-top: 1px solid var(--line); padding-top: var(--space-3); display: flex; justify-content: center; }
+.wall-muted { color: var(--ink-muted); }
+.wall-title { margin: 0; }
+.wall-desktop { display: none; }
+.wall-stack { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); padding-top: var(--space-2); }
+.wall-stack .fv-icon { width: 32px; height: 32px; color: var(--accent); }
+.wall-actions { display: flex; gap: var(--space-2); padding-top: var(--space-2); }
+.wall-actions > * { flex: 1 1 auto; min-width: 0; }
+.wall-actions form { display: flex; }
+.wall-actions form > * { flex: 1 1 auto; }
+/* Two large buttons side by side on a 390px phone: tighter side padding so both labels fit. */
+.wall-actions .fv-btn { min-width: 0; padding-inline: var(--space-3); }
+
+/* Desktop: four rows, a wider card, and the heading form of the card. */
+@media (min-width: 992px) {
+  .wall { grid-template-rows: repeat(4, 1fr); }
+  .wall-row:nth-child(5) { display: none; }
+  .wall-card { padding: var(--space-8); }
+  .wall-mobile { display: none; }
+  .wall-desktop { display: block; }
+}
