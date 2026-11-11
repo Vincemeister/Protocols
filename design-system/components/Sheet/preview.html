@@ -1,0 +1,17 @@
+<!-- @dsCard group="Feedback" height=420 width=390 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Sheet — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div class="fv-dialog-stage" id="s" style="height:420px;align-items:flex-end"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('s').appendChild(Object.assign(document.createElement('div'), {className:'fv-scrim'}));
+var body = document.createElement('div');
+body.appendChild(F.Select({label:'Add to list', value:'camera', options:[{value:'camera',label:'Camera bag essentials'},{value:'desk',label:'Desk setup'}]}));
+$('s').appendChild(F.Sheet({title:'Save product', body:body, actions:[{variant:'tertiary', label:'Cancel'},{variant:'primary', label:'Save to list'}]}));
+
+</script>
+</body>
+</html>

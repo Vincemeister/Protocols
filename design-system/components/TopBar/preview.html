@@ -1,0 +1,15 @@
+<!-- @dsCard group="Navigation" height=160 width=390 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Top bar — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style>[data-theme="dark"] .fv-topbar-brand img{content:url("/_blob/e7204842962e182682d0dc2c0e7fb52a")}</style></head>
+<body>
+<div id="a"></div><div style="height:16px"></div><div id="b"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+$('a').appendChild(F.TopBar({brand:true, mark:'/_blob/80f8d640e455838de1ac7468e3b2612a', action:{icon:'bell', label:'Notifications', badge:true}}));
+$('b').appendChild(F.TopBar({title:'Camera bag essentials', action:{icon:'share', label:'Share'}}));
+
+</script>
+</body>
+</html>

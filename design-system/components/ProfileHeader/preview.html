@@ -1,0 +1,17 @@
+<!-- @dsCard group="Identity" height=560 width=640 -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Profile header — preview</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap" rel="stylesheet"><style></style></head>
+<body>
+<div id="s"></div><hr style="border:0;border-top:1px solid var(--line);margin:0"><div id="m" style="max-width:390px"></div>
+<script>
+var F = window.Favolist, $ = function (id) { return document.getElementById(id); };
+
+var bio = 'Travel photographer in Bali. Everything here I own, use and would buy again.';
+var counts = [{value:'1.2k',label:'followers'},{value:'86',label:'following'},{value:'8',label:'lists'}];
+$('s').appendChild(F.ProfileHeader({name:'Vince Rehms', handle:'@vince.rehms', bio:bio, links:[{href:'https://youtube.com/@vince', label:'youtube.com/@vince', icon:'youtube'},{href:'https://instagram.com/vince.rehms', label:'instagram.com/vince.rehms', icon:'instagram'},{href:'https://vincerehms.com', label:'vincerehms.com', icon:'globe'}], counts:counts, large:true}));
+$('m').appendChild(F.ProfileHeader({name:'Vince Rehms', handle:'@vince.rehms', bio:bio, links:[{href:'https://youtube.com/@vince', label:'@vince', icon:'youtube'},{href:'https://instagram.com/vince.rehms', label:'@vince.rehms', icon:'instagram'},{href:'https://vincerehms.com', label:'vincerehms.com', icon:'globe'}], counts:counts, own:true}));
+
+</script>
+</body>
+</html>

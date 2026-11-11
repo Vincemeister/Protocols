@@ -1,0 +1,227 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-24T05:20:00Z"
+  },
+  "title": "Favolist screens",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "A1 \u00b7 Creator profile \u00b7 Lists"
+    },
+    "ProfileProducts.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "A1 \u00b7 Creator profile \u00b7 Products"
+    },
+    "ProfileDark.dc.html": {
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "A1 \u00b7 Creator profile \u00b7 Dark"
+    },
+    "ProfileVisitor.dc.html": {
+      "x": 0,
+      "y": 1264,
+      "w": 390,
+      "h": 844,
+      "title": "A1 \u00b7 Creator profile \u00b7 Signed-out visitor"
+    },
+    "ListPage.dc.html": {
+      "x": 470,
+      "y": 1264,
+      "w": 390,
+      "h": 844,
+      "title": "A2 \u00b7 List page"
+    },
+    "ProductPage.dc.html": {
+      "x": 940,
+      "y": 1264,
+      "w": 390,
+      "h": 844,
+      "title": "A3 \u00b7 Product page"
+    },
+    "DesktopProfile.dc.html": {
+      "x": 0,
+      "y": 2528,
+      "w": 1280,
+      "h": 900,
+      "title": "A1 \u00b7 Creator profile \u00b7 Desktop",
+      "expand": "fill"
+    },
+    "AddSource.dc.html": {
+      "x": 0,
+      "y": 3848,
+      "w": 390,
+      "h": 844,
+      "title": "C4 \u00b7 Add a product \u00b7 Paste a link"
+    },
+    "AddFetching.dc.html": {
+      "x": 470,
+      "y": 3848,
+      "w": 390,
+      "h": 844,
+      "title": "C4 \u00b7 Add a product \u00b7 Fetching"
+    },
+    "AddFailed.dc.html": {
+      "x": 940,
+      "y": 3848,
+      "w": 390,
+      "h": 844,
+      "title": "C4 \u00b7 Add a product \u00b7 Couldn't fetch"
+    },
+    "AddDetails.dc.html": {
+      "x": 1410,
+      "y": 3848,
+      "w": 390,
+      "h": 844,
+      "title": "C5 \u00b7 Add a product \u00b7 Details"
+    },
+    "AddReview.dc.html": {
+      "x": 1880,
+      "y": 3848,
+      "w": 390,
+      "h": 844,
+      "title": "C6 \u00b7 Review \u00b7 Empty, Speak"
+    },
+    "AddReviewRecording.dc.html": {
+      "x": 2350,
+      "y": 3848,
+      "w": 390,
+      "h": 844,
+      "title": "C6 \u00b7 Review \u00b7 Listening"
+    },
+    "AddReviewTidied.dc.html": {
+      "x": 2820,
+      "y": 3848,
+      "w": 390,
+      "h": 844,
+      "title": "C6 \u00b7 Review \u00b7 Tidied"
+    },
+    "NewList.dc.html": {
+      "x": 3290,
+      "y": 3848,
+      "w": 390,
+      "h": 844,
+      "title": "C3 \u00b7 New list"
+    },
+    "SignIn.dc.html": {
+      "x": 0,
+      "y": 5112,
+      "w": 390,
+      "h": 844,
+      "title": "B1 \u00b7 Sign in \u00b7 The product wall",
+      "is_interactive": true
+    },
+    "CheckEmail.dc.html": {
+      "x": 470,
+      "y": 5112,
+      "w": 390,
+      "h": 844,
+      "title": "B2 \u00b7 Check your email"
+    },
+    "Onboarding.dc.html": {
+      "x": 940,
+      "y": 5112,
+      "w": 390,
+      "h": 844,
+      "title": "B5 \u00b7 Onboarding \u00b7 1 of 3"
+    },
+    "Landing.dc.html": {
+      "x": 1410,
+      "y": 5112,
+      "w": 1280,
+      "h": 1400,
+      "title": "A8 \u00b7 Landing \u00b7 Desktop",
+      "expand": "fill"
+    },
+    "SignInDesktop.dc.html": {
+      "x": 2770,
+      "y": 5112,
+      "w": 1280,
+      "h": 900,
+      "title": "B1 \u00b7 Sign in \u00b7 Desktop (alternative)",
+      "expand": "fill",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "ProfileProducts.dc.html",
+    "ProfileDark.dc.html",
+    "ProfileVisitor.dc.html",
+    "ListPage.dc.html",
+    "ProductPage.dc.html",
+    "DesktopProfile.dc.html",
+    "AddSource.dc.html",
+    "AddFetching.dc.html",
+    "AddFailed.dc.html",
+    "AddDetails.dc.html",
+    "AddReview.dc.html",
+    "AddReviewRecording.dc.html",
+    "AddReviewTidied.dc.html",
+    "NewList.dc.html",
+    "SignIn.dc.html",
+    "CheckEmail.dc.html",
+    "Onboarding.dc.html",
+    "Landing.dc.html",
+    "SignInDesktop.dc.html"
+  ],
+  "notes": {
+    "a1": {
+      "x": 0,
+      "y": -300,
+      "text": "A1 Creator profile \u2014 mobile, signed-in viewer",
+      "kind": "title1",
+      "maxW": 1330
+    },
+    "a2": {
+      "x": 0,
+      "y": 964,
+      "text": "From a Linktree: signed-out profile \u2192 list \u2192 product",
+      "kind": "title1",
+      "maxW": 1330
+    },
+    "a3": {
+      "x": 0,
+      "y": 2228,
+      "text": "Desktop \u2014 the three-column frame with both rails",
+      "kind": "title1",
+      "maxW": 1280
+    },
+    "c4": {
+      "x": 0,
+      "y": 3548,
+      "text": "Creator loop: paste a link \u2192 details \u2192 speak the review \u2192 tidied, and a new list",
+      "kind": "title1",
+      "maxW": 3680
+    },
+    "b1": {
+      "x": 0,
+      "y": 4812,
+      "text": "Front door: sign in on the product wall \u2192 check your email \u2192 onboarding, and the landing page",
+      "kind": "title1",
+      "maxW": 4050
+    }
+  },
+  "designSystems": [
+    {
+      "title": "Favolist",
+      "namespace": "favolist",
+      "artifact": "https://claude.ai/code/artifact/0374b604-cc98-40e0-8b3c-31c5409e0ead",
+      "version": "1792867943-b64d",
+      "copiedAt": "2026-10-25T04:58:00Z"
+    }
+  ]
+}
