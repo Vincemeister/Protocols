@@ -1,0 +1,575 @@
+{
+  "profiles": [
+    {
+      "id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "username": "vince.rehms",
+      "display_name": "Vince Rehms",
+      "avatar_url": null,
+      "bio": "Travel photographer in Bali. Everything here I own, use and would buy again.",
+      "about": "I shoot travel and food around Indonesia and I get asked the same question every week: what's in the bag? This is the answer, kept up to date. If I stopped using something, it comes off the list.\n\nThis is a demo profile with sample content, shown while Favolist is being built.",
+      "links": [
+        {
+          "kind": "youtube",
+          "url": "https://youtube.com/@vince"
+        },
+        {
+          "kind": "instagram",
+          "url": "https://instagram.com/vince.rehms"
+        },
+        {
+          "kind": "website",
+          "url": "https://vincerehms.com"
+        }
+      ],
+      "is_public": true,
+      "created_at": "2026-08-01T03:00:00+00:00"
+    },
+    {
+      "id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "username": "mira.makes",
+      "display_name": "Mira Kusuma",
+      "avatar_url": null,
+      "bio": "Trail runner and ceramicist in Ubud. I only list what survived a rainy season.",
+      "about": "Mornings on the ridge, afternoons at the wheel. People ask about the vest more than the pots.\n\nThis is a demo profile with sample content, shown while Favolist is being built.",
+      "links": [
+        {
+          "kind": "instagram",
+          "url": "https://instagram.com/mira.makes"
+        }
+      ],
+      "is_public": true,
+      "created_at": "2026-08-01T03:00:00+00:00"
+    },
+    {
+      "id": "175c4eaa-e43f-57b2-ad95-7b0ba4fc53fe",
+      "username": "ketut.rides",
+      "display_name": "Ketut Arya",
+      "avatar_url": null,
+      "bio": "I ride a scooter across Bali every day and fix it myself.",
+      "about": "Twenty years on two wheels between Denpasar and Singaraja. This is what's under the seat.\n\nThis is a demo profile with sample content, shown while Favolist is being built.",
+      "links": [
+        {
+          "kind": "youtube",
+          "url": "https://youtube.com/@ketut.rides"
+        }
+      ],
+      "is_public": true,
+      "created_at": "2026-08-01T03:00:00+00:00"
+    }
+  ],
+  "lists": [
+    {
+      "id": "a7b02bd5-b543-5aa0-a202-5447bc14907c",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "camera-bag-essentials",
+      "name": "Camera bag essentials",
+      "intro": "What's in the bag on a shoot day. Nothing sponsored; I bought all of it, and I've replaced the things that broke.",
+      "cover_url": "/demo/covers/plum.svg",
+      "is_public": true,
+      "numbered": true,
+      "position": 0,
+      "created_at": "2026-08-01T03:00:00+00:00",
+      "updated_at": "2026-11-04T03:00:00+00:00"
+    },
+    {
+      "id": "e45f1901-56bc-5a09-a677-c8b617765d85",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "desk-setup",
+      "name": "Desk setup",
+      "intro": "Where the editing happens. I keep it to things that earn the space.",
+      "cover_url": "/demo/covers/sage.svg",
+      "is_public": true,
+      "numbered": false,
+      "position": 1,
+      "created_at": "2026-08-01T03:00:00+00:00",
+      "updated_at": "2026-10-21T03:00:00+00:00"
+    },
+    {
+      "id": "c2c4df9e-302c-5140-a58c-b8ae7858543f",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "bali-travel-kit",
+      "name": "Bali travel kit",
+      "intro": "For scooter days and boat days. Everything here has been rained on.",
+      "cover_url": "/demo/covers/slate.svg",
+      "is_public": true,
+      "numbered": false,
+      "position": 2,
+      "created_at": "2026-08-01T03:00:00+00:00",
+      "updated_at": "2026-10-02T03:00:00+00:00"
+    },
+    {
+      "id": "828e5706-c8bc-5594-a966-bface81d1686",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "coffee-at-home",
+      "name": "Coffee at home",
+      "intro": "One good cup before the light gets harsh.",
+      "cover_url": "/demo/covers/umber.svg",
+      "is_public": true,
+      "numbered": false,
+      "position": 3,
+      "created_at": "2026-08-01T03:00:00+00:00",
+      "updated_at": "2026-09-12T03:00:00+00:00"
+    },
+    {
+      "id": "87281383-040c-5b1e-a422-a4f9b15f6df0",
+      "owner_id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "slug": "trail-runs",
+      "name": "Trail runs",
+      "intro": "What I carry for anything over an hour in the hills.",
+      "cover_url": "/demo/covers/sage.svg",
+      "is_public": true,
+      "numbered": true,
+      "position": 0,
+      "created_at": "2026-08-01T03:00:00+00:00",
+      "updated_at": "2026-11-01T03:00:00+00:00"
+    },
+    {
+      "id": "123e753a-0d5c-5190-a469-d3553f47ff26",
+      "owner_id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "slug": "studio-shelf",
+      "name": "Studio shelf",
+      "intro": "The few tools I'd buy again tomorrow.",
+      "cover_url": "/demo/covers/rose.svg",
+      "is_public": true,
+      "numbered": false,
+      "position": 1,
+      "created_at": "2026-08-01T03:00:00+00:00",
+      "updated_at": "2026-10-11T03:00:00+00:00"
+    },
+    {
+      "id": "edf4689d-a38b-5103-aebd-8d4ca5e296e6",
+      "owner_id": "175c4eaa-e43f-57b2-ad95-7b0ba4fc53fe",
+      "slug": "scooter-kit",
+      "name": "Scooter kit",
+      "intro": "Everything under the seat, in the order I'd replace it.",
+      "cover_url": "/demo/covers/slate.svg",
+      "is_public": true,
+      "numbered": true,
+      "position": 0,
+      "created_at": "2026-08-01T03:00:00+00:00",
+      "updated_at": "2026-10-28T03:00:00+00:00"
+    },
+    {
+      "id": "326e0162-69b5-56bb-a975-3f51071d6a56",
+      "owner_id": "175c4eaa-e43f-57b2-ad95-7b0ba4fc53fe",
+      "slug": "roadside-coffee",
+      "name": "Roadside coffee",
+      "intro": "For the long way round.",
+      "cover_url": "/demo/covers/umber.svg",
+      "is_public": true,
+      "numbered": false,
+      "position": 1,
+      "created_at": "2026-08-01T03:00:00+00:00",
+      "updated_at": "2026-09-18T03:00:00+00:00"
+    }
+  ],
+  "products": [
+    {
+      "id": "0d1aed05-cbae-5284-a116-a55334331097",
+      "list_id": "a7b02bd5-b543-5aa0-a202-5447bc14907c",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "everyday-sling-6l",
+      "name": "Everyday Sling 6L",
+      "brand": "Peak Design",
+      "image_url": null,
+      "source_url": "https://www.peakdesign.com",
+      "source_domain": "peakdesign.com",
+      "position": 0,
+      "created_at": "2026-08-10T03:00:00+00:00"
+    },
+    {
+      "id": "16b450ba-7ddf-5115-ab37-e54d87235bb4",
+      "list_id": "a7b02bd5-b543-5aa0-a202-5447bc14907c",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "a7c-ii",
+      "name": "A7C II",
+      "brand": "Sony",
+      "image_url": null,
+      "source_url": "https://www.sony.com",
+      "source_domain": "sony.com",
+      "position": 1,
+      "created_at": "2026-08-12T03:00:00+00:00"
+    },
+    {
+      "id": "e2a3d98b-5847-589a-add1-a151cb7df8c2",
+      "list_id": "a7b02bd5-b543-5aa0-a202-5447bc14907c",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "battery-and-card-pouch",
+      "name": "Battery and card pouch",
+      "brand": "Halden",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 2,
+      "created_at": "2026-09-02T03:00:00+00:00"
+    },
+    {
+      "id": "bb9a46fe-0d8c-519f-afec-d22055806526",
+      "list_id": "e45f1901-56bc-5a09-a677-c8b617765d85",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "notion-plus",
+      "name": "Notion Plus",
+      "brand": "Notion",
+      "image_url": null,
+      "source_url": "https://www.notion.com",
+      "source_domain": "notion.com",
+      "position": 0,
+      "created_at": "2026-08-20T03:00:00+00:00"
+    },
+    {
+      "id": "ad40b05d-0794-579b-a48c-2bc4fc091af6",
+      "list_id": "e45f1901-56bc-5a09-a677-c8b617765d85",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "monitor-light-bar",
+      "name": "Monitor light bar",
+      "brand": "Lumo",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 1,
+      "created_at": "2026-09-15T03:00:00+00:00"
+    },
+    {
+      "id": "70c1569d-e378-5ae9-ae7d-cddf361a101a",
+      "list_id": "c2c4df9e-302c-5140-a58c-b8ae7858543f",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "dry-bag-10l",
+      "name": "Dry bag 10L",
+      "brand": "Tidewater",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 0,
+      "created_at": "2026-09-20T03:00:00+00:00"
+    },
+    {
+      "id": "22c92968-e99b-5fd0-a2e6-19efd0e617b3",
+      "list_id": "c2c4df9e-302c-5140-a58c-b8ae7858543f",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "mineral-sunscreen-spf-50",
+      "name": "Mineral sunscreen SPF 50",
+      "brand": "Solara",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 1,
+      "created_at": "2026-09-22T03:00:00+00:00"
+    },
+    {
+      "id": "86badf18-ff3b-55b5-ad3f-b7bc101872a2",
+      "list_id": "828e5706-c8bc-5594-a966-bface81d1686",
+      "owner_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "slug": "hand-grinder",
+      "name": "Hand grinder",
+      "brand": "Kopi & Co",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 0,
+      "created_at": "2026-09-10T03:00:00+00:00"
+    },
+    {
+      "id": "03d769b9-8c89-5438-a54a-5837348bc5da",
+      "list_id": "87281383-040c-5b1e-a422-a4f9b15f6df0",
+      "owner_id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "slug": "trail-vest-5l",
+      "name": "Trail vest 5L",
+      "brand": "Ridgeline",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 0,
+      "created_at": "2026-08-18T03:00:00+00:00"
+    },
+    {
+      "id": "d983f032-7601-545c-a709-869eb96f07de",
+      "list_id": "87281383-040c-5b1e-a422-a4f9b15f6df0",
+      "owner_id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "slug": "soft-flask-500ml",
+      "name": "Soft flask 500ml",
+      "brand": "Ridgeline",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 1,
+      "created_at": "2026-08-18T03:00:00+00:00"
+    },
+    {
+      "id": "4b88cd29-548c-541e-a515-7282be8df7f8",
+      "list_id": "87281383-040c-5b1e-a422-a4f9b15f6df0",
+      "owner_id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "slug": "headlamp-400",
+      "name": "Headlamp 400",
+      "brand": "Nightjar",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 2,
+      "created_at": "2026-10-05T03:00:00+00:00"
+    },
+    {
+      "id": "8b6ffa42-83ed-533a-a661-c7848450eca3",
+      "list_id": "123e753a-0d5c-5190-a469-d3553f47ff26",
+      "owner_id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "slug": "trimming-tool-set",
+      "name": "Trimming tool set",
+      "brand": "Clayworks",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 0,
+      "created_at": "2026-09-08T03:00:00+00:00"
+    },
+    {
+      "id": "b5a4b688-52fe-5240-a97f-8aeb0b69c3ab",
+      "list_id": "123e753a-0d5c-5190-a469-d3553f47ff26",
+      "owner_id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "slug": "split-leg-apron",
+      "name": "Split-leg apron",
+      "brand": "Clayworks",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 1,
+      "created_at": "2026-09-08T03:00:00+00:00"
+    },
+    {
+      "id": "d1e54113-f57f-5668-a9e8-121fb4ed620d",
+      "list_id": "edf4689d-a38b-5103-aebd-8d4ca5e296e6",
+      "owner_id": "175c4eaa-e43f-57b2-ad95-7b0ba4fc53fe",
+      "slug": "rain-poncho",
+      "name": "Rain poncho",
+      "brand": "Monsun",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 0,
+      "created_at": "2026-08-25T03:00:00+00:00"
+    },
+    {
+      "id": "5e00bd05-574e-5c18-ac3a-da5623ab7ee8",
+      "list_id": "edf4689d-a38b-5103-aebd-8d4ca5e296e6",
+      "owner_id": "175c4eaa-e43f-57b2-ad95-7b0ba4fc53fe",
+      "slug": "phone-mount",
+      "name": "Phone mount",
+      "brand": "Gripline",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 1,
+      "created_at": "2026-08-25T03:00:00+00:00"
+    },
+    {
+      "id": "5b27facc-02e3-5936-a3f9-dc32f08afae0",
+      "list_id": "edf4689d-a38b-5103-aebd-8d4ca5e296e6",
+      "owner_id": "175c4eaa-e43f-57b2-ad95-7b0ba4fc53fe",
+      "slug": "tyre-repair-kit",
+      "name": "Tyre repair kit",
+      "brand": "Gripline",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 2,
+      "created_at": "2026-09-30T03:00:00+00:00"
+    },
+    {
+      "id": "ae0b3861-f8cf-587b-ad22-8a4cdd61cf79",
+      "list_id": "326e0162-69b5-56bb-a975-3f51071d6a56",
+      "owner_id": "175c4eaa-e43f-57b2-ad95-7b0ba4fc53fe",
+      "slug": "insulated-bottle-600ml",
+      "name": "Insulated bottle 600ml",
+      "brand": "Kaldu",
+      "image_url": null,
+      "source_url": null,
+      "source_domain": null,
+      "position": 0,
+      "created_at": "2026-09-16T03:00:00+00:00"
+    }
+  ],
+  "reviews": [
+    {
+      "product_id": "0d1aed05-cbae-5284-a116-a55334331097",
+      "body_text": "I've carried this through four countries and it still looks new. The strap is the reason I bought it: one pull and the bag swings to the front, and the magnetic latch has never once opened on its own in a crowd. It takes a mirrorless body with a 35mm, a spare battery and a phone, and nothing more, which is the point.",
+      "tidied": false,
+      "published_at": "2026-08-10T03:00:00+00:00",
+      "updated_at": "2026-08-10T03:00:00+00:00"
+    },
+    {
+      "product_id": "16b450ba-7ddf-5115-ab37-e54d87235bb4",
+      "body_text": "Small enough that I actually bring it. I shoot it with one 35mm lens most days, and the battery gets me through a full day of walking around. The flip screen is the part I didn't know I needed.",
+      "tidied": false,
+      "published_at": "2026-08-12T03:00:00+00:00",
+      "updated_at": "2026-08-12T03:00:00+00:00"
+    },
+    {
+      "product_id": "e2a3d98b-5847-589a-add1-a151cb7df8c2",
+      "body_text": "Two batteries and a card wallet in one zip. Dull, but it ended the ritual of emptying the whole bag on a café table to find a card.",
+      "tidied": false,
+      "published_at": "2026-09-02T03:00:00+00:00",
+      "updated_at": "2026-09-02T03:00:00+00:00"
+    },
+    {
+      "product_id": "bb9a46fe-0d8c-519f-afec-d22055806526",
+      "body_text": "Every shoot gets a page: the brief, the shot list, the invoice. I tried three other tools and came back each time, mostly because clients can open a page without making an account.",
+      "tidied": false,
+      "published_at": "2026-08-20T03:00:00+00:00",
+      "updated_at": "2026-08-20T03:00:00+00:00"
+    },
+    {
+      "product_id": "ad40b05d-0794-579b-a48c-2bc4fc091af6",
+      "body_text": "It lights the desk and not the screen, so I can edit at night without a lamp reflecting in the photo I'm grading. I forget it's there, which is the best thing I can say about a lamp.",
+      "tidied": false,
+      "published_at": "2026-09-15T03:00:00+00:00",
+      "updated_at": "2026-09-15T03:00:00+00:00"
+    },
+    {
+      "product_id": "70c1569d-e378-5ae9-ae7d-cddf361a101a",
+      "body_text": "The camera goes in here the moment a boat is involved. Roll it three times and it floats; I tested that by accident off Nusa Penida.",
+      "tidied": false,
+      "published_at": "2026-09-20T03:00:00+00:00",
+      "updated_at": "2026-09-20T03:00:00+00:00"
+    },
+    {
+      "product_id": "22c92968-e99b-5fd0-a2e6-19efd0e617b3",
+      "body_text": "Doesn't run into my eyes when I sweat, which rules out most of the others I tried. One tube lasts me about a month of shooting outside.",
+      "tidied": false,
+      "published_at": "2026-09-22T03:00:00+00:00",
+      "updated_at": "2026-09-22T03:00:00+00:00"
+    },
+    {
+      "product_id": "86badf18-ff3b-55b5-ad3f-b7bc101872a2",
+      "body_text": "Forty seconds of grinding and the kitchen smells right. I bought it for travel and it never left the house.",
+      "tidied": false,
+      "published_at": "2026-09-10T03:00:00+00:00",
+      "updated_at": "2026-09-10T03:00:00+00:00"
+    },
+    {
+      "product_id": "03d769b9-8c89-5438-a54a-5837348bc5da",
+      "body_text": "It doesn't bounce, even full. I've washed it more times than I can count and the mesh hasn't stretched.",
+      "tidied": false,
+      "published_at": "2026-08-18T03:00:00+00:00",
+      "updated_at": "2026-08-18T03:00:00+00:00"
+    },
+    {
+      "product_id": "d983f032-7601-545c-a709-869eb96f07de",
+      "body_text": "Shrinks as you drink, so nothing sloshes. Buy two; you will lose a cap.",
+      "tidied": false,
+      "published_at": "2026-08-18T03:00:00+00:00",
+      "updated_at": "2026-08-18T03:00:00+00:00"
+    },
+    {
+      "product_id": "4b88cd29-548c-541e-a515-7282be8df7f8",
+      "body_text": "For the 5am starts. Bright enough to see roots, light enough that I forget I'm wearing it by the second kilometre.",
+      "tidied": false,
+      "published_at": "2026-10-05T03:00:00+00:00",
+      "updated_at": "2026-10-05T03:00:00+00:00"
+    },
+    {
+      "product_id": "8b6ffa42-83ed-533a-a661-c7848450eca3",
+      "body_text": "Three loops, and I use one of them for nearly everything. They hold an edge far longer than the set I learned on.",
+      "tidied": false,
+      "published_at": "2026-09-08T03:00:00+00:00",
+      "updated_at": "2026-09-08T03:00:00+00:00"
+    },
+    {
+      "product_id": "b5a4b688-52fe-5240-a97f-8aeb0b69c3ab",
+      "body_text": "Covers both knees at the wheel. It took me two years of ruined trousers to buy one.",
+      "tidied": false,
+      "published_at": "2026-09-08T03:00:00+00:00",
+      "updated_at": "2026-09-08T03:00:00+00:00"
+    },
+    {
+      "product_id": "d1e54113-f57f-5668-a9e8-121fb4ed620d",
+      "body_text": "Long enough to cover my knees while riding, and the hood fits under a helmet. It lives under the seat from November to March.",
+      "tidied": false,
+      "published_at": "2026-08-25T03:00:00+00:00",
+      "updated_at": "2026-08-25T03:00:00+00:00"
+    },
+    {
+      "product_id": "5e00bd05-574e-5c18-ac3a-da5623ab7ee8",
+      "body_text": "Hasn't dropped the phone once, including on the road to Kintamani, which drops everything.",
+      "tidied": false,
+      "published_at": "2026-08-25T03:00:00+00:00",
+      "updated_at": "2026-08-25T03:00:00+00:00"
+    },
+    {
+      "product_id": "5b27facc-02e3-5936-a3f9-dc32f08afae0",
+      "body_text": "Used it four times this year. Ten minutes by the roadside and I'm moving again, without pushing the bike to a workshop.",
+      "tidied": false,
+      "published_at": "2026-09-30T03:00:00+00:00",
+      "updated_at": "2026-09-30T03:00:00+00:00"
+    },
+    {
+      "product_id": "ae0b3861-f8cf-587b-ad22-8a4cdd61cf79",
+      "body_text": "Coffee from home is still hot at the top of the pass. It fits the hook under the handlebars, which is the only reason I chose this size.",
+      "tidied": false,
+      "published_at": "2026-09-16T03:00:00+00:00",
+      "updated_at": "2026-09-16T03:00:00+00:00"
+    }
+  ],
+  "referral_codes": [
+    {
+      "product_id": "0d1aed05-cbae-5284-a116-a55334331097",
+      "code": "VINCE10",
+      "link": null,
+      "benefit_text": "10% off",
+      "status": "active"
+    },
+    {
+      "product_id": "70c1569d-e378-5ae9-ae7d-cddf361a101a",
+      "code": "VINCEDRY",
+      "link": null,
+      "benefit_text": "Free strap",
+      "status": "active"
+    },
+    {
+      "product_id": "d983f032-7601-545c-a709-869eb96f07de",
+      "code": "MIRA15",
+      "link": null,
+      "benefit_text": "15% off",
+      "status": "active"
+    },
+    {
+      "product_id": "5e00bd05-574e-5c18-ac3a-da5623ab7ee8",
+      "code": "KETUT",
+      "link": null,
+      "benefit_text": "Free shipping",
+      "status": "active"
+    }
+  ],
+  "follow_counts": [
+    {
+      "profile_id": "35df0732-07a1-5c54-acdf-ddde494f280e",
+      "followers": 2,
+      "following": 2
+    },
+    {
+      "profile_id": "3d77bff1-6a15-55f5-a597-4dcb14aec420",
+      "followers": 2,
+      "following": 1
+    },
+    {
+      "profile_id": "175c4eaa-e43f-57b2-ad95-7b0ba4fc53fe",
+      "followers": 1,
+      "following": 2
+    }
+  ],
+  "like_counts": [
+    {
+      "product_id": "0d1aed05-cbae-5284-a116-a55334331097",
+      "likes": 2
+    },
+    {
+      "product_id": "70c1569d-e378-5ae9-ae7d-cddf361a101a",
+      "likes": 1
+    },
+    {
+      "product_id": "03d769b9-8c89-5438-a54a-5837348bc5da",
+      "likes": 1
+    },
+    {
+      "product_id": "d1e54113-f57f-5668-a9e8-121fb4ed620d",
+      "likes": 2
+    }
+  ]
+}

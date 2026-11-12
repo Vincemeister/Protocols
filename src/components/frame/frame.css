@@ -1,0 +1,76 @@
+/* The page frame (brand book, Layout): on desktop a navigation rail, a content
+   column and, from 1200px, a suggestions rail; below 992px the rails go and a
+   bar sits at the bottom. Tokens only. */
+.app-frame { max-width: var(--page-max); margin: 0 auto; display: flex; align-items: stretch; min-height: 100vh; min-height: 100dvh; background: var(--surface); color: var(--ink); }
+.app-rail, .app-aside { display: none; }
+.app-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: var(--space-16); }
+.app-column { width: 100%; max-width: var(--content-max); display: flex; flex-direction: column; }
+.app-bottom { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-nav); }
+.app-bottom .fv-bottombar { position: static; }
+.app-desktop-only { display: none; }
+.app-toast { position: fixed; left: 0; right: 0; bottom: calc(var(--bar-mobile) + var(--space-4)); z-index: var(--z-toast); display: flex; justify-content: center; pointer-events: none; }
+.app-toast > * { pointer-events: auto; }
+
+/* The signed-out bar at the bottom of a phone: one sentence and one way in. */
+.visitor-bar { display: flex; align-items: center; gap: var(--space-3); height: var(--bar-mobile); padding: 0 var(--space-3) 0 var(--space-4); box-sizing: border-box; background: var(--surface-raised); border-top: 1px solid var(--line); }
+.visitor-bar p { flex: 1; margin: 0; color: var(--ink-muted); }
+
+/* Cards and headers follow the column: 16px gutters on a phone, none on desktop
+   where the column itself is inset. */
+.app-column .fv-product { max-width: none; padding: var(--space-4); }
+.app-column .fv-product-title a:hover { color: var(--accent); }
+.app-column .fv-profile { max-width: none; padding: var(--space-5) var(--space-4) var(--space-4); gap: var(--space-3); }
+.app-column .fv-tabs { gap: var(--space-5); }
+.app-pad { padding: var(--space-4); }
+.app-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); padding: var(--space-4); }
+.app-row { display: flex; align-items: center; gap: var(--space-3); }
+.app-row-text { flex: 1; min-width: 0; }
+.app-strong { font-weight: 600; }
+.app-muted { color: var(--ink-muted); }
+.app-stack { display: flex; flex-direction: column; gap: var(--space-3); }
+.app-about { font-weight: 300; white-space: pre-line; margin: 0; }
+
+/* Pressed state of the heart and bookmark: the icon fills, in ink (pink stays reserved for "Go to product"). */
+.fv-icon-btn[aria-pressed="true"] { color: var(--ink); }
+.fv-icon-btn[aria-pressed="true"] .fv-icon, .fv-btn.is-on .fv-icon { fill: currentColor; }
+
+/* A2: the list cover with its title. */
+.list-cover { position: relative; height: 200px; overflow: hidden; background: var(--surface-sunken); color: var(--on-image); }
+.list-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.list-cover::after { content: ""; position: absolute; inset: 0; background: var(--scrim); opacity: var(--opacity-scrim); }
+.list-cover-text { position: absolute; z-index: 1; left: var(--space-4); right: var(--space-4); bottom: var(--space-4); }
+.list-cover-text h2, .list-cover-text p { margin: 0; }
+.list-cover-text p { margin-top: var(--space-1); font-weight: 500; }
+.list-intro { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); border-bottom: 1px solid var(--line); }
+.list-intro p { margin: 0; }
+
+/* A3: the product page. */
+.product-hero { aspect-ratio: 13 / 10; }
+.product-body { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4); }
+.product-body h2, .product-body p { margin: 0; }
+.product-title { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+.product-title > div { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.product-body .fv-code-frame { align-self: stretch; }
+.product-body .fv-code-frame code { flex: 1; }
+.product-cta { display: flex; gap: var(--space-2); }
+.product-cta > a { flex: 1; }
+.product-meta { padding-top: 0; }
+.product-meta > :last-child { margin-left: auto; }
+
+@media (min-width: 992px) {
+  .app-rail { display: block; flex: 0 0 var(--rail-nav); position: sticky; top: 0; height: 100vh; align-self: flex-start; }
+  .app-main { padding: 0 var(--space-6) var(--space-12); }
+  .app-bottom, .app-mobile-only { display: none; }
+  .app-desktop-only { display: block; }
+  .app-toast { bottom: var(--space-6); }
+  .app-column .fv-product { padding: var(--space-6) 0; }
+  .app-column .fv-profile { padding: var(--space-10) 0 var(--space-6); gap: var(--space-4); }
+  .app-column .fv-tabs { padding: 0; gap: var(--space-6); }
+  .app-column .fv-topbar { padding: 0; margin: 0 calc(var(--space-3) * -1); border-bottom: 0; }
+  .app-pad { padding: var(--space-6) 0; }
+  .app-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: var(--space-6) 0 var(--space-12); }
+  .list-intro, .product-body { padding-left: 0; padding-right: 0; }
+}
+@media (min-width: 1200px) {
+  .app-aside { display: block; flex: 0 0 var(--rail-aside); position: sticky; top: 0; height: 100vh; align-self: flex-start; overflow-y: auto; }
+}
