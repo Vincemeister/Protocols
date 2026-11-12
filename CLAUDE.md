@@ -18,8 +18,9 @@ If these disagree: the design system wins over the brief, and the brief wins ove
 ## Where the build is
 
 - **Phase 1, Foundation: done** (11 Nov 2026). Tokens, the component library, `/dev/components`, sign-in (B1, B2), the database schema.
-- **Check before phase 2:** `20261111000000_favolist_v1.sql` was written on 11 Nov but its run on the Supabase project was waiting for Vini's confirmation (it drops the empty prototype tables). If the database still has `users` / `items` instead of `profiles` / `products`, apply it first.
-- **Next: phase 2, Public viewer** (brief, section 5). Then phases 3 to 5, one pull request per phase.
+- **Phase 2, Public viewer: done** (12 Nov 2026). A1 profile with its four tabs, A2 list page, A3 product page, the desktop frame with both rails, follow / like / save, three demo profiles. Not yet tested signed in against the live project: the build environment cannot reach Supabase, so follow, like and save have only been type-checked.
+- **Next: phase 3, Creator loop** (brief, section 5). Then phases 4 and 5, one pull request per phase.
+- **Before a public launch:** delete the demo profiles (`supabase/seed/demo-content.mjs`: invented people, invented reviews, mostly invented brands).
 
 Update this section at the end of each phase.
 
@@ -31,7 +32,12 @@ Update this section at the end of each phase.
 - `src/app/dev/components/` — every component in both themes; `previews.tsx` mirrors the design system's `preview.html` files. `npm run compare` (with the built app on port 3111) diffs each preview against `bundle.js` pixel by pixel.
 - `src/lib/supabase/` — `createUserClient()` (the signed-in user, reads cookies) and `createPublicClient()` (anonymous, safe inside `'use cache'`). `src/proxy.ts` keeps the session fresh.
 - `src/lib/auth/actions.ts` — server actions for the magic link, Google and sign-out. `src/app/auth/callback` exchanges the code for a session.
-- `supabase/migrations/` — the schema. `20261111000000_favolist_v1.sql` is the brief's data model with its access rules.
+- `supabase/migrations/` — the schema. `20261111000000_favolist_v1.sql` is the brief's data model with its access rules; `20261112000000_public_viewer.sql` adds slugs, likes and the count views.
+- `src/lib/data/` — what signed-out visitors may see. `dataset.ts` reads the whole public dataset once and caches it (tag `public-data`); `public.ts` shapes it per page (`getProfilePage`, `getListPage`, `getProductPage`, `getSuggestions`). Without Supabase values it serves `supabase/seed/demo.json`.
+- `src/lib/viewer.ts` — who is looking (`getViewer()`), and `src/components/frame/ForViewer.tsx`, which renders the signed-out version first and swaps in the signed-in one. `src/lib/actions/social.ts` — follow, like, save.
+- `src/components/frame/AppFrame.tsx` + `frame.css` — the page frame: navigation rail and suggestions rail on desktop, bottom bar (or the visitor bar) on a phone. Every public page sits in it.
+- `src/app/[username]/` — `(profile)/` is the profile with its tab pages (Lists at the root, `products`, `codes`, `about`); `[list]/` the list page; `[list]/[product]/` the product page.
+- `supabase/seed/demo-content.mjs` — the demo profiles. `npm run seed:build` regenerates `demo.json`, `demo.sql` and the placeholder covers from it.
 
 ## Decisions made while building (and why)
 
@@ -39,6 +45,12 @@ Update this section at the end of each phase.
 - **Icons are drawn from the design system's own outlines** (generated from `bundle.js`) so they match it exactly; they are Lucide's drawings at the version the system was built with. `lucide-react` supplies names the bundle lacks (`settings`, `log-out`); add new names in `Icon.tsx`.
 - **Theme**: an inline script in `<head>` sets `data-theme` before first paint from the `fv-theme` cookie, else from the device. `setTheme()` in `src/lib/theme.ts` writes the cookie. (The brief says the server renders the theme from the cookie; the inline script gives the same result without making every page dynamic.)
 - **`profiles.id` is its own id with `auth_user_id` beside it**, not the auth user's id as the brief sketched: the seed pipeline creates curated profiles before their creator has an account. `auth_user_id` is not readable through the API; use the `my_profile()` function to find the signed-in user's profile, and always name columns when selecting from `profiles` (`select *` fails by design).
+- **Addresses**: `/username`, `/username/list-slug`, `/username/list-slug/product-slug`. Lists and products have a `slug` column for this; a list may not be called `products`, `codes` or `about`, and usernames that would collide with the app's own pages are refused by the database.
+- **Likes exist** (`likes` table) although the brief's first-cut data model left them out: the designed product cards have a heart with a count.
+- **Component props beyond `index.d.ts`**, each marked in its file: `ProductCard` (`number`, `href`, `imageRatio`, `actions`; `creator` optional), `Tabs` items (`href`), `TopBar` (`backHref`, `trailing`), `UserCard` (`href`). Fold them into the design system at the next re-export.
+- **Pressed heart and bookmark** fill in `ink` (`frame.css`); the design system has no pressed state for icon buttons yet.
+- **Home, Search, Create, Saved, Notifications** in the rail and bottom bar lead to the home page (signed in) or sign-in (visitor) until phase 4 builds them.
+- **The public dataset is loaded whole and cached** (see `dataset.ts`). Fine for a seeded launch; switch to per-page queries when there are thousands of products.
 - **Form components take a `name`** (not in `index.d.ts`) so their values submit with a form.
 - **Known design-system bug**: in the light theme `bundle.css` shows both mark files side by side in the rail and top bar (`.fv-rail-brand img` outranks `.fv-mark-dark`). `app.css` works around it; fix it in the design system at the next re-export.
 

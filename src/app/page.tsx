@@ -1,5 +1,7 @@
 import { Suspense } from "react";
-import { Button, Mark } from "@/components/ui";
+import { Button, Mark, UserCard } from "@/components/ui";
+import { getCreators } from "@/lib/data/public";
+import { plural } from "@/lib/format";
 import { signOut } from "@/lib/auth/actions";
 import { APP_NAME } from "@/lib/config";
 import { hasSupabase } from "@/lib/supabase/env";
@@ -7,7 +9,8 @@ import { createUserClient } from "@/lib/supabase/server";
 
 // Placeholder home until phase 4 (the signed-in feed, C1) and phase 5 (the
 // landing page, A8). It shows the brand and whether you are signed in.
-export default function Home() {
+export default async function Home() {
+  const creators = await getCreators();
   return (
     <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "var(--space-4)", padding: "var(--space-6)", textAlign: "center" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
@@ -21,6 +24,14 @@ export default function Home() {
       <Suspense fallback={<Button variant="primary" size="lg" href="/sign-in" label="Sign in" />}>
         <Session />
       </Suspense>
+      {creators.length ? (
+        <section style={{ width: "100%", maxWidth: 400, textAlign: "left", paddingTop: "var(--space-8)" }}>
+          <h2 className="fv-overline">Creators</h2>
+          {creators.map((c) => (
+            <UserCard key={c.id} name={c.name} handle={`@${c.username}`} meta={plural(c.followers, "follower")} avatar={c.avatar} href={`/${c.username}`} action={false} lined />
+          ))}
+        </section>
+      ) : null}
     </main>
   );
 }
