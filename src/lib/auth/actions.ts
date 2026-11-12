@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { hasSupabase } from "@/lib/supabase/env";
+import { SUPABASE_KEY, SUPABASE_URL, hasSupabase } from "@/lib/supabase/env";
 import { createUserClient } from "@/lib/supabase/server";
 
 export interface SignInState {
@@ -41,9 +41,25 @@ export async function sendLink(_prev: SignInState, form: FormData): Promise<Sign
   redirect(`/sign-in/check-email?email=${encodeURIComponent(email)}`);
 }
 
+/**
+ * Whether Google sign-in is switched on in the Supabase project. Supabase
+ * publishes this at /auth/v1/settings; asking first means a project without
+ * Google set up shows a sentence on our page instead of Supabase's raw error.
+ */
+async function googleIsEnabled() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/auth/v1/settings`, { headers: { apikey: SUPABASE_KEY! }, cache: "no-store" });
+    const settings = (await res.json()) as { external?: { google?: boolean } };
+    return settings.external?.google === true;
+  } catch {
+    return true; // could not ask: let the normal flow report any problem
+  }
+}
+
 /** B1 "Continue with Google": hands over to Google, which returns to /auth/callback. */
 export async function continueWithGoogle(): Promise<void> {
   if (!hasSupabase()) redirect("/sign-in?error=not-connected");
+  if (!(await googleIsEnabled())) redirect("/sign-in?error=google-off");
   const supabase = await createUserClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

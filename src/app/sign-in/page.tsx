@@ -10,6 +10,7 @@ export const metadata: Metadata = { title: "Sign in" };
 const NOTICES: Record<string, string> = {
   link: "That link has expired or was already used. Ask for a new one.",
   google: "Google sign-in didn't go through. Try again, or use your email.",
+  "google-off": "Google sign-in isn't set up yet. Enter your email and we'll send you a link.",
   "not-connected": "Sign-in isn't connected yet: add the Supabase values to .env.local.",
 };
 
