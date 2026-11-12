@@ -14,7 +14,10 @@ type Params = Promise<{ username: string }>;
 
 // Prebuild the pages of the creators that exist at build time; others are built on first visit.
 export async function generateStaticParams() {
-  return (await getCreators()).map((c) => ({ username: c.username }));
+  const creators = await getCreators();
+  // Next needs at least one address to prebuild. With no creators yet, prebuild
+  // a reserved name: it can never be a profile, so it prebuilds the not-found page.
+  return creators.length ? creators.map((c) => ({ username: c.username })) : [{ username: "favolist" }];
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
