@@ -5,10 +5,10 @@ import { AppFrame } from "@/components/frame/AppFrame";
 import { AutoMore } from "@/components/me/AutoMore";
 import { People } from "@/components/me/People";
 import { ProductFeed } from "@/components/public/ProductFeed";
-import { Button, EmptyState, Icon, Mark, MarkLoader, TopBar, UserCard } from "@/components/ui";
+import { Landing } from "@/components/landing/Landing";
+import { EmptyState, Icon, MarkLoader, TopBar } from "@/components/ui";
 import { getCreators, getFeed } from "@/lib/data/public";
 import { plural } from "@/lib/format";
-import { APP_NAME } from "@/lib/config";
 import { getViewer } from "@/lib/viewer";
 import "@/components/me/me.css";
 
@@ -17,8 +17,7 @@ type Props = { searchParams: Promise<{ pages?: string }> };
 const PAGE = 12;
 
 // The root address is two screens: C1, the home feed, for someone signed in;
-// and for a visitor the page that says what Favolist is (A8, the landing
-// page, is built in phase 5; until then a short placeholder).
+// and A8, the landing page, for a visitor.
 export default function Home(props: Props) {
   return (
     // Who is looking is request data: the choice streams in. The mark assembles meanwhile.
@@ -76,25 +75,7 @@ async function HomeFor({ searchParams }: Props) {
 }
 
 async function Visitor() {
+  // "See a creator's page" leads to a real one: the first creator there is, or the directory when there is none yet.
   const creators = await getCreators();
-  return (
-    <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "var(--space-4)", padding: "var(--space-6)", textAlign: "center" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
-        <span style={{ width: 32, height: 32, display: "block" }} className="fv-mark-box"><Mark /></span>
-        <span className="heading-3">{APP_NAME}</span>
-      </div>
-      <p className="body" style={{ margin: 0, color: "var(--ink-muted)", maxWidth: 360 }}>
-        The products people actually use, reviewed in their own words.
-      </p>
-      <Button variant="primary" size="lg" href="/sign-in" label="Sign in" />
-      {creators.length ? (
-        <section style={{ width: "100%", maxWidth: 400, textAlign: "left", paddingTop: "var(--space-8)" }}>
-          <h2 className="fv-overline">Creators</h2>
-          {creators.map((c) => (
-            <UserCard key={c.id} name={c.name} handle={`@${c.username}`} meta={plural(c.followers, "follower")} avatar={c.avatar} href={`/${c.username}`} action={false} lined />
-          ))}
-        </section>
-      ) : null}
-    </main>
-  );
+  return <Landing creatorHref={creators[0] ? `/${creators[0].username}` : "/search"} />;
 }

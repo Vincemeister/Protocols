@@ -14,6 +14,7 @@ import { AccountSettings, PrivacySettings, ProfileSettingsForm, ThemeSettings } 
 import { SettingsMenu } from "@/components/me/SettingsMenu";
 import { ProductFeed } from "@/components/public/ProductFeed";
 import { EmptyState, Tabs, TopBar } from "@/components/ui";
+import { Landing } from "@/components/landing/Landing";
 import type { MyList } from "@/lib/creator/data";
 import { getCreators, getFeed } from "@/lib/data/public";
 
@@ -61,6 +62,7 @@ async function FeedDemo() {
 }
 
 export const SCREENS: { name: string; title: string; render: () => ReactNode }[] = [
+  { name: "landing", title: "A8 Landing", render: () => <Landing creatorHref="/vince.rehms" /> },
   { name: "welcome", title: "B5 Welcome", render: () => <WelcomeForm suggestedUsername="vince.rehms" host="favolist.com" /> },
   { name: "new-list", title: "C3 New list", render: () => <ListForm closeHref="/dev/screens" /> },
   {
