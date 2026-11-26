@@ -71,6 +71,7 @@ Update this section at the end of each phase.
 - **The "share the page to Favolist" tip on the paste-a-link screen is left out** until the app can be installed and receive shares (phase 5). `/create?url=…` already accepts a link, so only the manifest is missing.
 - **The username prefix shows the site's real address** (the host of the request) instead of the design's "favolist.com/", which is not ours.
 - **Component props beyond `index.d.ts` added in phase 3**: `FieldProps` (`success`, `hideCount`), `TextField` (`prefix`, `inputMode`, `autoCapitalize`, `spellCheck`), `TextArea` (`levels`, `fill`, `micDisabled`, `micLabel`; with `onRecord` the parent controls `recording`), `TopBar` (`backIcon`).
+- **The database is kept awake.** Supabase pauses a free project after a week without activity; it was paused between 12 and 27 Nov 2026, which took the site and every build down. `vercel.json` has Vercel call `/api/keepalive` once a day. If builds ever fail with "Could not load the public data", check first whether the project is paused.
 - **Next.js 16.4.6**, up from 16.4.2, for the published cache advisories (several concern Cache Components, which this app uses).
 - **Known design-system bug**: in the light theme `bundle.css` shows both mark files side by side in the rail and top bar (`.fv-rail-brand img` outranks `.fv-mark-dark`). `app.css` works around it; fix it in the design system at the next re-export.
 
