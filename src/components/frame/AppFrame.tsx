@@ -7,23 +7,24 @@ import type { Viewer } from "@/lib/viewer";
 import { ForViewer } from "./ForViewer";
 import "./frame.css";
 
-// Create opens the add-a-product flow (phase 3). Search, Saved and
-// Notifications are built in phase 4; until then they lead to the home page
-// for someone signed in and to sign-in for a visitor.
-function nav(viewer: Viewer | null): SideNavItem[] {
-  const soon = viewer ? "/" : "/sign-in";
-  return [
+export type NavLabel = "Home" | "Search" | "Create" | "Saved" | "Notifications" | "Profile";
+
+/** A visitor is sent to sign-in by everything except Home and Search. */
+function nav(viewer: Viewer | null, current?: NavLabel): SideNavItem[] {
+  const to = (href: string) => (viewer ? href : "/sign-in");
+  const items: SideNavItem[] = [
     { label: "Home", icon: "home", href: "/" },
-    { label: "Search", icon: "search", href: soon },
-    { label: "Create", icon: "plus-square", href: viewer ? "/create" : "/sign-in" },
-    { label: "Saved", icon: "bookmark", href: soon },
-    { label: "Notifications", icon: "bell", href: soon },
-    { label: "Profile", icon: "user", href: viewer?.profile ? `/${viewer.profile.username}` : soon },
+    { label: "Search", icon: "search", href: "/search" },
+    { label: "Create", icon: "plus-square", href: to("/create") },
+    { label: "Saved", icon: "bookmark", href: to("/saved") },
+    { label: "Notifications", icon: "bell", href: to("/notifications"), unread: !!viewer?.unread },
+    { label: "Profile", icon: "user", href: viewer?.profile ? `/${viewer.profile.username}` : to("/welcome") },
   ];
+  return items.map((it) => ({ ...it, current: it.label === current }));
 }
 
-/** The frame every signed-in-or-not public page sits in. `except` keeps the creator being viewed out of the suggestions. */
-export function AppFrame({ children, except }: { children: ReactNode; except?: string }) {
+/** The frame every page outside the focused creator forms sits in. `except` keeps the creator being viewed out of the suggestions; `current` marks the navigation item. */
+export function AppFrame({ children, except, current }: { children: ReactNode; except?: string; current?: NavLabel }) {
   return (
     <>
       <div className="app-frame">
@@ -31,7 +32,7 @@ export function AppFrame({ children, except }: { children: ReactNode; except?: s
           <ForViewer>
             {(viewer) => (
               <SideNav
-                items={nav(viewer)}
+                items={nav(viewer, current)}
                 user={viewer?.profile ? { name: viewer.profile.name, handle: `@${viewer.profile.username}`, avatar: viewer.profile.avatar } : undefined}
               />
             )}
@@ -48,7 +49,7 @@ export function AppFrame({ children, except }: { children: ReactNode; except?: s
         <ForViewer>
           {(viewer) =>
             viewer ? (
-              <BottomBar items={nav(viewer).filter((i) => i.label !== "Notifications").map((i) => ({ icon: i.icon, label: i.label, href: i.href }))} />
+              <BottomBar items={nav(viewer, current).filter((i) => i.label !== "Notifications").map((i) => ({ icon: i.icon, label: i.label, href: i.href, current: i.current }))} />
             ) : (
               <div className="visitor-bar">
                 <p className="body-sm">Keep your own list of what you actually use.</p>
