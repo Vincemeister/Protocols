@@ -1,0 +1,80 @@
+/* The creator screens (phase 3): one focused form per screen, with no rails
+   and no bottom bar. Full screen on a phone; a raised sheet on desktop, where
+   the inventory asks for a modal. Tokens only. */
+.creator-screen { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; background: var(--surface); color: var(--ink); }
+.creator-sheet { width: 100%; max-width: 480px; flex: 1 1 auto; display: flex; flex-direction: column; background: var(--surface); }
+.creator-step { text-align: center; color: var(--ink-muted); }
+.creator-main { flex: 1 1 auto; display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-6) var(--space-4) var(--space-4); }
+.creator-main.is-roomy { gap: var(--space-6); padding-top: var(--space-8); }
+/* A <button> does not inherit the page's font by itself. */
+.creator-main .fv-uploader, .creator-found button { font-family: inherit; }
+/* A <form> wraps the fields without becoming a layout box of its own. */
+.creator-main form { display: contents; }
+.creator-main h2, .creator-main p { margin: 0; }
+.creator-intro { display: flex; flex-direction: column; gap: var(--space-2); }
+.creator-intro.is-tight { gap: var(--space-1); }
+.creator-muted { color: var(--ink-muted); }
+.creator-foot { margin-top: auto; display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-2); }
+.creator-foot p { text-align: center; color: var(--ink-muted); }
+.creator-row { display: flex; gap: var(--space-2); }
+.creator-row > * { flex: 1; }
+.creator-or { display: flex; align-items: center; gap: var(--space-3); color: var(--ink-faint); letter-spacing: 0.06em; }
+.creator-or::before, .creator-or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.creator-section { display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-2); border-top: 1px solid var(--line); }
+.creator-section .fv-overline { margin: 0; }
+.creator-choices { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.creator-skeleton { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--line); }
+.creator-skeleton-head { display: flex; align-items: center; justify-content: space-between; }
+.creator-fetching { justify-content: flex-start; height: auto; padding: 0; }
+
+/* A product in one line: thumbnail, name, a second line. */
+.creator-item { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.creator-item-text { flex: 1; min-width: 0; }
+.creator-item-text > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.creator-item .fv-referral-thumb { flex: none; }
+.creator-item .fv-referral-thumb img { object-fit: cover; }
+.creator-thumb-sm { width: 40px; height: 40px; }
+.creator-thumb-md { width: 48px; height: 48px; }
+.creator-recent { padding: var(--space-2) 0; border-top: 1px solid var(--line); text-decoration: none; color: inherit; }
+
+/* C5: the picture and where it comes from. */
+.creator-picture { display: flex; gap: var(--space-4); align-items: flex-start; }
+.creator-picture .fv-uploader { width: 120px; flex: none; padding: 0; }
+.creator-picture-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.creator-picture-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.creator-found { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+.creator-found button { position: relative; aspect-ratio: 1 / 1; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-none); background: var(--surface-sunken); overflow: hidden; cursor: pointer; }
+.creator-found button[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.creator-found button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.creator-found img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.creator-avatar { display: flex; align-items: center; gap: var(--space-4); }
+.creator-avatar .fv-uploader { width: 96px; flex: none; border-radius: var(--radius-full); padding: 0; }
+.creator-pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+.creator-code { font-family: var(--font-mono); letter-spacing: 0.02em; }
+
+/* C6: the review field takes the room that is left. */
+.creator-main .creator-grow { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.creator-main .creator-grow > .fv-field { flex: 1 1 auto; min-height: 0; }
+.creator-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+/* C8: the products of a list, in order. Arrows on a phone, a grip to drag on desktop. */
+.creator-sort { display: flex; flex-direction: column; }
+.creator-sort .fv-referral { grid-template-columns: 48px 1fr auto; background: var(--surface); }
+.creator-sort .fv-referral.is-dragging { opacity: var(--opacity-disabled); }
+.creator-sort .fv-referral.is-over { box-shadow: 0 -2px 0 var(--accent); }
+.creator-sort .fv-referral-thumb { width: 48px; height: 48px; }
+.creator-sort .fv-referral-thumb img { object-fit: cover; }
+.creator-sort .fv-referral-text a { color: inherit; text-decoration: none; }
+.creator-sort .fv-icon-btn:disabled { opacity: var(--opacity-disabled); cursor: default; }
+.creator-sort .fv-grip { display: none; }
+.creator-number { font-family: var(--font-mono); color: var(--ink-faint); }
+
+@media (min-width: 992px) {
+  .creator-screen { background: var(--surface-sunken); padding: var(--space-10) var(--space-6); box-sizing: border-box; }
+  .creator-sheet { flex: 0 1 auto; min-height: 640px; background: var(--surface-raised); box-shadow: var(--shadow-lg); }
+  .creator-sheet .fv-topbar { position: static; }
+  .creator-main { padding: var(--space-6); }
+  .creator-main.is-roomy { padding-top: var(--space-8); }
+  .creator-sort .fv-grip { display: inline-flex; }
+  .creator-sort .creator-arrows { display: none; }
+}
