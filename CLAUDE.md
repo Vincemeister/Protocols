@@ -20,7 +20,8 @@ If these disagree: the design system wins over the brief, and the brief wins ove
 - **Phase 1, Foundation: done** (11 Nov 2026). Tokens, the component library, `/dev/components`, sign-in (B1, B2), the database schema.
 - **Phase 2, Public viewer: done** (12 Nov 2026). A1 profile with its four tabs, A2 list page, A3 product page, the desktop frame with both rails, follow / like / save, three demo profiles. Not yet tested signed in against the live project: the build environment cannot reach Supabase, so follow, like and save have only been type-checked.
 - **Phase 3, Creator loop: done** (27 Nov 2026). B5 step one (name and username), C3 new / edit list, C4 paste a link with its fetching and failed states, C5 details, C6 review with voice, C7 edit, C8 reorder. Checked in a browser on `/dev/screens` (made-up data, both themes, 390px and 1280px) and by `npm test`. Not yet run signed in against the live project, and the voice review has not been tried with a real microphone on a phone: the build environment can reach neither.
-- **Next: phase 4, Creator surfaces without designs** (brief, section 5). Then phase 5, one pull request per phase.
+- **Phase 4, Creator surfaces without designs: built** (27 Nov 2026), in its own pull request on top of phase 3. C1 home feed, C2 own-profile controls, C9 saved, C10 referral codes, C11 notifications, C12 followers / following, C13–C16 settings (profile, account, privacy, theme), C17 delete confirmations (product, list, account), A5 search with the creators directory (A6) as its starting state. Checked on `/dev/screens` and, for search and the sign-in gates, on the real routes. **Its migration (`20261127010000_creator_surfaces.sql`) is not applied to the live database yet**: it needs Vini's confirmation because it contains a function that deletes. Until it is applied, "Remove" on a follower does nothing and deleting an account fails with a message.
+- **Next: phase 5, Edges** (brief, section 5): A8 landing (designed: `design/screens/Landing.dc.html`), A9 legal pages, B6 the magic-link email, share images, analytics events.
 - **Before a public launch:** delete the demo profiles (`supabase/seed/demo-content.mjs`: invented people, invented reviews, mostly invented brands).
 
 Update this section at the end of each phase.
@@ -43,7 +44,10 @@ Update this section at the end of each phase.
 - `src/lib/voice/` — `tidy.ts` (pure: the rule-based tidy pass and the validator that refuses any added, changed or reordered word) and `transcribe.ts` (speech to text). `src/app/api/voice` keeps the recording, transcribes and tidies.
 - `src/components/creator/` — the creator screens, one focused form each inside `CreatorScreen` (no rails, no bottom bar; a raised sheet on desktop). `AddProduct` holds C4 and C5 together because they hand state to each other; `ReviewForm` + `useRecorder` are C6; `ListForm` is C3 with C8 inside it.
 - `src/app/welcome`, `src/app/lists/…`, `src/app/create/…` — their pages: `/welcome`, `/lists` (every list, drafts included), `/lists/new`, `/lists/<id>/edit`, `/create` (`?list=` preselects a list, `?url=` fetches a link at once), `/create/<product>` (details), `/create/<product>/review`.
-- `src/app/dev/screens/` — every creator screen with made-up data, for looking at without signing in.
+- `src/lib/me/` — the signed-in creator's private side (phase 4). `data.ts`: notifications, follower ids, referral codes, the profile as stored. `actions.ts`: referral codes, mark all read, remove a follower, the settings saves, the three deletions.
+- `src/components/me/` — the signed-in screens: `Screen` (page frame + top bar + the part that needs the session behind Suspense), `Modal` (the design system's Dialog over the page: a sheet on a phone, a box on desktop), `ConfirmDelete`, `ReferralList`, `People`, `NotificationRows`, `SettingsMenu`, `SettingsForms`, `AutoMore` (the feed's "Loading more"), `SearchBox`.
+- `src/app/page.tsx` is two screens: the home feed for someone signed in, a placeholder for a visitor until the landing page exists. `src/app/saved`, `/notifications`, `/referrals`, `/follows`, `/follows/following`, `/settings/…`, `/search`.
+- `src/app/dev/screens/` — every creator and signed-in screen with made-up data, for looking at without signing in.
 - `tests/` — `npm test` (Node's own test runner, no dependency): slugs, the link reader against a fake network, the tidy pass and its validator. `tests/register.mjs` lets the tests import server modules as written.
 - `supabase/seed/demo-content.mjs` — the demo profiles. `npm run seed:build` regenerates `demo.json`, `demo.sql` and the placeholder covers from it.
 
@@ -73,6 +77,15 @@ Update this section at the end of each phase.
 - **Component props beyond `index.d.ts` added in phase 3**: `FieldProps` (`success`, `hideCount`), `TextField` (`prefix`, `inputMode`, `autoCapitalize`, `spellCheck`), `TextArea` (`levels`, `fill`, `micDisabled`, `micLabel`; with `onRecord` the parent controls `recording`), `TopBar` (`backIcon`).
 - **The database is kept awake.** Supabase pauses a free project after a week without activity; it was paused between 12 and 27 Nov 2026, which took the site and every build down. `vercel.json` has Vercel call `/api/keepalive` once a day. If builds ever fail with "Could not load the public data", check first whether the project is paused.
 - **Next.js 16.4.6**, up from 16.4.2, for the published cache advisories (several concern Cache Components, which this app uses).
+- **Phase 4 screens have no artboards**, as the brief says: they are assembled from the components on the list-page and form-page templates. Nothing visual was invented; `me.css` is layout glue with tokens only.
+- **The feed grows by address**: `/?pages=3` renders three pages of cards, and the "Loading more" row asks for the next one when it scrolls into view. No client-side product state, and Back returns to the same depth.
+- **Search is a plain GET form** (`/search?q=…`), open to visitors, over the cached public data: every word typed must appear in the name (creators: name, username, one-liner; lists: name, intro; products: name, brand). With nothing typed it lists the creators (A6 folded in).
+- **Settings on desktop is the same menu in the column**, not a left sub-navigation: with seven rows a second navigation would only repeat it.
+- **Account settings has no password section** (there are none). Changing the email sends a confirmation link to the new address; nothing changes until it is opened.
+- **Privacy is one switch** (show my page to everyone). Per-list drafts live on the list; products are never public before their review.
+- **Deleting an account** needs the username typed, empties the creator's storage folders, then calls `delete_my_account()`, which removes the profile (everything else follows by foreign key) and the sign-in.
+- **Notifications are marked read by the button**, not by opening the screen, so a glance does not lose the dots. The bell shows a dot while something is unread (`viewer.unread`).
+- **Props beyond `index.d.ts` added in phase 4**: `SideNavItem.unread`.
 - **Known design-system bug**: in the light theme `bundle.css` shows both mark files side by side in the rail and top bar (`.fv-rail-brand img` outranks `.fv-mark-dark`). `app.css` works around it; fix it in the design system at the next re-export.
 
 ## Working agreements

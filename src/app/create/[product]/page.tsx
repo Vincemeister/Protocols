@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CreatorLoading, CreatorScreen } from "@/components/creator/CreatorScreen";
 import { DetailsForm } from "@/components/creator/DetailsForm";
+import { ConfirmDelete } from "@/components/me/ConfirmDelete";
 import { getMyLists, getMyProduct } from "@/lib/creator/data";
 import { requireCreator } from "@/lib/creator/session";
+import { deleteProduct } from "@/lib/me/actions";
 
 export const metadata: Metadata = { title: "Edit product" };
 
@@ -31,6 +33,14 @@ async function EditProduct({ params }: Props) {
         lists={lists}
         values={{ id: product.id, name: product.name, brand: product.brand, listId: product.list.id, code: product.code, benefit: product.benefit, image: product.image, sourceUrl: product.sourceUrl }}
       />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <ConfirmDelete
+          label="Delete product" title={`Delete ${product.name}?`}
+          message={`It comes off ${product.list.name}, with your review${product.code ? ", its code" : ""} and the recording. This cannot be undone.`}
+          // bind() fixes the first argument on the server side, so the browser cannot ask to delete something else.
+          action={deleteProduct.bind(null, product.id)}
+        />
+      </div>
     </CreatorScreen>
   );
 }

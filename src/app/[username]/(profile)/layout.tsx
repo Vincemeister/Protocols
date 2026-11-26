@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { AppFrame } from "@/components/frame/AppFrame";
@@ -6,7 +7,7 @@ import { ForViewer } from "@/components/frame/ForViewer";
 import { ProfileTabs } from "@/components/public/ProfileTabs";
 import { profileLinks } from "@/components/public/links";
 import { LiveProfileHeader, ShareIcon } from "@/components/social/controls";
-import { Button, TopBar } from "@/components/ui";
+import { Button, Icon, TopBar } from "@/components/ui";
 import { getCreators, getProfilePage } from "@/lib/data/public";
 import { compact } from "@/lib/format";
 
@@ -47,7 +48,9 @@ export default async function ProfileLayout({ children, params }: { children: Re
           trailing={
             <ForViewer>
               {(viewer) =>
-                viewer ? (
+                viewer?.profile?.id === profile.id ? (
+                  <Link className="fv-icon-btn" href="/settings" aria-label="Settings"><Icon name="settings" size="lg" /></Link>
+                ) : viewer ? (
                   <ShareIcon title={profile.name} label="Share profile" />
                 ) : (
                   <Button variant="link" size="sm" href="/sign-in" label="Sign in" style={{ marginRight: "var(--space-2)" }} />
@@ -86,6 +89,7 @@ export default async function ProfileLayout({ children, params }: { children: Re
             <div className="owner-bar">
               <Button variant="tertiary" size="sm" icon="plus" href="/create" label="Add a product" />
               <Button variant="tertiary" size="sm" icon="list" href="/lists" label="Your lists" />
+              <Button variant="tertiary" size="sm" icon="settings" href="/settings" label="Settings" />
             </div>
           ) : null
         }
