@@ -11,7 +11,11 @@ export interface FieldProps {
   help?: string;
   /** Replaces help; turns the field red. */
   error?: string;
+  /** Beyond index.d.ts (phase 3): replaces help with a green confirmation ("Available. …"), as on the welcome screen. */
+  success?: string;
   maxLength?: number;
+  /** Beyond index.d.ts (phase 3): keeps the limit but hides the "12 / 40" counter, as the designed forms do on short fields. */
+  hideCount?: boolean;
   disabled?: boolean;
 }
 
@@ -27,7 +31,8 @@ interface FieldShellProps extends FieldProps {
 }
 
 /** Label above, control, then help or error and an optional counter. Shared by every form control. */
-export function FieldShell({ id, label, optional, help, error, maxLength, length = 0, before, after, children }: FieldShellProps) {
+export function FieldShell({ id, label, optional, help, error, success, maxLength: limit, hideCount, length = 0, before, after, children }: FieldShellProps) {
+  const maxLength = hideCount ? undefined : limit;
   return (
     <div className={cx("fv-field", error && "is-error")}>
       {label ? (
@@ -38,7 +43,7 @@ export function FieldShell({ id, label, optional, help, error, maxLength, length
       ) : null}
       {before}
       {children}
-      {error || help || maxLength ? (
+      {error || success || help || maxLength ? (
         <div className="fv-help">
           <span id={`${id}-help`}>
             {error ? (
@@ -46,6 +51,11 @@ export function FieldShell({ id, label, optional, help, error, maxLength, length
                 <Icon name="alert-triangle" size="sm" />
                 {error}
               </>
+            ) : success ? (
+              <span style={{ color: "var(--success)" }}>
+                <Icon name="check" style={{ width: 14, height: 14, verticalAlign: -2, marginRight: "var(--space-1)" }} />
+                {success}
+              </span>
             ) : (
               help || ""
             )}

@@ -23,13 +23,22 @@ export interface TextAreaProps extends FieldProps {
   onChange?: (value: string) => void;
   onRecord?: (recording: boolean) => void;
   onRevert?: () => void;
+  // --- Beyond index.d.ts (phase 3) ---
+  /** Bar heights from the microphone, each 0 to 1. Without it the wave shows its resting shape. */
+  levels?: number[];
+  /** Grows to fill its column, as on the review screen. */
+  fill?: boolean;
+  /** Greys out Speak while a recording is being written down. */
+  micDisabled?: boolean;
+  /** "Record again" once there is a recording. */
+  micLabel?: string;
 }
 
-// Resting shape of the level wave. Phase 3 drives these heights from the microphone.
+// Resting shape of the level wave, used when no live levels are passed.
 const WAVE = [6, 10, 14, 8, 16, 12, 6, 10, 18, 8, 12, 6, 14, 10, 8, 16, 6, 12, 10, 8, 14, 6, 10, 16, 8, 12];
 
 export function TextArea(props: TextAreaProps) {
-  const { value = "", placeholder, rows = 4, voice, recording = false, recordingTime, tidied, onChange, onRecord, onRevert, ...field } = props;
+  const { value = "", placeholder, rows = 4, voice, recording = false, recordingTime, tidied, onChange, onRecord, onRevert, levels, fill, micDisabled, micLabel, ...field } = props;
   const auto = useId();
   const id = field.id || auto;
   const [text, setText] = useSyncedState(value);
@@ -47,6 +56,7 @@ export function TextArea(props: TextAreaProps) {
       disabled={field.disabled}
       aria-invalid={field.error ? true : undefined}
       aria-describedby={field.error || field.help ? `${id}-help` : undefined}
+      style={fill ? { flex: "1 1 auto", minHeight: 200, resize: "none" } : undefined}
       onChange={(e) => {
         setText(e.target.value);
         onChange?.(e.target.value);
@@ -67,7 +77,7 @@ export function TextArea(props: TextAreaProps) {
             <span className="fv-rec-dot" />
             Listening
             <span className="fv-rec-wave" aria-hidden="true">
-              {WAVE.map((h, i) => <i key={i} style={{ height: h }} />)}
+              {WAVE.map((h, i) => <i key={i} style={{ height: levels ? 4 + Math.round(Math.min(1, levels[i] ?? 0) * 14) : h }} />)}
             </span>
             <span className="fv-rec-time">{recordingTime || "0:00"}</span>
           </div>
@@ -84,15 +94,19 @@ export function TextArea(props: TextAreaProps) {
         ) : null
       }
     >
-      <div className="fv-voice-wrap">
+      <div className="fv-voice-wrap" style={fill ? { flex: "1 1 auto", minHeight: 0, display: "flex" } : undefined}>
         {control}
         <button
           className={cx("fv-mic", on && "is-recording")}
           type="button"
-          aria-label={on ? "Stop recording" : "Record your review"}
+          aria-label={on ? "Stop recording" : micLabel || "Record your review"}
           aria-pressed={on}
+          disabled={micDisabled}
+          style={micDisabled ? { opacity: "var(--opacity-disabled)", cursor: "default" } : undefined}
           onClick={() => {
-            setOn(!on);
+            // With a handler, the parent decides when recording really starts
+            // (the microphone may be refused) and passes `recording` back down.
+            if (!onRecord) setOn(!on);
             onRecord?.(!on);
           }}
         >
