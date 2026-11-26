@@ -19,4 +19,12 @@ export async function requireCreator() {
   return { profile: viewer.profile, uid: user.id, db };
 }
 
+/** The same gate for screens that only read: the viewer, with a profile for sure. */
+export async function requireViewer() {
+  const viewer = await getViewer();
+  if (!viewer) redirect("/sign-in");
+  if (!viewer.profile) redirect("/welcome");
+  return { ...viewer, profile: viewer.profile };
+}
+
 export type Creator = Awaited<ReturnType<typeof requireCreator>>;

@@ -22,6 +22,8 @@ export interface PublicProduct {
   review: string; code?: { code: string; label: string }; likes: number;
   added: string; addedExact: string; edited?: string;
   list: { name: string; slug: string; href: string }; position: number; href: string;
+  /** Who recommends it: needed wherever products of several creators are shown together (feed, saved, search). */
+  creator: { id: string; username: string; name: string; avatar?: string };
 }
 
 function index(ds: Dataset) {
@@ -62,6 +64,7 @@ function toProduct(pr: ProductRow, list: ListRow, owner: ProfileRow, position: n
     added: ago(review.published_at!, now), addedExact: exactDate(review.published_at!),
     edited: edited ? ago(review.updated_at, now) : undefined,
     list: { name: list.name, slug: list.slug, href: listHref }, position, href: `${listHref}/${pr.slug}`,
+    creator: { id: owner.id, username: owner.username, name: owner.display_name, avatar: owner.avatar_url ?? undefined },
   };
 }
 
@@ -154,4 +157,84 @@ export async function getCreators() {
   const ds = await loadDataset();
   const ix = index(ds);
   return ds.profiles.filter((p) => p.is_public).map((p) => toProfile(p, ix));
+}
+
+// ---------------------------------------------------------------------------
+// Phase 4: views that mix several creators. Arguments are plain sorted arrays
+// so the same question is answered from the cache.
+// ---------------------------------------------------------------------------
+
+/** Every public product with its publication time, newest first. */
+function allProducts(ds: Dataset, ix: ReturnType<typeof index>, now: Date) {
+  return ds.profiles.filter((o) => o.is_public).flatMap((owner) =>
+    listsOf(ds, owner).flatMap((l) => productsOf(ds, l, owner, ix, now).map((p) => ({ p, at: ix.reviewOf.get(p.id)!.published_at! }))),
+  ).sort((a, b) => b.at.localeCompare(a.at));
+}
+
+/** C1: the newest products of the creators someone follows. `page` starts at 0. */
+export async function getFeed(followedIds: string[], page = 0, size = 12) {
+  "use cache";
+  cacheTag(PUBLIC_DATA);
+  cacheLife("minutes");
+  const ds = await loadDataset();
+  const followed = new Set(followedIds);
+  const all = allProducts(ds, index(ds), new Date()).filter((x) => followed.has(x.p.creator.id));
+  return { products: all.slice(page * size, (page + 1) * size).map((x) => x.p), more: all.length > (page + 1) * size };
+}
+
+/** C9: the products and lists someone saved, as far as they are still public. */
+export async function getSaved(productIds: string[], listIds: string[]) {
+  "use cache";
+  cacheTag(PUBLIC_DATA);
+  cacheLife("minutes");
+  const ds = await loadDataset();
+  const ix = index(ds);
+  const now = new Date();
+  const wanted = new Set(productIds);
+  const products = allProducts(ds, ix, now).map((x) => x.p).filter((p) => wanted.has(p.id));
+  const lists = ds.lists.filter((l) => listIds.includes(l.id) && l.is_public).flatMap((l) => {
+    const owner = ds.profiles.find((o) => o.id === l.owner_id && o.is_public);
+    if (!owner) return [];
+    const items = productsOf(ds, l, owner, ix, now);
+    return [{ list: toList(l, owner, items.length, now, items.find((p) => p.image)?.image), creator: toProfile(owner, ix) }];
+  });
+  return { products, lists };
+}
+
+/** C12 and C11: public profiles by id, in the order asked. */
+export async function getPeople(ids: string[]) {
+  "use cache";
+  cacheTag(PUBLIC_DATA);
+  cacheLife("minutes");
+  const ds = await loadDataset();
+  const ix = index(ds);
+  const byId = new Map(ds.profiles.filter((p) => p.is_public).map((p) => [p.id, p]));
+  return ids.flatMap((id) => (byId.has(id) ? [toProfile(byId.get(id)!, ix)] : []));
+}
+
+/** A5: creators, lists and products whose name contains the words typed. */
+export async function searchPublic(query: string) {
+  "use cache";
+  cacheTag(PUBLIC_DATA);
+  cacheLife("minutes");
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean).slice(0, 6);
+  if (!words.length) return { creators: [], lists: [], products: [] };
+  const hit = (...texts: (string | null | undefined)[]) => {
+    const hay = texts.filter(Boolean).join(" ").toLowerCase();
+    return words.every((w) => hay.includes(w));
+  };
+  const ds = await loadDataset();
+  const ix = index(ds);
+  const now = new Date();
+  const owners = ds.profiles.filter((p) => p.is_public);
+  const creators = owners.filter((p) => hit(p.display_name, p.username, p.bio)).slice(0, 8).map((p) => toProfile(p, ix));
+  const lists = owners.flatMap((owner) =>
+    listsOf(ds, owner).flatMap((l) => {
+      if (!hit(l.name, l.intro)) return [];
+      const items = productsOf(ds, l, owner, ix, now);
+      return items.length ? [{ list: toList(l, owner, items.length, now, items.find((p) => p.image)?.image), creator: toProfile(owner, ix) }] : [];
+    }),
+  ).slice(0, 8);
+  const products = allProducts(ds, ix, now).map((x) => x.p).filter((p) => hit(p.name, p.brand)).slice(0, 12);
+  return { creators, lists, products };
 }
