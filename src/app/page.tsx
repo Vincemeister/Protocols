@@ -4,8 +4,7 @@ import { getCreators } from "@/lib/data/public";
 import { plural } from "@/lib/format";
 import { signOut } from "@/lib/auth/actions";
 import { APP_NAME } from "@/lib/config";
-import { hasSupabase } from "@/lib/supabase/env";
-import { createUserClient } from "@/lib/supabase/server";
+import { getViewer } from "@/lib/viewer";
 
 // Placeholder home until phase 4 (the signed-in feed, C1) and phase 5 (the
 // landing page, A8). It shows the brand and whether you are signed in.
@@ -37,12 +36,22 @@ export default async function Home() {
 }
 
 async function Session() {
-  const user = hasSupabase() ? (await (await createUserClient()).auth.getUser()).data.user : null;
-  if (!user) return <Button variant="primary" size="lg" href="/sign-in" label="Sign in" />;
+  const viewer = await getViewer();
+  if (!viewer) return <Button variant="primary" size="lg" href="/sign-in" label="Sign in" />;
   return (
-    <form action={signOut} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--space-3)" }}>
-      <p className="body-sm" style={{ margin: 0 }}>Signed in as {user.email}</p>
-      <Button type="submit" variant="tertiary" label="Sign out" />
-    </form>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--space-3)" }}>
+      {viewer.profile ? (
+        <div style={{ display: "flex", gap: "var(--space-2)" }}>
+          <Button variant="primary" size="lg" icon="plus" href="/create" label="Add a product" />
+          <Button variant="tertiary" size="lg" href={`/${viewer.profile.username}`} label="Your page" />
+        </div>
+      ) : (
+        <Button variant="primary" size="lg" href="/welcome" label="Set up your page" />
+      )}
+      <form action={signOut} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--space-2)" }}>
+        <p className="caption" style={{ margin: 0, color: "var(--ink-muted)" }}>Signed in as {viewer.email}</p>
+        <Button type="submit" variant="link" size="sm" label="Sign out" />
+      </form>
+    </div>
   );
 }

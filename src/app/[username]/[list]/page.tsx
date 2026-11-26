@@ -6,7 +6,7 @@ import { AppFrame } from "@/components/frame/AppFrame";
 import { ForViewer } from "@/components/frame/ForViewer";
 import { ProductFeed } from "@/components/public/ProductFeed";
 import { FollowSmall, SaveButton, ShareIcon } from "@/components/social/controls";
-import { Avatar, EmptyState, TopBar } from "@/components/ui";
+import { Avatar, Button, EmptyState, TopBar } from "@/components/ui";
 import { getListPage } from "@/lib/data/public";
 import { plural } from "@/lib/format";
 
@@ -33,6 +33,16 @@ export default async function ListPage({ params }: { params: Params }) {
         title={profile.username} backHref={profileHref} backLabel={`Back to ${profile.name}`}
         trailing={<ShareIcon title={`${list.name} by ${profile.name}`} label="Share list" />}
       />
+      <ForViewer>
+        {(viewer) =>
+          viewer?.profile?.id === profile.id ? (
+            <div className="owner-bar">
+              <Button variant="tertiary" size="sm" icon="plus" href={`/create?list=${list.id}`} label="Add a product" />
+              <Button variant="tertiary" size="sm" icon="pencil" href={`/lists/${list.id}/edit`} label="Edit list" />
+            </div>
+          ) : null
+        }
+      </ForViewer>
       <div className="list-cover">
         {list.cover ? <img src={list.cover} alt="" /> : null}
         <div className="list-cover-text">

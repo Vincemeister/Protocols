@@ -80,6 +80,16 @@ export default async function ProfileLayout({ children, params }: { children: Re
           );
         }}
       </ForViewer>
+      <ForViewer>
+        {(viewer) =>
+          viewer?.profile?.id === profile.id ? (
+            <div className="owner-bar">
+              <Button variant="tertiary" size="sm" icon="plus" href="/create" label="Add a product" />
+              <Button variant="tertiary" size="sm" icon="list" href="/lists" label="Your lists" />
+            </div>
+          ) : null
+        }
+      </ForViewer>
       <ProfileTabs username={profile.username} lists={lists.length} products={products.length} codes={codes.length} />
       {children}
     </AppFrame>

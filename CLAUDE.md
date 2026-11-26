@@ -19,7 +19,8 @@ If these disagree: the design system wins over the brief, and the brief wins ove
 
 - **Phase 1, Foundation: done** (11 Nov 2026). Tokens, the component library, `/dev/components`, sign-in (B1, B2), the database schema.
 - **Phase 2, Public viewer: done** (12 Nov 2026). A1 profile with its four tabs, A2 list page, A3 product page, the desktop frame with both rails, follow / like / save, three demo profiles. Not yet tested signed in against the live project: the build environment cannot reach Supabase, so follow, like and save have only been type-checked.
-- **Next: phase 3, Creator loop** (brief, section 5). Then phases 4 and 5, one pull request per phase.
+- **Phase 3, Creator loop: done** (27 Nov 2026). B5 step one (name and username), C3 new / edit list, C4 paste a link with its fetching and failed states, C5 details, C6 review with voice, C7 edit, C8 reorder. Checked in a browser on `/dev/screens` (made-up data, both themes, 390px and 1280px) and by `npm test`. Not yet run signed in against the live project, and the voice review has not been tried with a real microphone on a phone: the build environment can reach neither.
+- **Next: phase 4, Creator surfaces without designs** (brief, section 5). Then phase 5, one pull request per phase.
 - **Before a public launch:** delete the demo profiles (`supabase/seed/demo-content.mjs`: invented people, invented reviews, mostly invented brands).
 
 Update this section at the end of each phase.
@@ -37,6 +38,13 @@ Update this section at the end of each phase.
 - `src/lib/viewer.ts` — who is looking (`getViewer()`), and `src/components/frame/ForViewer.tsx`, which renders the signed-out version first and swaps in the signed-in one. `src/lib/actions/social.ts` — follow, like, save.
 - `src/components/frame/AppFrame.tsx` + `frame.css` — the page frame: navigation rail and suggestions rail on desktop, bottom bar (or the visitor bar) on a phone. Every public page sits in it.
 - `src/app/[username]/` — `(profile)/` is the profile with its tab pages (Lists at the root, `products`, `codes`, `about`); `[list]/` the list page; `[list]/[product]/` the product page.
+- `src/lib/creator/` — the creator's side (phase 3). `session.ts`: `requireCreator()`, the gate for every creator screen and action (signed out → sign-in, no username yet → `/welcome`). `actions.ts`: the Server Actions that write (profile, list, product, review, reorder). `data.ts`: the creator's own lists and products, drafts included, read as the signed-in user and never cached. `images.ts`: pictures are copied into our storage, never hotlinked. `slug.ts`, `limits.ts`.
+- `src/lib/scrape/` — paste a link, get the product. `extract.ts` is pure (JSON-LD, Open Graph, Amazon markup, Shopify JSON, the App Store lookup); `safe-fetch.ts` refuses private addresses on every hop; `index.ts` puts them together under one 8-second deadline. `src/app/api/fetch-product` is the endpoint.
+- `src/lib/voice/` — `tidy.ts` (pure: the rule-based tidy pass and the validator that refuses any added, changed or reordered word) and `transcribe.ts` (speech to text). `src/app/api/voice` keeps the recording, transcribes and tidies.
+- `src/components/creator/` — the creator screens, one focused form each inside `CreatorScreen` (no rails, no bottom bar; a raised sheet on desktop). `AddProduct` holds C4 and C5 together because they hand state to each other; `ReviewForm` + `useRecorder` are C6; `ListForm` is C3 with C8 inside it.
+- `src/app/welcome`, `src/app/lists/…`, `src/app/create/…` — their pages: `/welcome`, `/lists` (every list, drafts included), `/lists/new`, `/lists/<id>/edit`, `/create` (`?list=` preselects a list, `?url=` fetches a link at once), `/create/<product>` (details), `/create/<product>/review`.
+- `src/app/dev/screens/` — every creator screen with made-up data, for looking at without signing in.
+- `tests/` — `npm test` (Node's own test runner, no dependency): slugs, the link reader against a fake network, the tidy pass and its validator. `tests/register.mjs` lets the tests import server modules as written.
 - `supabase/seed/demo-content.mjs` — the demo profiles. `npm run seed:build` regenerates `demo.json`, `demo.sql` and the placeholder covers from it.
 
 ## Decisions made while building (and why)
@@ -52,6 +60,18 @@ Update this section at the end of each phase.
 - **Home, Search, Create, Saved, Notifications** in the rail and bottom bar lead to the home page (signed in) or sign-in (visitor) until phase 4 builds them.
 - **The public dataset is loaded whole and cached** (see `dataset.ts`). Fine for a seeded launch; switch to per-page queries when there are thousands of products.
 - **Form components take a `name`** (not in `index.d.ts`) so their values submit with a form.
+- **The welcome screen (B5, step one) was built in phase 3**, ahead of the rest of onboarding: nothing in the creator loop works without a profile. First sign-in lands on `/welcome`; it leads to the new-list screen, which leads to the first product.
+- **A product is saved as soon as its details are confirmed, and published by its review.** Until then it is a draft only its owner sees (the database rule from phase 1 does the hiding). Drafts are reachable from the list's edit screen, marked "Needs a review".
+- **A list's address (slug) never changes after it is created**, even when the list is renamed: shared links must keep working. Products likewise.
+- **Reorder saves by itself** (no Save button to forget): arrows on a phone, a grip to drag from 992px, put back if saving fails.
+- **Voice.** Speech to text is OpenAI's transcription endpoint when `OPENAI_API_KEY` is set (model `gpt-transcribe`, changeable by env). Without a key, the browser's own live recognition is the transcript where the browser has it. **The tidy pass is rule-based by default** (fillers and stumbled repeats out, capital and full stop in): it cannot add a word by construction, costs nothing and needs no second model. Setting `OPENAI_TIDY_MODEL` lets a language model do it instead; its answer is used only if every word is the creator's, in order (`isFaithful`), otherwise the rule-based version stands.
+- **Live words while speaking** use the browser's SpeechRecognition. On phones it is switched off when the server transcribes, because a phone gives the microphone to one listener at a time and the recording matters more; the help line then says "We'll write it down when you tap Stop."
+- **A review longer than 600 characters is not cut for the creator**: the field turns red and Publish waits until they trim it. Recordings stop by themselves at two minutes.
+- **Pictures**: a phone photo is scaled down in the browser (longest side 1600px, JPEG) before upload; a picture chosen from the product's page is fetched once on save and copied to storage. If that copy fails the product is saved without a picture rather than not at all.
+- **The "share the page to Favolist" tip on the paste-a-link screen is left out** until the app can be installed and receive shares (phase 5). `/create?url=…` already accepts a link, so only the manifest is missing.
+- **The username prefix shows the site's real address** (the host of the request) instead of the design's "favolist.com/", which is not ours.
+- **Component props beyond `index.d.ts` added in phase 3**: `FieldProps` (`success`, `hideCount`), `TextField` (`prefix`, `inputMode`, `autoCapitalize`, `spellCheck`), `TextArea` (`levels`, `fill`, `micDisabled`, `micLabel`; with `onRecord` the parent controls `recording`), `TopBar` (`backIcon`).
+- **Next.js 16.4.6**, up from 16.4.2, for the published cache advisories (several concern Cache Components, which this app uses).
 - **Known design-system bug**: in the light theme `bundle.css` shows both mark files side by side in the rail and top bar (`.fv-rail-brand img` outranks `.fv-mark-dark`). `app.css` works around it; fix it in the design system at the next re-export.
 
 ## Working agreements
@@ -74,5 +94,6 @@ Update this section at the end of each phase.
 
 - On Vini's Mac, Node lives in `~/.local/node/bin` (no Homebrew): `export PATH="$HOME/.local/node/bin:$PATH"`, then `npm install` and `npm run dev`.
 - Next.js 16 with Cache Components (`cacheComponents: true`): public data goes through `'use cache'` functions; anything that reads cookies or `searchParams` sits behind `<Suspense>`. Read `node_modules/next/dist/docs/` before using an API you aren't sure about (see AGENTS.md).
+- `npm test` runs the unit tests; `npm run typecheck` and `npm run lint` the rest. `/dev/screens` and `/dev/components` need no sign-in.
 - Supabase project "favolist" (ref `affixoepqkhypnmjtfpq`, Singapore). `.env.local` needs `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (see `.env.example`). Without them the app still runs; sign-in says it is not connected.
 - Sign-in set-up that lives in the Supabase dashboard, not in code: the Google provider (needs a Google OAuth client), and the allowed redirect addresses (`http://localhost:3000/**` and the production address) under Authentication → URL configuration.

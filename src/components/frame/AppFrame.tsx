@@ -7,14 +7,15 @@ import type { Viewer } from "@/lib/viewer";
 import { ForViewer } from "./ForViewer";
 import "./frame.css";
 
-// Home, Search, Create, Saved and Notifications are built in phase 4. Until
-// then they lead to the home page for someone signed in and to sign-in for a visitor.
+// Create opens the add-a-product flow (phase 3). Search, Saved and
+// Notifications are built in phase 4; until then they lead to the home page
+// for someone signed in and to sign-in for a visitor.
 function nav(viewer: Viewer | null): SideNavItem[] {
   const soon = viewer ? "/" : "/sign-in";
   return [
     { label: "Home", icon: "home", href: "/" },
     { label: "Search", icon: "search", href: soon },
-    { label: "Create", icon: "plus-square", href: soon },
+    { label: "Create", icon: "plus-square", href: viewer ? "/create" : "/sign-in" },
     { label: "Saved", icon: "bookmark", href: soon },
     { label: "Notifications", icon: "bell", href: soon },
     { label: "Profile", icon: "user", href: viewer?.profile ? `/${viewer.profile.username}` : soon },

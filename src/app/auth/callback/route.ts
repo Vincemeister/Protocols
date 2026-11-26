@@ -12,5 +12,8 @@ export async function GET(request: NextRequest) {
 
   const supabase = await createUserClient();
   const { error } = await supabase.auth.exchangeCodeForSession(code);
-  return NextResponse.redirect(error ? failed : home);
+  if (error) return NextResponse.redirect(failed);
+  // Someone signing in for the first time has no profile yet: they choose a name and username first.
+  const { data: profile } = await supabase.rpc("my_profile").maybeSingle();
+  return NextResponse.redirect(profile ? home : new URL("/welcome", request.url));
 }
