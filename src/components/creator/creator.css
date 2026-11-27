@@ -7,7 +7,7 @@
 .creator-main { flex: 1 1 auto; display: flex; flex-direction: column; gap: var(--space-5); padding: var(--space-6) var(--space-4) var(--space-4); }
 .creator-main.is-roomy { gap: var(--space-6); padding-top: var(--space-8); }
 /* A <button> does not inherit the page's font by itself. */
-.creator-main .fv-uploader, .creator-found button { font-family: inherit; }
+.creator-main .fv-uploader { font-family: inherit; }
 /* A <form> wraps the fields without becoming a layout box of its own. */
 .creator-main form { display: contents; }
 .creator-main h2, .creator-main p { margin: 0; }
@@ -37,16 +37,17 @@
 .creator-thumb-md { width: 48px; height: 48px; }
 .creator-recent { padding: var(--space-2) 0; border-top: 1px solid var(--line); text-decoration: none; color: inherit; }
 
-/* C5: the picture and where it comes from. */
-.creator-picture { display: flex; gap: var(--space-4); align-items: flex-start; }
-.creator-picture .fv-uploader { width: 120px; flex: none; padding: 0; }
-.creator-picture-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-.creator-picture-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.creator-found { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
-.creator-found button { position: relative; aspect-ratio: 1 / 1; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-none); background: var(--surface-sunken); overflow: hidden; cursor: pointer; }
-.creator-found button[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-.creator-found button:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-.creator-found img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* C5: the product's pictures as a grid of squares. Chosen ones carry their number; the rest wait, dimmed. */
+.creator-group { display: flex; flex-direction: column; gap: var(--space-2); }
+.creator-pictures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+/* The Add tile is the design system's uploader at the size of one grid cell (it is 160px wide on its own). */
+.creator-pictures .fv-uploader { width: 100%; min-width: 0; padding: 0; gap: var(--space-1); }
+.creator-picture-tile { position: relative; aspect-ratio: 1 / 1; padding: 0; border: 1px solid var(--line); border-radius: var(--radius-none); background: var(--surface-sunken); overflow: hidden; cursor: pointer; font-family: inherit; }
+.creator-picture-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: var(--opacity-disabled); }
+.creator-picture-tile[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.creator-picture-tile[aria-pressed="true"] img { opacity: 1; }
+.creator-picture-tile:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.creator-picture-n { position: absolute; top: 0; left: 0; min-width: var(--space-6); padding: var(--space-1) var(--space-2); box-sizing: border-box; background: var(--accent); color: var(--on-accent); font-weight: 600; text-align: center; }
 .creator-avatar { display: flex; align-items: center; gap: var(--space-4); }
 .creator-avatar .fv-uploader { width: 96px; flex: none; border-radius: var(--radius-full); padding: 0; }
 .creator-brand { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); margin-top: calc(var(--space-3) * -1); }

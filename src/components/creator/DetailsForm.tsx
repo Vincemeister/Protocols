@@ -1,13 +1,12 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useState } from "react";
 import { Alert, BrandChip, Button, Icon, Select, TextField } from "@/components/ui";
-import { cx } from "@/components/ui/cx";
 import { FieldShell } from "@/components/ui/Field";
 import { saveProduct, type FormState } from "@/lib/creator/actions";
 import type { MyList } from "@/lib/creator/data";
-import { useImageFile } from "./useImageFile";
+import { usePictures } from "./usePictures";
 
 export interface DetailsValues {
   /** Set when editing a product that already exists. */
@@ -17,8 +16,8 @@ export interface DetailsValues {
   listId?: string;
   code?: string;
   benefit?: string;
-  /** The picture already saved with the product. */
-  image?: string;
+  /** The pictures already saved with the product, in order. */
+  images?: string[];
   /** The brand logo already saved with the product. */
   logo?: string;
   sourceUrl?: string;
@@ -33,17 +32,10 @@ interface DetailsFormProps {
 
 /**
  * C5 Check the details (and C7, the same form for a product that exists):
- * name, picture, brand, list, referral code. Saving it leads to the review.
+ * name, pictures, brand, list, referral code. Saving it leads to the review.
  */
 export function DetailsForm({ lists, values, found }: DetailsFormProps) {
-  const upload = useImageFile(1600);
-  const candidates = found?.images ?? [];
-  // The picture shown: one they uploaded, else one chosen from the page, else the one already saved.
-  const [remote, setRemote] = useState<string | undefined>(candidates[0]);
-  const [choosing, setChoosing] = useState(false);
-  // Pictures that turned out not to load, or to be a blank placeholder: dropped from the choice.
-  const [broken, setBroken] = useState<string[]>([]);
-  const drop = (src: string) => setBroken((b) => (b.includes(src) ? b : [...b, src]));
+  const pictures = usePictures({ saved: values.images ?? [], found: found?.images ?? [] });
   const [brand, setBrand] = useState(values.brand ?? "");
   // The logo: one found on the page, else the one already saved; the creator can take it off.
   const [logo, setLogo] = useState<{ src: string; fresh: boolean } | undefined>(
@@ -55,23 +47,14 @@ export function DetailsForm({ lists, values, found }: DetailsFormProps) {
   const [benefit, setBenefit] = useState(values.benefit ?? "");
 
   const [state, submit, pending] = useActionState<FormState, FormData>(
-    (prev, form) => {
-      if (upload.picked) form.set("image_file", upload.picked.blob, "product.jpg");
+    async (prev, form) => {
+      // The pictures go into storage first, one small request each; the save then carries only their addresses.
+      for (const url of await pictures.store()) form.append("picture", url);
       return saveProduct(prev, form);
     },
     {},
   );
 
-  const usable = candidates.filter((src) => !broken.includes(src));
-  // If the chosen picture fails, the next one that works takes its place.
-  const chosen = upload.picked ? undefined : remote && !broken.includes(remote) ? remote : usable[0];
-  const shown = upload.picked?.preview ?? chosen ?? values.image;
-  // A picture that failed before this form was listening (it can arrive already rendered) is caught here.
-  const shownImg = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    const el = shownImg.current;
-    if (el && el.complete && el.naturalWidth < 60 && chosen && shown === chosen) drop(chosen);
-  }, [shown, chosen]);
   const codeHelp = code.trim()
     ? `Shown as "${benefit.trim() ? `${benefit.trim()} with ${code.trim()}` : `Code ${code.trim()}`}" under your review.`
     : 'Shown as "10% off with VINCE10" under your review.';
@@ -80,7 +63,6 @@ export function DetailsForm({ lists, values, found }: DetailsFormProps) {
     <form action={submit}>
       {values.id ? <input type="hidden" name="id" value={values.id} /> : null}
       <input type="hidden" name="source_url" value={values.sourceUrl ?? ""} />
-      {chosen ? <input type="hidden" name="image_remote" value={chosen} /> : null}
       {logo?.fresh && brand.trim() ? <input type="hidden" name="logo_remote" value={logo.src} /> : null}
       {logoRemoved ? <input type="hidden" name="logo_removed" value="1" /> : null}
 
@@ -91,47 +73,40 @@ export function DetailsForm({ lists, values, found }: DetailsFormProps) {
       ) : null}
       {state.error ? <Alert tone="danger" message={state.error} /> : null}
 
-      <div className="creator-picture">
-        {upload.field}
-        <button className={cx("fv-uploader", shown && "has-image")} type="button" aria-label={shown ? "Replace image" : "Add a picture"} onClick={upload.open}>
-          {shown ? (
-            <img
-              ref={shownImg} src={shown} alt=""
-              onError={() => { if (shown === chosen) drop(shown); }}
-              // Some shops answer a missing picture with a 1×1 blank instead of an error.
-              onLoad={(e) => { if (shown === chosen && e.currentTarget.naturalWidth < 60) drop(shown); }}
-            />
-          ) : (
-            <div className="fv-uploader-fill" style={{ background: "var(--surface-sunken)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--ink-faint)" }}>
-              <Icon name="image" size="lg" />
-            </div>
-          )}
-        </button>
-        <div className="creator-picture-text">
-          <p className="caption creator-muted">
-            {upload.error ?? (usable.length > 1
-              ? `We found ${usable.length} pictures. Square ones look best.`
-              : usable.length === 1 ? "We found 1 picture. Square ones look best."
-              : shown ? "Square pictures look best." : "Add a picture. Square ones look best.")}
-          </p>
-          <div className="creator-picture-actions">
-            {usable.length > 1 ? <Button variant="tertiary" size="sm" label={choosing ? "Done" : "Choose"} onClick={() => setChoosing(!choosing)} /> : null}
-            <Button variant={usable.length > 1 ? "link" : "tertiary"} size="sm" label={usable.length ? "Upload mine" : "Upload"} onClick={upload.open} />
-          </div>
+      <div className="creator-group">
+        {pictures.field}
+        <div className="creator-pictures" role="group" aria-label="Pictures">
+          <button className="fv-uploader" type="button" onClick={pictures.open} aria-label="Add pictures of your own">
+            <Icon name="plus" />
+            <span>Add</span>
+          </button>
+          {pictures.tiles.map((t, i) => {
+            const place = pictures.place(t.key);
+            return (
+              <button
+                key={t.key} type="button" className="creator-picture-tile" aria-pressed={place > 0} disabled={pending}
+                aria-label={place ? `Picture ${i + 1}, ${place === 1 ? "the cover" : `number ${place}`}. Tap to drop it.` : `Picture ${i + 1}, not used. Tap to add it.`}
+                onClick={() => pictures.toggle(t.key)}
+              >
+                <img
+                  src={t.src} alt="" loading="lazy"
+                  onError={() => pictures.drop(t.key)}
+                  // Some shops answer a missing picture with a 1×1 blank instead of an error.
+                  onLoad={(e) => { if (e.currentTarget.naturalWidth < 60) pictures.drop(t.key); }}
+                  // And one that failed before this form was listening (it can arrive already rendered) is caught here.
+                  ref={(el) => { if (el && el.complete && el.naturalWidth < 60) queueMicrotask(() => pictures.drop(t.key)); }}
+                />
+                {place ? <span className="creator-picture-n caption">{place === 1 ? "Cover" : place}</span> : null}
+              </button>
+            );
+          })}
         </div>
+        <p className="caption creator-muted">
+          {pictures.notice ?? (pictures.tiles.length
+            ? `${pictures.chosen} of ${pictures.tiles.length} chosen. Number 1 is the cover. Tap a picture to drop it or add it back.`
+            : "Add pictures: the product's, and your own of it in use. Square ones look best.")}
+        </p>
       </div>
-      {choosing && usable.length > 1 ? (
-        <div className="creator-found" role="group" aria-label="Pictures from the page">
-          {usable.map((src, i) => (
-            <button
-              key={src} type="button" aria-label={`Picture ${i + 1}`} aria-pressed={chosen === src}
-              onClick={() => { upload.clear(); setRemote(src); }}
-            >
-              <img src={src} alt="" loading="lazy" onError={() => drop(src)} onLoad={(e) => { if (e.currentTarget.naturalWidth < 60) drop(src); }} />
-            </button>
-          ))}
-        </div>
-      ) : null}
 
       <TextField id="name" name="name" label="Product name" value={values.name} maxLength={80} hideCount required error={state.fields?.name} />
       <TextField
@@ -171,7 +146,10 @@ export function DetailsForm({ lists, values, found }: DetailsFormProps) {
       </FieldShell>
 
       <div className="creator-foot">
-        <Button type="submit" variant="primary" size="lg" block disabled={pending} label={pending ? "Saving…" : "Next: your review"} />
+        <Button
+          type="submit" variant="primary" size="lg" block disabled={pending}
+          label={pictures.progress ? `Saving pictures ${Math.min(pictures.progress.done + 1, pictures.progress.total)} of ${pictures.progress.total}…` : pending ? "Saving…" : "Next: your review"}
+        />
       </div>
     </form>
   );

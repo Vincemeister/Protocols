@@ -9,7 +9,7 @@
 export interface ProductDetails {
   name: string;
   brand?: string;
-  /** Absolute https addresses, best first, at most eight. */
+  /** Absolute https addresses, best first, at most twenty: a product can show many pictures. */
   images: string[];
   /** The address to keep: the page's canonical link when it has one. */
   url: string;
@@ -107,7 +107,7 @@ function imagesOf(value: unknown): string[] {
 }
 
 /** Absolute https addresses, in order, without repeats, data: links or tracking pixels. */
-export function tidyImages(candidates: string[], base: string) {
+export function tidyImages(candidates: string[], base: string, max = 20) {
   const seen = new Set<string>();
   const out: string[] = [];
   for (const raw of candidates) {
@@ -124,7 +124,7 @@ export function tidyImages(candidates: string[], base: string) {
     if (seen.has(key)) continue;
     seen.add(key);
     out.push(url.toString());
-    if (out.length === 8) break;
+    if (out.length === max) break;
   }
   return out;
 }
@@ -151,18 +151,27 @@ function amazon(html: string) {
   const title = clean(html.match(/<span[^>]*id=["']productTitle["'][^>]*>([\s\S]*?)<\/span>/i)?.[1]);
   const byline = clean(html.match(/<a[^>]*id=["']bylineInfo["'][^>]*>([\s\S]*?)<\/a>/i)?.[1]);
   const brand = byline.replace(/^Visit the\s+/i, "").replace(/\s+Store$/i, "").replace(/^Brand:\s*/i, "");
-  const images: string[] = [];
+  // Amazon serves one picture at many sizes: ".../I/71abc._AC_SX679_.jpg". Without the size part it is
+  // the full picture, and the same picture always has the same address, so repeats fall away.
+  const fullSize = (url: string) => url.replace(/(\/images\/I\/[^./]+)\.[^/]*?(\.(?:jpe?g|png|webp))$/i, "$1$2");
+  const found: string[] = [];
   const hires = html.match(/data-old-hires=["']([^"']+)["']/i)?.[1];
-  if (hires) images.push(hires);
-  const dynamic = html.match(/data-a-dynamic-image=["']([^"']+)["']/i)?.[1];
+  if (hires) found.push(hires);
+  // The gallery, from the page's own script: one entry per picture, its "hiRes" address or, without one, its "large" one.
+  // (Never both: Amazon files the two sizes of one picture under different names, so both would show it twice.)
+  for (const m of html.matchAll(/"hiRes"\s*:\s*(?:"(https:[^"]+)"|null)[^{}]*?"large"\s*:\s*"(https:[^"]+)"/g)) found.push(m[1] ?? m[2]);
+  // The main picture's size table is the last resort, and only its largest entry: the rest are the same picture, smaller.
+  const dynamic = found.length ? undefined : html.match(/data-a-dynamic-image=["']([^"']+)["']/i)?.[1];
   if (dynamic) {
     try {
       const sizes = JSON.parse(decodeEntities(dynamic)) as Record<string, [number, number]>;
-      images.push(...Object.entries(sizes).sort((a, b) => b[1][0] - a[1][0]).map(([url]) => url));
+      const largest = Object.entries(sizes).sort((a, b) => b[1][0] - a[1][0])[0]?.[0];
+      if (largest) found.push(largest);
     } catch {
       // ignore
     }
   }
+  const images = [...new Set(found.map((url) => fullSize(url.replace(/\\\//g, "/"))))];
   return { title, brand, images };
 }
 

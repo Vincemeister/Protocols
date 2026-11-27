@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Gallery } from "@/components/public/Gallery";
 import { AppFrame } from "@/components/frame/AppFrame";
 import { ForViewer } from "@/components/frame/ForViewer";
 import { FollowSmall, IconToggle, SaveButton, ShareIcon } from "@/components/social/controls";
@@ -40,9 +40,7 @@ export default async function ProductPage({ params }: { params: Params }) {
           ) : null
         }
       </ForViewer>
-      <div className="fv-product-image product-hero">
-        {product.image ? <img src={product.image} alt={product.name} /> : <Icon name="image" size="lg" />}
-      </div>
+      <Gallery images={product.images} name={product.name} />
       <div className="product-body">
         <div className="product-title">
           <div>

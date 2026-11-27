@@ -7,6 +7,7 @@ import { domainOf, normaliseUrl } from "@/lib/scrape/extract";
 import { hasSupabase } from "@/lib/supabase/env";
 import { createUserClient } from "@/lib/supabase/server";
 import { storeImageFile, storeImageFromUrl } from "./images";
+import { allowedPictures, ownFolder } from "./pictures";
 import { MAX_REVIEW, MIN_REVIEW } from "./limits";
 import { requireCreator, type Creator } from "./session";
 import { RESERVED_LIST_SLUGS, USERNAME_PATTERN, slugify, uniqueSlug } from "./slug";
@@ -148,20 +149,21 @@ export async function saveProduct(_prev: FormState, form: FormData): Promise<For
     listId = data.id;
   }
 
-  // The picture: one they uploaded, else one they chose from the page, else the one already saved.
-  const remote = normaliseUrl(String(form.get("image_remote") ?? ""));
-  let image: string | null | undefined; // undefined = leave as it is
-  const uploaded = await storeImageFile(me.db, me.uid, form.get("image_file"));
-  if (uploaded) image = uploaded;
-  else if (remote) image = await storeImageFromUrl(me.db, me.uid, remote);
-  else if (form.get("image_removed") === "1") image = null;
+  // The pictures arrive as addresses, in the creator's order: the form has already put each one into
+  // their storage folder (/api/product-image). Only those, or ones the product already had, are kept.
+  const { data: before } = id
+    ? await me.db.from("products").select("image_urls").eq("id", id).eq("owner_id", me.profile.id).maybeSingle<{ image_urls: string[] | null }>()
+    : { data: null };
+  const pictures = allowedPictures(form.getAll("picture").map(String), ownFolder(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "", me.uid), before?.image_urls ?? []);
 
   const { data: siblings } = await me.db.from("products").select("id, slug, position").eq("list_id", listId).eq("owner_id", me.profile.id);
   const others = (siblings ?? []).filter((p) => p.id !== id);
   const values: Record<string, unknown> = {
     name, brand: brand || null, source_url: sourceUrl, source_domain: sourceUrl ? domainOf(sourceUrl) : null,
   };
-  if (image !== undefined && (image !== null || !remote)) values.image_url = image;
+  // The first picture is the cover: what cards, feeds and list covers show.
+  values.image_urls = pictures;
+  values.image_url = pictures[0] ?? null;
 
   // The brand's logo, found on the product's page: copied to our storage like the picture.
   const logoRemote = normaliseUrl(String(form.get("logo_remote") ?? ""));
