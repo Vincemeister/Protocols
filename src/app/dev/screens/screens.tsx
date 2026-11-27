@@ -12,6 +12,7 @@ import { People } from "@/components/me/People";
 import { ReferralList } from "@/components/me/ReferralList";
 import { AccountSettings, PrivacySettings, ProfileSettingsForm, ThemeSettings } from "@/components/me/SettingsForms";
 import { SettingsMenu } from "@/components/me/SettingsMenu";
+import { Gallery } from "@/components/public/Gallery";
 import { ProductFeed } from "@/components/public/ProductFeed";
 import { CoverMosaic, EmptyState, ListCard, Tabs, TopBar } from "@/components/ui";
 import { Landing } from "@/components/landing/Landing";
@@ -122,6 +123,26 @@ export const SCREENS: { name: string; title: string; render: () => ReactNode }[]
         </Framed>
       );
     },
+  },
+  {
+    name: "gallery", title: "A3 Product page, many pictures",
+    render: () => {
+      const tones = ["slate", "umber", "sage", "plum"];
+      return (
+        <Framed title="Camera bag essentials">
+          <Gallery name="Everyday Sling 6L" images={Array.from({ length: 12 }, (_, i) => `/demo/covers/${tones[i % 4]}.svg?n=${i}`)} />
+          <div className="product-body"><h2 className="heading-4">Everyday Sling 6L</h2></div>
+        </Framed>
+      );
+    },
+  },
+  {
+    name: "edit-pictures", title: "C7 Edit product, pictures already saved",
+    render: () => (
+      <CreatorScreen title="Check the details" step="2 of 3" backHref="/dev/screens">
+        <DetailsForm lists={lists} values={{ id: product.id, name: "Everyday Sling 6L", brand: "Peak Design", listId: lists[0].id, images: ["/demo/covers/slate.svg", "/demo/covers/umber.svg", "/demo/covers/sage.svg", "/demo/covers/plum.svg", "/demo/covers/slate.svg?2", "/demo/covers/umber.svg?2"] }} />
+      </CreatorScreen>
+    ),
   },
   { name: "home-feed", title: "C1 Home feed", render: () => <FeedDemo /> },
   {
