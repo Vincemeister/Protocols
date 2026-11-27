@@ -7,7 +7,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 export interface MyList { id: string; name: string; slug: string; isPublic: boolean; numbered: boolean; intro: string; cover?: string }
 export interface MyProduct {
-  id: string; slug: string; name: string; brand: string; image?: string; sourceUrl: string; sourceDomain: string;
+  id: string; slug: string; name: string; brand: string; logo?: string; image?: string; sourceUrl: string; sourceDomain: string;
   list: { id: string; name: string; slug: string };
   code: string; benefit: string;
   review: { body: string; raw: string; audioPath: string; tidied: boolean; published: boolean } | null;
@@ -44,8 +44,8 @@ export async function getMyList(db: SupabaseClient, profileId: string, listId: s
 export async function getMyProduct(db: SupabaseClient, profileId: string, productId: string): Promise<MyProduct | null> {
   if (!/^[0-9a-f-]{36}$/i.test(productId)) return null;
   const { data: p } = await db.from("products")
-    .select("id, slug, name, brand, image_url, source_url, source_domain, list_id").eq("owner_id", profileId).eq("id", productId)
-    .maybeSingle<{ id: string; slug: string; name: string; brand: string | null; image_url: string | null; source_url: string | null; source_domain: string | null; list_id: string }>();
+    .select("id, slug, name, brand, brand_logo_url, image_url, source_url, source_domain, list_id").eq("owner_id", profileId).eq("id", productId)
+    .maybeSingle<{ id: string; slug: string; name: string; brand: string | null; brand_logo_url: string | null; image_url: string | null; source_url: string | null; source_domain: string | null; list_id: string }>();
   if (!p) return null;
   const [list, review, code] = await Promise.all([
     db.from("lists").select("id, name, slug").eq("id", p.list_id).maybeSingle<{ id: string; name: string; slug: string }>(),
@@ -55,7 +55,7 @@ export async function getMyProduct(db: SupabaseClient, profileId: string, produc
   ]);
   if (!list.data) return null;
   return {
-    id: p.id, slug: p.slug, name: p.name, brand: p.brand ?? "", image: p.image_url ?? undefined,
+    id: p.id, slug: p.slug, name: p.name, brand: p.brand ?? "", logo: p.brand_logo_url ?? undefined, image: p.image_url ?? undefined,
     sourceUrl: p.source_url ?? "", sourceDomain: p.source_domain ?? "", list: list.data,
     code: code.data?.code ?? "", benefit: code.data?.benefit_text ?? "",
     review: review.data

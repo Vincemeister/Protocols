@@ -5,6 +5,7 @@ import { CreatorLoading } from "@/components/creator/CreatorScreen";
 import { ListForm } from "@/components/creator/ListForm";
 import { getMyList } from "@/lib/creator/data";
 import { requireCreator } from "@/lib/creator/session";
+import { canTranscribe } from "@/lib/voice/transcribe";
 
 export const metadata: Metadata = { title: "Edit list" };
 
@@ -31,7 +32,7 @@ async function EditList({ params, searchParams }: Props) {
     <ListForm
       // A new key after each save makes the form start again from the saved values.
       key={saved ?? "edit"}
-      list={list} products={products} saved={saved === "1"}
+      list={list} products={products} saved={saved === "1"} serverTranscribes={canTranscribe()}
       closeHref={visible ? `/${profile.username}/${list.slug}` : `/${profile.username}`}
       viewHref={visible ? `/${profile.username}/${list.slug}` : undefined}
     />

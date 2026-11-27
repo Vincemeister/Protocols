@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { CreatorLoading } from "@/components/creator/CreatorScreen";
 import { ListForm } from "@/components/creator/ListForm";
 import { requireCreator } from "@/lib/creator/session";
+import { canTranscribe } from "@/lib/voice/transcribe";
 
 export const metadata: Metadata = { title: "New list" };
 
@@ -17,5 +18,5 @@ export default function NewListPage() {
 
 async function NewList() {
   const { profile } = await requireCreator();
-  return <ListForm closeHref={`/${profile.username}`} />;
+  return <ListForm closeHref={`/${profile.username}`} serverTranscribes={canTranscribe()} />;
 }

@@ -49,7 +49,7 @@ export default async function ProductPage({ params }: { params: Params }) {
             <h2 className="heading-4">{product.name}</h2>
             {product.domain ? <p className="caption app-muted">Via {product.domain}</p> : null}
           </div>
-          {product.brand ? <BrandChip name={product.brand} /> : null}
+          {product.brand ? <BrandChip name={product.brand} logo={product.brandLogo} /> : null}
         </div>
 
         <div className="app-row">

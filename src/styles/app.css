@@ -29,3 +29,9 @@ img.fv-mark-dark { display: var(--fv-mark-on-dark) !important; }
 
 /* A sized box for the mark outside the rail and top bar. */
 .fv-mark-box img { width: 100%; height: 100%; }
+
+/* A list's cover made of its products' pictures (CoverMosaic): one picture,
+   or a seamless grid of squares once there are enough. It sits where the
+   single cover photo sat, under the same scrim. */
+.cover-mosaic { position: absolute; inset: 0; display: grid; grid-auto-rows: minmax(0, 1fr); }
+.fv-list-card .cover-mosaic img, .list-cover .cover-mosaic img, .cover-mosaic img { position: static; inset: auto; display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; object-fit: cover; }

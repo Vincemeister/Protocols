@@ -14,11 +14,15 @@ export interface PublicProfile {
   followers: number; following: number;
 }
 export interface PublicList {
-  id: string; slug: string; name: string; intro?: string; cover?: string; numbered: boolean;
+  id: string; slug: string; name: string; intro?: string; numbered: boolean;
+  /** A cover set by hand (curated and demo lists only; creators no longer choose one). */
+  cover?: string;
+  /** The list's product pictures, in order: what its cover is made of. */
+  pictures: string[];
   productCount: number; updated: string; updatedExact: string; href: string;
 }
 export interface PublicProduct {
-  id: string; slug: string; name: string; brand?: string; image?: string; url?: string; domain?: string;
+  id: string; slug: string; name: string; brand?: string; brandLogo?: string; image?: string; url?: string; domain?: string;
   review: string; code?: { code: string; label: string }; likes: number;
   added: string; addedExact: string; edited?: string;
   list: { name: string; slug: string; href: string }; position: number; href: string;
@@ -42,10 +46,11 @@ function toProfile(p: ProfileRow, ix: ReturnType<typeof index>): PublicProfile {
   };
 }
 
-/** `firstImage`: a list without a cover of its own shows its first product's picture (C3: "Or we'll use your first product's picture"). */
-function toList(l: ListRow, owner: ProfileRow, productCount: number, now: Date, firstImage?: string): PublicList {
+/** `products`: the list's public products in order; their pictures make its cover (see CoverMosaic). */
+function toList(l: ListRow, owner: ProfileRow, productCount: number, now: Date, products: PublicProduct[] = []): PublicList {
   return {
-    id: l.id, slug: l.slug, name: l.name, intro: l.intro ?? undefined, cover: l.cover_url ?? firstImage, numbered: l.numbered,
+    id: l.id, slug: l.slug, name: l.name, intro: l.intro ?? undefined, cover: l.cover_url ?? undefined, numbered: l.numbered,
+    pictures: products.flatMap((p) => (p.image ? [p.image] : [])).slice(0, 9),
     productCount, updated: ago(l.updated_at, now), updatedExact: exactDate(l.updated_at), href: `/${owner.username}/${l.slug}`,
   };
 }
@@ -57,7 +62,7 @@ function toProduct(pr: ProductRow, list: ListRow, owner: ProfileRow, position: n
   // "edited <when>" only when the review changed after it was published (more than a day later).
   const edited = new Date(review.updated_at).getTime() - new Date(review.published_at!).getTime() > 86_400_000;
   return {
-    id: pr.id, slug: pr.slug, name: pr.name, brand: pr.brand ?? undefined, image: pr.image_url ?? undefined,
+    id: pr.id, slug: pr.slug, name: pr.name, brand: pr.brand ?? undefined, brandLogo: pr.brand_logo_url ?? undefined, image: pr.image_url ?? undefined,
     url: code?.link ?? pr.source_url ?? undefined, domain: pr.source_domain ?? undefined, review: review.body_text,
     code: code?.code ? { code: code.code, label: code.benefit_text ? `${code.benefit_text} with` : "Code" } : undefined,
     likes: ix.likesOf.get(pr.id) ?? 0,
@@ -98,7 +103,7 @@ export async function getProfilePage(username: string) {
     .sort((a, b) => b.at.localeCompare(a.at)).map((x) => x.p);
   return {
     profile: toProfile(owner, ix),
-    lists: byList.map((x) => toList(x.list, owner, x.products.length, now, x.products.find((p) => p.image)?.image)),
+    lists: byList.map((x) => toList(x.list, owner, x.products.length, now, x.products)),
     products,
     // The Codes tab is the Products tab filtered to items with a code; it exists only when there is one.
     codes: products.filter((p) => p.code),
@@ -117,7 +122,7 @@ export async function getListPage(username: string, listSlug: string) {
   const ix = index(ds);
   const now = new Date();
   const products = productsOf(ds, list, owner, ix, now);
-  return { profile: toProfile(owner, ix), list: toList(list, owner, products.length, now, products.find((p) => p.image)?.image), products };
+  return { profile: toProfile(owner, ix), list: toList(list, owner, products.length, now, products), products };
 }
 
 /** A3: one product with the full review. */
@@ -144,7 +149,7 @@ export async function getSuggestions(exceptUsername?: string) {
     const first = listsOf(ds, owner)[0];
     if (!first) return [];
     const products = productsOf(ds, first, owner, ix, now);
-    return products.length ? [{ list: toList(first, owner, products.length, now, products.find((p) => p.image)?.image), creator: toProfile(owner, ix) }] : [];
+    return products.length ? [{ list: toList(first, owner, products.length, now, products), creator: toProfile(owner, ix) }] : [];
   });
   return { lists: lists.slice(0, 2), people: others.slice(0, 3).map((p) => toProfile(p, ix)) };
 }
@@ -196,7 +201,7 @@ export async function getSaved(productIds: string[], listIds: string[]) {
     const owner = ds.profiles.find((o) => o.id === l.owner_id && o.is_public);
     if (!owner) return [];
     const items = productsOf(ds, l, owner, ix, now);
-    return [{ list: toList(l, owner, items.length, now, items.find((p) => p.image)?.image), creator: toProfile(owner, ix) }];
+    return [{ list: toList(l, owner, items.length, now, items), creator: toProfile(owner, ix) }];
   });
   return { products, lists };
 }
@@ -232,7 +237,7 @@ export async function searchPublic(query: string) {
     listsOf(ds, owner).flatMap((l) => {
       if (!hit(l.name, l.intro)) return [];
       const items = productsOf(ds, l, owner, ix, now);
-      return items.length ? [{ list: toList(l, owner, items.length, now, items.find((p) => p.image)?.image), creator: toProfile(owner, ix) }] : [];
+      return items.length ? [{ list: toList(l, owner, items.length, now, items), creator: toProfile(owner, ix) }] : [];
     }),
   ).slice(0, 8);
   const products = allProducts(ds, ix, now).map((x) => x.p).filter((p) => hit(p.name, p.brand)).slice(0, 12);

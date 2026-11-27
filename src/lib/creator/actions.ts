@@ -90,10 +90,10 @@ export async function saveList(_prev: FormState, form: FormData): Promise<FormSt
   const intro = long(form, "intro", 300);
   const isPublic = form.get("is_public") === "on";
   const numbered = form.get("numbered") === "on";
-  const uploaded = await storeImageFile(me.db, me.uid, form.get("cover_file"));
+  // No cover to save: a list's cover is made of its products' pictures (CoverMosaic).
 
   if (!id) {
-    const { data, error } = await insertList(me, { name, intro, cover: uploaded, isPublic, numbered });
+    const { data, error } = await insertList(me, { name, intro, isPublic, numbered });
     if (error || !data) return { error: "We couldn't create the list. Try again." };
     updateTag(PUBLIC_DATA);
     redirect(`/create?list=${data.id}`);
@@ -102,8 +102,6 @@ export async function saveList(_prev: FormState, form: FormData): Promise<FormSt
   if (!isId(id)) return { error: "That list no longer exists." };
   // The address (slug) stays as it was: links people have shared must keep working.
   const changes: Record<string, unknown> = { name, intro: intro || null, is_public: isPublic, numbered };
-  if (uploaded) changes.cover_url = uploaded;
-  else if (form.get("cover_removed") === "1") changes.cover_url = null;
   const { error } = await me.db.from("lists").update(changes).eq("id", id).eq("owner_id", me.profile.id);
   if (error) return { error: "We couldn't save the list. Try again." };
   updateTag(PUBLIC_DATA);
@@ -164,6 +162,15 @@ export async function saveProduct(_prev: FormState, form: FormData): Promise<For
     name, brand: brand || null, source_url: sourceUrl, source_domain: sourceUrl ? domainOf(sourceUrl) : null,
   };
   if (image !== undefined && (image !== null || !remote)) values.image_url = image;
+
+  // The brand's logo, found on the product's page: copied to our storage like the picture.
+  const logoRemote = normaliseUrl(String(form.get("logo_remote") ?? ""));
+  if (logoRemote) {
+    const logo = await storeImageFromUrl(me.db, me.uid, logoRemote);
+    if (logo) values.brand_logo_url = logo;
+  } else if (form.get("logo_removed") === "1" || !brand) {
+    values.brand_logo_url = null;
+  }
 
   let productId = id;
   if (!id) {

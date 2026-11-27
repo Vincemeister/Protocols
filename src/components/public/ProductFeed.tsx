@@ -41,7 +41,7 @@ export function ProductFeed({ products, profile, as, numbered }: { products: Pub
           creator={as === "mixed" ? { name: p.creator.username, avatar: p.creator.avatar } : as === "profile" && profile ? { name: profile.username, avatar: profile.avatar } : undefined}
           listName={as === "list" ? undefined : p.list.name}
           number={as === "list" && numbered ? ordinal(p.position) : undefined}
-          product={{ name: p.name, image: p.image, brand: p.brand }}
+          product={{ name: p.name, image: p.image, brand: p.brand, brandLogo: p.brandLogo }}
           review={p.review}
           code={p.code?.code}
           codeLabel={p.code?.label}

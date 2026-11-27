@@ -13,7 +13,7 @@ export default async function ListsTab({ params }: { params: Promise<{ username:
     <div className="app-grid fv-rise">
       {page.lists.map((l) => (
         <ListCard
-          key={l.id} size="sm" name={l.name} count={plural(l.productCount, "product")} cover={l.cover} href={l.href}
+          key={l.id} size="sm" name={l.name} count={plural(l.productCount, "product")} cover={l.cover} pictures={l.pictures} href={l.href}
           creator={{ name: page.profile.username, avatar: page.profile.avatar }}
         />
       ))}

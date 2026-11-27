@@ -31,7 +31,7 @@ async function EditProduct({ params }: Props) {
     <CreatorScreen title="Check the details" step="2 of 3" backHref={back} close>
       <DetailsForm
         lists={lists}
-        values={{ id: product.id, name: product.name, brand: product.brand, listId: product.list.id, code: product.code, benefit: product.benefit, image: product.image, sourceUrl: product.sourceUrl }}
+        values={{ id: product.id, name: product.name, brand: product.brand, listId: product.list.id, code: product.code, benefit: product.benefit, image: product.image, logo: product.logo, sourceUrl: product.sourceUrl }}
       />
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ConfirmDelete

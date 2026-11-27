@@ -16,6 +16,7 @@ export { type FieldProps } from "./Field";
 export { FollowButton, type FollowButtonProps } from "./FollowButton";
 export { Icon, type IconName, type IconProps } from "./Icon";
 export { ImageUploader, type ImageUploaderProps } from "./ImageUploader";
+export { CoverMosaic } from "./CoverMosaic";
 export { ListCard, type ListCardProps } from "./ListCard";
 export { LoadMore } from "./LoadMore";
 export { Mark } from "./Mark";

@@ -23,7 +23,7 @@ export interface ListRow {
   is_public: boolean; numbered: boolean; position: number; created_at: string; updated_at: string;
 }
 export interface ProductRow {
-  id: string; list_id: string; owner_id: string; slug: string; name: string; brand: string | null;
+  id: string; list_id: string; owner_id: string; slug: string; name: string; brand: string | null; brand_logo_url?: string | null;
   image_url: string | null; source_url: string | null; source_domain: string | null; position: number; created_at: string;
 }
 export interface ReviewRow { product_id: string; body_text: string; tidied: boolean; published_at: string | null; updated_at: string }
@@ -52,7 +52,7 @@ export async function loadDataset(): Promise<Dataset> {
   const [profiles, lists, products, reviews, codes, follows, likes] = await Promise.all([
     db.from("profiles").select("id, username, display_name, avatar_url, bio, about, links, is_public, created_at"),
     db.from("lists").select("id, owner_id, slug, name, intro, cover_url, is_public, numbered, position, created_at, updated_at"),
-    db.from("products").select("id, list_id, owner_id, slug, name, brand, image_url, source_url, source_domain, position, created_at"),
+    db.from("products").select("id, list_id, owner_id, slug, name, brand, brand_logo_url, image_url, source_url, source_domain, position, created_at"),
     db.from("reviews").select("product_id, body_text, tidied, published_at, updated_at"),
     db.from("referral_codes").select("product_id, code, link, benefit_text, status"),
     db.from("profile_follow_counts").select("profile_id, followers, following"),

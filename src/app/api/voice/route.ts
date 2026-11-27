@@ -5,7 +5,7 @@ import { clampReview } from "@/lib/voice/tidy";
 import { canTranscribe, tidy, transcribe } from "@/lib/voice/transcribe";
 
 // C6, on Stop: keep the recording, turn it into text, tidy it (build brief,
-// section 6). Answers { audioPath, raw, tidied } where `tidied` is null when
+// section 6). Also plain dictation for other fields, when no product is named. Answers { audioPath, raw, tidied } where `tidied` is null when
 // there was nothing to tidy or the tidy pass could not be trusted.
 export const maxDuration = 60;
 
@@ -23,7 +23,10 @@ export async function POST(request: NextRequest) {
   const productId = String(form?.get("product") ?? "");
   // What the browser heard while the creator spoke; used when no transcription service is set up.
   const live = String(form?.get("live") ?? "").replace(/\s+/g, " ").trim().slice(0, 4000);
-  if (!(audio instanceof Blob) || !audio.size || !/^[0-9a-f-]{36}$/i.test(productId)) return NextResponse.json({ error: "bad_request" }, { status: 400 });
+  // With a product this is a review: the recording is kept with it. Without one it is plain dictation
+  // (a list's intro): transcribed, tidied, and nothing kept.
+  const forReview = productId !== "";
+  if (!(audio instanceof Blob) || !audio.size || (forReview && !/^[0-9a-f-]{36}$/i.test(productId))) return NextResponse.json({ error: "bad_request" }, { status: 400 });
   if (audio.size > MAX_BYTES) return NextResponse.json({ error: "too_large" }, { status: 413 });
 
   // "audio/webm;codecs=opus" → "audio/webm"
@@ -31,14 +34,17 @@ export async function POST(request: NextRequest) {
   const ext = EXTENSIONS[type];
   if (!ext) return NextResponse.json({ error: "bad_request" }, { status: 400 });
 
-  // Only for a product of theirs (row-level security hides everyone else's drafts).
-  const { data: product } = await db.from("products").select("id").eq("id", productId).maybeSingle();
-  if (!product) return NextResponse.json({ error: "not_found" }, { status: 404 });
+  let audioPath: string | null = null;
+  if (forReview) {
+    // Only for a product of theirs (row-level security hides everyone else's drafts).
+    const { data: product } = await db.from("products").select("id").eq("id", productId).maybeSingle();
+    if (!product) return NextResponse.json({ error: "not_found" }, { status: 404 });
 
-  const path = `${user.id}/${productId}-${Date.now()}.${ext}`;
-  const upload = await db.storage.from("audio").upload(path, audio, { contentType: type });
-  const audioPath = upload.error ? null : path;
-  if (upload.error) console.error("Audio upload failed", upload.error.message);
+    const path = `${user.id}/${productId}-${Date.now()}.${ext}`;
+    const upload = await db.storage.from("audio").upload(path, audio, { contentType: type });
+    audioPath = upload.error ? null : path;
+    if (upload.error) console.error("Audio upload failed", upload.error.message);
+  }
 
   const deadline = AbortSignal.timeout(45_000);
   let raw = live;

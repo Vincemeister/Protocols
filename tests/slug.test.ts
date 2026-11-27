@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { slugify, suggestUsername, uniqueSlug } from "../src/lib/creator/slug.ts";
+import { mosaicLayout } from "../src/lib/mosaic.ts";
 
 test("slugify", () => {
   assert.equal(slugify("Everyday Sling 6L"), "everyday-sling-6l");
@@ -22,4 +23,11 @@ test("suggestUsername", () => {
   assert.equal(suggestUsername("v.rehms@gmail.com"), "v.rehms");
   assert.equal(suggestUsername("Vince Rehms"), "vince.rehms");
   assert.equal(suggestUsername("ab"), "");
+});
+
+test("a list cover grows with the list", () => {
+  assert.deepEqual([0, 1, 3, 4, 8, 9, 20].map((n) => mosaicLayout(n, "square").tiles), [0, 1, 1, 4, 4, 9, 9]);
+  assert.deepEqual([0, 1, 2, 7, 8, 20].map((n) => mosaicLayout(n, "banner").tiles), [0, 1, 2, 2, 8, 8]);
+  assert.equal(mosaicLayout(9, "square").cols, 3);
+  assert.equal(mosaicLayout(8, "banner").cols, 4);
 });

@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import dns from "node:dns";
+import { syncBuiltinESMExports } from "node:module";
 import { afterEach, test } from "node:test";
 import { scrapeProduct } from "../src/lib/scrape/index.ts";
 import { isPublicAddress } from "../src/lib/scrape/safe-fetch.ts";
@@ -6,6 +8,9 @@ import { isPublicAddress } from "../src/lib/scrape/safe-fetch.ts";
 // The link reader end to end, with the network replaced: each test says what
 // every address answers. Hosts are IP addresses so no DNS is involved.
 const HOST = "https://93.184.216.34";
+// Named hosts (amazon.com, the book catalogues) resolve to a public address without asking a real DNS server.
+dns.promises.lookup = (async () => [{ address: "93.184.216.34", family: 4 }]) as unknown as typeof dns.promises.lookup;
+syncBuiltinESMExports();
 const realFetch = globalThis.fetch;
 afterEach(() => { globalThis.fetch = realFetch; });
 
@@ -47,7 +52,7 @@ test("a Shopify product: the JSON twin supplies name, vendor and all pictures", 
   assert.equal(result.product.name, "Everyday Sling 6L");
   assert.deepEqual(result.product.images, [`${HOST}/a.jpg`, `${HOST}/b.jpg`]);
   assert.equal(result.product.url, `${HOST}/products/everyday-sling`);
-  assert.equal(asked.length, 2);
+  assert.equal(asked.length, 3); // the page twice (as a browser, as a link preview) and the JSON
 });
 
 test("a page that blocks us still works when the Shopify JSON answers", async () => {
@@ -65,7 +70,7 @@ test("redirects are followed, and each hop is checked", async () => {
 
   const asked = network({ [`${HOST}/evil`]: { status: 302, location: "http://169.254.169.254/latest/meta-data/" } });
   assert.deepEqual(await scrapeProduct(`${HOST}/evil`), { ok: false, reason: "bad_link" });
-  assert.deepEqual(asked, [`${HOST}/evil`]); // the private address was never requested
+  assert.deepEqual([...new Set(asked)], [`${HOST}/evil`]); // the private address was never requested
 });
 
 test("private and odd addresses are refused without a request", async () => {
@@ -90,4 +95,70 @@ test("walls, missing pages and slow sites fail with a reason", async () => {
 test("isPublicAddress", () => {
   for (const ip of ["8.8.8.8", "93.184.216.34", "2606:4700:4700::1111"]) assert.ok(isPublicAddress(ip), ip);
   for (const ip of ["127.0.0.1", "10.1.2.3", "172.16.0.1", "172.31.255.255", "192.168.0.1", "169.254.169.254", "100.64.0.1", "0.0.0.0", "::1", "fd00::1", "fe80::1", "::ffff:10.0.0.1", "224.0.0.1"]) assert.ok(!isPublicAddress(ip), ip);
+});
+
+const AMAZON_WALL = `<html><head><title>Amazon.com</title></head><body><form action="/errors/validateCaptcha">Enter the characters you see below</form></body></html>`;
+
+test("Amazon behind its robot check: a printed book comes from the book catalogues", async () => {
+  const link = "https://www.amazon.com/Project-Hail-Mary-Andy-Weir/dp/0593135202/ref=sr_1_1?crid=x";
+  network({
+    [link]: { body: AMAZON_WALL },
+    "https://www.googleapis.com/books/v1/volumes?q=isbn:0593135202&maxResults=1": {
+      type: "application/json",
+      body: JSON.stringify({ items: [{ volumeInfo: { title: "Project Hail Mary", authors: ["Andy Weir"], imageLinks: { thumbnail: "http://books.google.com/books/content?id=abc&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api" } } }] }),
+    },
+  });
+  const result = await scrapeProduct(link);
+  assert.deepEqual(result, {
+    ok: true,
+    product: {
+      name: "Project Hail Mary", brand: "Andy Weir", kind: "book", partial: true, domain: "amazon.com", url: "https://www.amazon.com/dp/0593135202",
+      images: [
+        "https://covers.openlibrary.org/b/isbn/0593135202-L.jpg?default=false",
+        "https://m.media-amazon.com/images/P/0593135202.01._SCLZZZZZZZ_.jpg",
+        "https://books.google.com/books/content?id=abc&printsec=frontcover&img=1&zoom=0&source=gbs_api",
+      ],
+    },
+  });
+});
+
+test("Amazon behind its robot check: anything else gets its name from the address", async () => {
+  const link = "https://www.amazon.com/Anker-Charger-Compact-Foldable-MacBook/dp/B0C5XBKZ1J?th=1";
+  network({ [link]: { body: AMAZON_WALL } });
+  const result = await scrapeProduct(link);
+  assert.ok(result.ok);
+  assert.equal(result.product.name, "Anker Charger Compact Foldable MacBook");
+  assert.equal(result.product.partial, true);
+  assert.equal(result.product.kind, undefined);
+  assert.deepEqual(result.product.images, ["https://m.media-amazon.com/images/P/B0C5XBKZ1J.01._SCLZZZZZZZ_.jpg"]);
+  assert.equal(result.product.url, "https://www.amazon.com/dp/B0C5XBKZ1J");
+});
+
+test("Amazon: a short link is followed to the real address first; no name at all means blocked", async () => {
+  network({
+    "https://a.co/d/abc123": { status: 301, location: "https://www.amazon.com/Kindle-Paperwhite-16-GB/dp/B0CFPJYX7P?ref=x" },
+    "https://www.amazon.com/Kindle-Paperwhite-16-GB/dp/B0CFPJYX7P?ref=x": { body: AMAZON_WALL },
+  });
+  const viaShort = await scrapeProduct("https://a.co/d/abc123");
+  assert.ok(viaShort.ok && viaShort.product.name === "Kindle Paperwhite 16 GB" && viaShort.product.domain === "amazon.com");
+
+  network({ "https://www.amazon.com/dp/B0CFPJYX7P": { body: AMAZON_WALL } });
+  assert.deepEqual(await scrapeProduct("https://www.amazon.com/dp/B0CFPJYX7P"), { ok: false, reason: "blocked" });
+});
+
+test("Amazon answering a link preview: the real page is read", async () => {
+  const link = "https://www.amazon.com/dp/B0CFPJYX7P";
+  let previews = 0;
+  const realFetchNow = globalThis.fetch;
+  globalThis.fetch = (async (input: URL | string, init?: RequestInit) => {
+    const agent = new Headers(init?.headers).get("user-agent") ?? "";
+    const isPreview = agent.startsWith("facebookexternalhit");
+    if (isPreview) previews++;
+    const body = isPreview ? `<title>Amazon.com: Kindle Paperwhite : Electronics</title><span id="productTitle"> Kindle Paperwhite (16 GB) </span>` : AMAZON_WALL;
+    return new Response(body, { status: 200, headers: { "content-type": "text/html" } });
+  }) as typeof fetch;
+  const result = await scrapeProduct(link);
+  globalThis.fetch = realFetchNow;
+  assert.ok(result.ok && result.product.name === "Kindle Paperwhite (16 GB)" && !result.product.partial);
+  assert.equal(previews, 1);
 });

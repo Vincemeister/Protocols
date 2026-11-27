@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import { Avatar } from "./Avatar";
+import { CoverMosaic } from "./CoverMosaic";
 import { cx } from "./cx";
 
 export interface ListCardProps {
@@ -8,17 +9,19 @@ export interface ListCardProps {
   /** "12 products" */
   count: string;
   cover?: string;
+  /** Beyond index.d.ts: the list's product pictures. When there are any, the cover is a mosaic of them and `cover` is only the fallback. */
+  pictures?: string[];
   creator: { name: string; avatar?: string; followers?: string };
   href?: string;
   /** sm for 2-column mobile grids and the suggestions rail. */
   size?: "md" | "sm";
 }
 
-export function ListCard({ name, count, cover, creator, href = "#", size }: ListCardProps) {
+export function ListCard({ name, count, cover, pictures, creator, href = "#", size }: ListCardProps) {
   const cls = cx("fv-list-card", size === "sm" && "fv-list-card-sm");
   const content = (
     <>
-      {cover ? <img src={cover} alt="" /> : null}
+      {pictures?.length ? <CoverMosaic pictures={pictures} /> : cover ? <img src={cover} alt="" /> : null}
       <div className="fv-list-top">
         <Avatar name={creator.name} src={creator.avatar} size={size === "sm" ? 24 : 32} />
         <div>
