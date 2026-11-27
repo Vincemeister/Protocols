@@ -103,7 +103,7 @@ export function AddProduct({ lists, listId, recent = [], initialUrl = "", closeH
         <DetailsForm
           key={product?.url ?? "manual"} lists={lists}
           values={{ name: product?.name, brand: product?.brand, listId, sourceUrl: product?.url ?? address ?? "" }}
-          found={product ? { images: product.images, domain: product.domain } : undefined}
+          found={product ? { images: product.images, domain: product.domain, logo: product.logo, kind: product.kind, partial: product.partial } : undefined}
         />
       </CreatorScreen>
     );
