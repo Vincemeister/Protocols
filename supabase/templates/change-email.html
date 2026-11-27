@@ -1,0 +1,24 @@
+<!--
+  B6: confirming a new sign-in address (Settings → Account). Paste into the
+  Supabase dashboard: Authentication → Emails → Templates → "Change Email Address".
+
+  Subject: Confirm your new email address for Favolist
+-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;font-family:Outfit,system-ui,-apple-system,'Segoe UI',sans-serif;color:#19070c;">
+        <tr><td style="font-size:20px;line-height:24px;font-weight:700;letter-spacing:-0.02em;padding-bottom:24px;">Favolist</td></tr>
+        <tr><td style="font-size:24px;line-height:28px;font-weight:600;letter-spacing:-0.02em;padding-bottom:8px;">Confirm your new email address</td></tr>
+        <tr><td style="font-size:16px;line-height:24px;color:#6b5a5f;padding-bottom:24px;">You asked to sign in to Favolist with {{ .NewEmail }} from now on. Confirm it and the change is made; until then you keep signing in with {{ .Email }}.</td></tr>
+        <tr>
+          <td style="padding-bottom:24px;">
+            <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#c93762;color:#ffffff;text-decoration:none;font-size:16px;line-height:48px;font-weight:500;padding:0 24px;border-radius:2px;">Confirm new address</a>
+          </td>
+        </tr>
+        <tr><td style="font-size:12px;line-height:16px;color:#6b5a5f;padding-bottom:24px;word-break:break-all;">Button not working? Copy this into your browser:<br>{{ .ConfirmationURL }}</td></tr>
+        <tr><td style="font-size:12px;line-height:16px;color:#978a8e;border-top:1px solid #ece6e8;padding-top:16px;">If you didn't ask for this, ignore this email and nothing changes.</td></tr>
+      </table>
+    </td>
+  </tr>
+</table>

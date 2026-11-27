@@ -1,0 +1,62 @@
+/* A8 Landing. The measurements are the artboard's (design/screens/Landing.dc.html,
+   drawn at 1280px); below 992px the columns stack and the gutters narrow.
+   Two things here are not tokens and come straight from the artboard: the
+   56/60 headline (the type scale stops at display, 40/44) and the two photo
+   stand-in tones in the mosaic. Fold both into the design system at its next
+   re-export. */
+.landing { min-height: 100vh; min-height: 100dvh; box-sizing: border-box; background: var(--surface); color: var(--ink); }
+.landing-inner { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--space-4); box-sizing: border-box; }
+.landing h1, .landing h2, .landing h3, .landing p { margin: 0; }
+.landing-muted { color: var(--ink-muted); }
+
+.landing-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); height: 64px; }
+.landing-brand { display: flex; align-items: center; gap: var(--space-2); color: var(--ink); text-decoration: none; }
+.landing-brand:hover { color: var(--ink); }
+.landing-brand .fv-mark-box { width: 24px; height: 24px; display: block; }
+.landing-brand span:last-child { font-size: 24px; line-height: 24px; font-weight: 700; letter-spacing: -0.02em; }
+.landing-nav { display: flex; align-items: center; gap: var(--space-2); }
+.landing-wide { display: none; }
+
+.landing-hero { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-10); padding: var(--space-10) 0 var(--space-12); }
+.landing-hero-text { flex: 1 1 480px; min-width: 0; max-width: 560px; display: flex; flex-direction: column; gap: var(--space-6); }
+.landing-hero-text > p:first-of-type { max-width: 48ch; }
+.landing-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.landing-mosaic-wrap { flex: 1 1 420px; min-width: 0; display: flex; justify-content: flex-start; }
+.landing-mosaic { width: 100%; max-width: 424px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+.landing-mosaic > * { aspect-ratio: 1 / 1; }
+.landing-mosaic-mark { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: var(--space-2); }
+
+.landing-features { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); padding: var(--space-10) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.landing-features > div { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.landing-why { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-10); padding: var(--space-12) 0; }
+.landing-why-text { flex: 1 1 420px; min-width: 0; max-width: 520px; display: flex; flex-direction: column; gap: var(--space-4); }
+.landing-why-text .fv-overline { margin: 0; }
+.landing-why-card { flex: 1 1 420px; min-width: 0; display: flex; justify-content: flex-start; }
+.landing-why-card .fv-product { width: 100%; max-width: 400px; border: 1px solid var(--line); }
+.landing-why-card .fv-product-review { -webkit-line-clamp: 4; }
+
+.landing-band { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-6); padding: var(--space-6); background: var(--accent-soft); }
+.landing-band > div { display: flex; flex-direction: column; gap: var(--space-2); max-width: 640px; }
+
+.landing-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-10) 0 var(--space-12); color: var(--ink-muted); }
+.landing-foot > div { display: flex; align-items: center; gap: var(--space-2); }
+.landing-foot .fv-mark-box { width: 20px; height: 20px; display: block; }
+.landing-foot nav { display: flex; flex-wrap: wrap; gap: var(--space-6); }
+.landing-foot a { color: var(--ink-muted); text-decoration: none; }
+.landing-foot a:hover { color: var(--ink); }
+
+@media (min-width: 600px) {
+  .landing-features { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); }
+  .landing-wide { display: inline-flex; }
+}
+@media (min-width: 992px) {
+  .landing-inner { padding: 0 var(--space-12); }
+  .landing-head { height: 72px; gap: var(--space-6); }
+  .landing-hero { gap: var(--space-12); padding: 72px 0 var(--space-20); }
+  .landing-headline { font-size: 56px; line-height: 60px; }
+  .landing-mosaic-wrap, .landing-why-card { justify-content: flex-end; }
+  .landing-features { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: var(--space-12) 0; }
+  .landing-why { gap: var(--space-12); padding: var(--space-20) 0; }
+  .landing-band { gap: var(--space-8); padding: var(--space-12); }
+}

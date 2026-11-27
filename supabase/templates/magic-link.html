@@ -1,0 +1,30 @@
+<!--
+  B6: the sign-in email. Paste into the Supabase dashboard:
+  Authentication → Emails → Templates → "Magic Link" (and "Confirm signup",
+  which a first sign-in uses), with the subject line below.
+
+  Subject: Your sign-in link for Favolist
+
+  Plain on purpose: one sentence, one button, the link in full for mail apps
+  that hide buttons. Colours are the design system's light theme, written out
+  because email cannot read CSS variables.
+-->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;font-family:Outfit,system-ui,-apple-system,'Segoe UI',sans-serif;color:#19070c;">
+        <tr><td style="font-size:20px;line-height:24px;font-weight:700;letter-spacing:-0.02em;padding-bottom:24px;">Favolist</td></tr>
+        <tr><td style="font-size:24px;line-height:28px;font-weight:600;letter-spacing:-0.02em;padding-bottom:8px;">Here's your sign-in link</td></tr>
+        <tr><td style="font-size:16px;line-height:24px;color:#6b5a5f;padding-bottom:24px;">Open it on this device and you're in. There is no password to remember.</td></tr>
+        <tr>
+          <td style="padding-bottom:24px;">
+            <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#c93762;color:#ffffff;text-decoration:none;font-size:16px;line-height:48px;font-weight:500;padding:0 24px;border-radius:2px;">Open Favolist</a>
+          </td>
+        </tr>
+        <tr><td style="font-size:12px;line-height:16px;color:#6b5a5f;padding-bottom:8px;">The link works once. If it has stopped working, ask for a new one on the sign-in page.</td></tr>
+        <tr><td style="font-size:12px;line-height:16px;color:#6b5a5f;padding-bottom:24px;word-break:break-all;">Button not working? Copy this into your browser:<br>{{ .ConfirmationURL }}</td></tr>
+        <tr><td style="font-size:12px;line-height:16px;color:#978a8e;border-top:1px solid #ece6e8;padding-top:16px;">You're getting this because someone entered {{ .Email }} on Favolist. If that wasn't you, ignore this email and nothing happens.</td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
