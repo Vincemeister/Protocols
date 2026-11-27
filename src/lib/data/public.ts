@@ -22,7 +22,9 @@ export interface PublicList {
   productCount: number; updated: string; updatedExact: string; href: string;
 }
 export interface PublicProduct {
-  id: string; slug: string; name: string; brand?: string; brandLogo?: string; image?: string; url?: string; domain?: string;
+  id: string; slug: string; name: string; brand?: string; brandLogo?: string; url?: string; domain?: string;
+  /** The cover picture (the first), for cards and list covers; and all of them, in order, for the product page. */
+  image?: string; images: string[];
   review: string; code?: { code: string; label: string }; likes: number;
   added: string; addedExact: string; edited?: string;
   list: { name: string; slug: string; href: string }; position: number; href: string;
@@ -63,6 +65,7 @@ function toProduct(pr: ProductRow, list: ListRow, owner: ProfileRow, position: n
   const edited = new Date(review.updated_at).getTime() - new Date(review.published_at!).getTime() > 86_400_000;
   return {
     id: pr.id, slug: pr.slug, name: pr.name, brand: pr.brand ?? undefined, brandLogo: pr.brand_logo_url ?? undefined, image: pr.image_url ?? undefined,
+    images: pr.image_urls?.length ? pr.image_urls : pr.image_url ? [pr.image_url] : [],
     url: code?.link ?? pr.source_url ?? undefined, domain: pr.source_domain ?? undefined, review: review.body_text,
     code: code?.code ? { code: code.code, label: code.benefit_text ? `${code.benefit_text} with` : "Code" } : undefined,
     likes: ix.likesOf.get(pr.id) ?? 0,
