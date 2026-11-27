@@ -11,7 +11,9 @@ import { ordinal } from "@/lib/format";
 import { ConfirmDelete } from "@/components/me/ConfirmDelete";
 import { deleteList } from "@/lib/me/actions";
 import { CreatorScreen } from "./CreatorScreen";
-import { useImageFile } from "./useImageFile";
+import { useDictation } from "./useDictation";
+
+const MAX_INTRO = 300;
 
 interface ListFormProps {
   /** Leave out for a new list. */
@@ -22,59 +24,42 @@ interface ListFormProps {
   /** The public address of the list, when it has one worth visiting. */
   viewHref?: string;
   saved?: boolean;
+  /** Whether the server has a transcription service, for speaking the intro. */
+  serverTranscribes?: boolean;
 }
 
-/** C3 New list / edit list, and on the edit screen C8: the list's products in an order the creator sets. */
-export function ListForm({ list, products = [], closeHref, viewHref, saved }: ListFormProps) {
-  const cover = useImageFile(1600);
-  const [coverRemoved, setCoverRemoved] = useState(false);
+/**
+ * C3 New list / edit list, and on the edit screen C8: the list's products in
+ * an order the creator sets. There is no cover to choose: a list's cover is
+ * made of its products' pictures.
+ */
+export function ListForm({ list, products = [], closeHref, viewHref, saved, serverTranscribes = false }: ListFormProps) {
   const [numbered, setNumbered] = useState(list?.numbered ?? false);
-  const [state, submit, pending] = useActionState<FormState, FormData>(
-    (prev, form) => {
-      if (cover.picked) form.set("cover_file", cover.picked.blob, "cover.jpg");
-      return saveList(prev, form);
-    },
-    {},
-  );
-  const shown = cover.picked?.preview ?? (coverRemoved ? undefined : list?.cover);
+  const [intro, setIntro] = useState(list?.intro ?? "");
+  const speak = useDictation({ value: intro, onChange: setIntro, serverTranscribes });
+  const [state, submit, pending] = useActionState<FormState, FormData>(saveList, {});
+  const introTooLong = intro.length > MAX_INTRO && !speak.recording;
 
   return (
     <CreatorScreen title={list ? "Edit list" : "New list"} backHref={closeHref} close>
       <form action={submit}>
         {list ? <input type="hidden" name="id" value={list.id} /> : null}
-        {coverRemoved && !cover.picked ? <input type="hidden" name="cover_removed" value="1" /> : null}
 
         {saved && !state.error && !state.fields ? <Alert tone="success" message="Saved." dismissible /> : null}
         {state.error ? <Alert tone="danger" message={state.error} /> : null}
-
-        <div>
-          {cover.field}
-          <button
-            className={cx("fv-uploader fv-uploader-wide", shown && "has-image")} type="button"
-            aria-label={shown ? "Replace cover" : "Add a cover"} onClick={cover.open}
-          >
-            {shown ? <img src={shown} alt="" /> : (
-              <>
-                <Icon name="upload" />
-                <span>Add a cover</span>
-                <span>Or we&apos;ll use your first product&apos;s picture</span>
-              </>
-            )}
-          </button>
-          {shown ? (
-            <div className="fv-uploader-actions">
-              <Button variant="tertiary" size="sm" label="Replace" onClick={cover.open} />
-              <Button variant="link" size="sm" label="Remove" onClick={() => { cover.clear(); setCoverRemoved(true); }} />
-            </div>
-          ) : null}
-          {cover.error ? <p className="caption" style={{ color: "var(--danger)", marginTop: "var(--space-2)" }}>{cover.error}</p> : null}
-        </div>
 
         <TextField
           id="name" name="name" label="List name" value={list?.name} placeholder="Camera bag essentials" maxLength={60} required
           help="Say what it's for, not just what's in it." error={state.fields?.name}
         />
-        <TextArea id="intro" name="intro" label="Intro" optional value={list?.intro} rows={3} maxLength={300} hideCount placeholder="One or two sentences at the top of the list." />
+        <TextArea
+          id="intro" name="intro" label="Intro" optional value={intro} onChange={setIntro} rows={3}
+          maxLength={speak.recording || introTooLong ? undefined : MAX_INTRO} hideCount
+          placeholder="One or two sentences at the top of the list. Tap Speak, or type."
+          {...speak.field}
+          help={speak.status ?? (list ? undefined : "Its cover makes itself from your products' pictures.")}
+          error={introTooLong ? `That's ${intro.length - MAX_INTRO} characters too long. Trim it to ${MAX_INTRO}.` : speak.problem}
+        />
 
         <div className="creator-choices">
           <Toggle name="is_public" label="Show on my profile" help="Off keeps it as a draft only you can see." checked={list ? list.isPublic : true} />
@@ -86,7 +71,7 @@ export function ListForm({ list, products = [], closeHref, viewHref, saved }: Li
         <div className="creator-foot">
           {list ? (
             <>
-              <Button type="submit" variant="primary" size="lg" block disabled={pending} label={pending ? "Saving…" : "Save list"} />
+              <Button type="submit" variant="primary" size="lg" block disabled={pending || introTooLong || speak.recording || speak.working} label={pending ? "Saving…" : "Save list"} />
               <div style={{ display: "flex", justifyContent: "center", gap: "var(--space-4)" }}>
                 {viewHref ? <Button variant="link" size="sm" href={viewHref} label="View the list" /> : null}
                 <ConfirmDelete
@@ -99,7 +84,7 @@ export function ListForm({ list, products = [], closeHref, viewHref, saved }: Li
               </div>
             </>
           ) : (
-            <Button type="submit" variant="primary" size="lg" block disabled={pending} label={pending ? "Creating…" : "Create and add a product"} />
+            <Button type="submit" variant="primary" size="lg" block disabled={pending || introTooLong || speak.recording || speak.working} label={pending ? "Creating…" : "Create and add a product"} />
           )}
         </div>
       </form>

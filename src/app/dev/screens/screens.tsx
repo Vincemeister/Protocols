@@ -13,7 +13,7 @@ import { ReferralList } from "@/components/me/ReferralList";
 import { AccountSettings, PrivacySettings, ProfileSettingsForm, ThemeSettings } from "@/components/me/SettingsForms";
 import { SettingsMenu } from "@/components/me/SettingsMenu";
 import { ProductFeed } from "@/components/public/ProductFeed";
-import { EmptyState, Tabs, TopBar } from "@/components/ui";
+import { CoverMosaic, EmptyState, ListCard, Tabs, TopBar } from "@/components/ui";
 import { Landing } from "@/components/landing/Landing";
 import type { MyList } from "@/lib/creator/data";
 import { getCreators, getFeed } from "@/lib/data/public";
@@ -81,7 +81,16 @@ export const SCREENS: { name: string; title: string; render: () => ReactNode }[]
   { name: "add-source", title: "C4 Paste a link", render: () => <AddProduct lists={lists} recent={recent} closeHref="/dev/screens" /> },
   { name: "add-fetching", title: "C4 Fetching", render: () => <AddProduct lists={lists} closeHref="/dev/screens" demo={{ step: "fetching", url: sling.url }} /> },
   { name: "add-failed", title: "C4 Failed", render: () => <AddProduct lists={lists} closeHref="/dev/screens" demo={{ step: "failed", url: "https://www.somestore.id/p/9918-sling", reason: "not_found" }} /> },
-  { name: "add-details", title: "C5 Details", render: () => <AddProduct lists={lists} closeHref="/dev/screens" demo={{ step: "details", url: sling.url, product: sling }} /> },
+  { name: "add-details", title: "C5 Details", render: () => <AddProduct lists={lists} closeHref="/dev/screens" demo={{ step: "details", url: sling.url, product: { ...sling, logo: "/brand/favicon-128.png" } }} /> },
+  {
+    name: "add-amazon", title: "C5 Details, Amazon would not show the page (a book)",
+    render: () => (
+      <AddProduct
+        lists={lists} closeHref="/dev/screens"
+        demo={{ step: "details", url: "https://www.amazon.com/dp/0593135202", product: { name: "Project Hail Mary", brand: "Andy Weir", images: ["/demo/covers/umber.svg"], url: "https://www.amazon.com/dp/0593135202", domain: "amazon.com", kind: "book", partial: true } }}
+      />
+    ),
+  },
   {
     name: "add-manual", title: "C5 Details, by hand (first product)",
     render: () => (
@@ -92,6 +101,28 @@ export const SCREENS: { name: string; title: string; render: () => ReactNode }[]
   },
   { name: "review", title: "C6 Review", render: () => <ReviewForm product={product} serverTranscribes={false} backHref="/dev/screens" /> },
   { name: "review-recording", title: "C6 Review, listening", render: () => <ReviewForm product={product} serverTranscribes={false} backHref="/dev/screens" demo={{ recording: true, seconds: 14, text: SPOKEN }} /> },
+  {
+    name: "covers", title: "List covers made of product pictures",
+    render: () => {
+      const tones = ["slate", "umber", "sage", "plum"];
+      const pics = (n: number) => Array.from({ length: n }, (_, i) => `/demo/covers/${tones[i % 4]}.svg`);
+      return (
+        <Framed title="List covers">
+          <div className="app-grid">
+            {[1, 3, 4, 7, 9, 12].map((n) => (
+              <ListCard key={n} size="sm" name={n === 1 ? "One product" : `${n} products`} count={`${n} with a picture`} pictures={pics(n)} creator={{ name: "vince.rehms" }} />
+            ))}
+          </div>
+          {[1, 2, 8].map((n) => (
+            <div className="list-cover" key={n} style={{ marginTop: "var(--space-4)" }}>
+              <CoverMosaic pictures={pics(n)} shape="banner" />
+              <div className="list-cover-text"><h2 className="heading-3">The list page, {n} {n === 1 ? "picture" : "pictures"}</h2></div>
+            </div>
+          ))}
+        </Framed>
+      );
+    },
+  },
   { name: "home-feed", title: "C1 Home feed", render: () => <FeedDemo /> },
   {
     name: "home-empty", title: "C1 Home feed, nobody followed yet",
