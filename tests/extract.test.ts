@@ -39,9 +39,9 @@ test("Amazon markup", () => {
   const p = extractProduct(html, "https://www.amazon.com/dp/B0CFPJYX7P");
   assert.equal(p?.name, "Kindle Paperwhite (16 GB)");
   assert.equal(p?.brand, "Amazon");
-  assert.deepEqual(p?.images, [
-    "https://m.media-amazon.com/images/I/hires.jpg", "https://m.media-amazon.com/images/I/big.jpg", "https://m.media-amazon.com/images/I/small.jpg",
-  ]);
+  assert.deepEqual(p?.images, ["https://m.media-amazon.com/images/I/hires.jpg"]);
+  // Without a high-resolution address, the largest entry of the size table stands in, once.
+  assert.deepEqual(extractProduct(html.replace(/data-old-hires="[^"]*"/, ""), "https://www.amazon.com/dp/B0CFPJYX7P")?.images, ["https://m.media-amazon.com/images/I/big.jpg"]);
   assert.equal(p?.domain, "amazon.com");
 });
 
@@ -131,4 +131,22 @@ test("book catalogue and data-service answers", () => {
   const ax = fromAxesso(JSON.stringify({ productTitle: "Kindle Paperwhite (16 GB)", manufacturer: "Amazon", imageUrlList: ["https://m.media-amazon.com/images/I/a.jpg"], asin: "B0CFPJYX7P" }), "https://www.amazon.com/x/dp/B0CFPJYX7P?ref=1");
   assert.deepEqual(ax, { name: "Kindle Paperwhite (16 GB)", brand: "Amazon", images: ["https://m.media-amazon.com/images/I/a.jpg"], url: "https://www.amazon.com/dp/B0CFPJYX7P", domain: "amazon.com" });
   assert.equal(fromAxesso(JSON.stringify({ message: "not found" }), "https://www.amazon.com/dp/B0CFPJYX7P"), null);
+});
+
+test("Amazon's gallery: every picture once, at full size", () => {
+  const html = `<span id="productTitle">Teenage Engineering OP-1 Field</span>
+  <img data-old-hires="https://m.media-amazon.com/images/I/71main._AC_SL1500_.jpg"
+   data-a-dynamic-image="{&quot;https://m.media-amazon.com/images/I/71main._AC_SX466_.jpg&quot;:[466,466],&quot;https://m.media-amazon.com/images/I/71main._AC_SX679_.jpg&quot;:[679,679]}">
+  <script>var data = {'colorImages': { 'initial': [{"hiRes":"https://m.media-amazon.com/images/I/71main._AC_SL1500_.jpg","thumb":"https://m.media-amazon.com/images/I/41main._AC_US40_.jpg","large":"https://m.media-amazon.com/images/I/41main._AC_.jpg"},
+  {"hiRes":"https://m.media-amazon.com/images/I/81side._AC_SL1500_.jpg","large":"https://m.media-amazon.com/images/I/51side._AC_.jpg"},
+  {"hiRes":null,"large":"https://m.media-amazon.com/images/I/61back._AC_.jpg"}]}};</script>`;
+  const p = extractProduct(html, "https://www.amazon.com/dp/B09YH7WNTR");
+  assert.deepEqual(p?.images, [
+    "https://m.media-amazon.com/images/I/71main.jpg", "https://m.media-amazon.com/images/I/81side.jpg", "https://m.media-amazon.com/images/I/61back.jpg",
+  ]);
+});
+
+test("a page with many pictures offers up to twenty", () => {
+  const tags = Array.from({ length: 30 }, (_, i) => `<meta property="og:image" content="https://cdn.example.com/p${i}.jpg">`).join("");
+  assert.equal(extractProduct(`<title>Chair</title>${tags}`, "https://shop.example.com/p/chair")?.images.length, 20);
 });
