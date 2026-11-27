@@ -86,7 +86,7 @@ async function Results({ searchParams }: Props) {
           <div className="me-section"><h2 className="fv-overline">Lists</h2></div>
           <div className="app-grid">
             {lists.map(({ list, creator }) => (
-              <ListCard key={list.id} size="sm" name={list.name} count={plural(list.productCount, "product")} cover={list.cover} href={list.href} creator={{ name: creator.username, avatar: creator.avatar }} />
+              <ListCard key={list.id} size="sm" name={list.name} count={plural(list.productCount, "product")} cover={list.cover} pictures={list.pictures} href={list.href} creator={{ name: creator.username, avatar: creator.avatar }} />
             ))}
           </div>
         </>

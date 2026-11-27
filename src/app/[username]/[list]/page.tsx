@@ -6,7 +6,7 @@ import { AppFrame } from "@/components/frame/AppFrame";
 import { ForViewer } from "@/components/frame/ForViewer";
 import { ProductFeed } from "@/components/public/ProductFeed";
 import { FollowSmall, SaveButton, ShareIcon } from "@/components/social/controls";
-import { Avatar, Button, EmptyState, TopBar } from "@/components/ui";
+import { Avatar, Button, CoverMosaic, EmptyState, TopBar } from "@/components/ui";
 import { getListPage } from "@/lib/data/public";
 import { plural } from "@/lib/format";
 
@@ -44,7 +44,7 @@ export default async function ListPage({ params }: { params: Params }) {
         }
       </ForViewer>
       <div className="list-cover">
-        {list.cover ? <img src={list.cover} alt="" /> : null}
+        {list.pictures.length ? <CoverMosaic pictures={list.pictures} shape="banner" /> : list.cover ? <img src={list.cover} alt="" /> : null}
         <div className="list-cover-text">
           <h2 className="heading-3">{list.name}</h2>
           <p className="body-sm" title={`Updated ${list.updatedExact}`}>

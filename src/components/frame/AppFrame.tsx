@@ -81,7 +81,7 @@ async function Suggestions({ except }: { except?: string }) {
           <div className="fv-aside-grid">
             {lists.map(({ list, creator }) => (
               <ListCard
-                key={list.id} size="sm" name={list.name} count={plural(list.productCount, "product")} cover={list.cover}
+                key={list.id} size="sm" name={list.name} count={plural(list.productCount, "product")} cover={list.cover} pictures={list.pictures}
                 creator={{ name: creator.username, avatar: creator.avatar }} href={list.href}
               />
             ))}
