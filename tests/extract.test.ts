@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
-  appStoreLookupUrl, extractProduct, fromAppStoreJson, fromShopifyJson, normaliseUrl, shopifyJsonUrl, stripSiteName,
+  amazonAsin, appStoreLookupUrl, extractProduct, fromAppStoreJson, fromAxesso, fromOpenLibrary, fromShopifyJson, isIsbn10, isWall,
+  nameFromAmazonSlug, normaliseUrl, shopifyJsonUrl, stripSiteName,
 } from "../src/lib/scrape/extract.ts";
 
 test("JSON-LD product wins over tags", () => {
@@ -81,4 +82,53 @@ test("normaliseUrl and stripSiteName", () => {
   assert.equal(normaliseUrl("localhost"), null);
   assert.equal(stripSiteName("Peak Design | Everyday Sling", ["Peak Design"]), "Everyday Sling");
   assert.equal(stripSiteName("Sony WH-1000XM5 - Black", ["Sony", "sony"]), "Sony WH-1000XM5 - Black");
+});
+
+test("a robot check is never a product", () => {
+  const wall = `<title>Amazon.com</title><form action="/errors/validateCaptcha">Type the characters you see in this image</form>`;
+  assert.ok(isWall(wall));
+  assert.equal(extractProduct(wall, "https://www.amazon.com/dp/B0CFPJYX7P"), null);
+  // Without any tell-tale text, the marketplace's own name as the only title is still not a product…
+  assert.equal(extractProduct("<title>Amazon.com</title>", "https://www.amazon.com/dp/B0CFPJYX7P"), null);
+  assert.equal(extractProduct("<title>Etsy</title>", "https://www.etsy.com/listing/1"), null);
+  // …but a product or app that shares its site's name is fine.
+  assert.equal(extractProduct("<title>Notion</title>", "https://www.notion.com/")?.name, "Notion");
+  assert.ok(!isWall("<title>Captain's log</title><p>A book about robots.</p>"));
+});
+
+test("the brand's logo: from the page's data, else its large icon; never for a marketplace", () => {
+  const ld = `<script type="application/ld+json">{"@graph":[{"@type":"Organization","name":"Peak Design","logo":{"@type":"ImageObject","url":"https://cdn.peak.com/logo.png"}},{"@type":"Product","name":"Sling"}]}</script>`;
+  assert.equal(extractProduct(`${ld}<link rel="apple-touch-icon" href="/touch.png">`, "https://peakdesign.com/p/sling")?.logo, "https://cdn.peak.com/logo.png");
+  const icons = `<title>Sling</title><link rel="icon" href="/favicon.ico"><link rel="icon" type="image/png" sizes="32x32" href="/i32.png"><link rel="icon" sizes="192x192" href="/i192.png"><link rel="apple-touch-icon" href="/touch.png"><link rel="mask-icon" href="/mask.svg">`;
+  assert.equal(extractProduct(icons, "https://peakdesign.com/p/sling")?.logo, "https://peakdesign.com/i192.png");
+  assert.equal(extractProduct(`<title>Sling</title><link rel="icon" href="/favicon.ico"><link rel="icon" href="/logo.svg" sizes="512x512">`, "https://peakdesign.com/p/sling")?.logo, undefined);
+  assert.equal(extractProduct(`<meta property="og:title" content="Mug"><link rel="apple-touch-icon" href="/etsy.png">`, "https://www.etsy.com/listing/1/mug")?.logo, undefined);
+});
+
+test("a book's brand is its author", () => {
+  const html = `<script type="application/ld+json">{"@type":"Book","name":"Project Hail Mary","author":{"@type":"Person","name":"Andy Weir"},"publisher":{"name":"Ballantine"}}</script>`;
+  const p = extractProduct(html, "https://bookshop.example.com/p/hail-mary");
+  assert.equal(p?.brand, "Andy Weir");
+  assert.equal(p?.kind, "book");
+});
+
+test("Amazon addresses", () => {
+  assert.equal(amazonAsin("https://www.amazon.com/Some-Name/dp/B0CFPJYX7P/ref=sr_1_1?x=1"), "B0CFPJYX7P");
+  assert.equal(amazonAsin("https://www.amazon.de/gp/product/b0cfpjyx7p"), "B0CFPJYX7P");
+  assert.equal(amazonAsin("https://www.amazon.co.uk/gp/aw/d/0593135202?psc=1"), "0593135202");
+  assert.equal(amazonAsin("https://www.amazon.com/s?k=kindle"), null);
+  assert.ok(isIsbn10("0593135202") && isIsbn10("080442957X"));
+  assert.ok(!isIsbn10("B0CFPJYX7P") && !isIsbn10("0593135203"));
+  assert.equal(nameFromAmazonSlug("https://www.amazon.com/Project-Hail-Mary-Andy-Weir/dp/0593135202"), "Project Hail Mary Andy Weir");
+  assert.equal(nameFromAmazonSlug("https://www.amazon.com/dp/0593135202"), null);
+  assert.equal(nameFromAmazonSlug("https://www.amazon.com/gp/product/0593135202"), null);
+});
+
+test("book catalogue and data-service answers", () => {
+  const ol = fromOpenLibrary(JSON.stringify({ "ISBN:0593135202": { title: "Project Hail Mary", authors: [{ name: "Andy Weir" }], cover: { large: "https://covers.openlibrary.org/b/id/1-L.jpg" } } }));
+  assert.deepEqual(ol, { title: "Project Hail Mary", author: "Andy Weir", images: ["https://covers.openlibrary.org/b/id/1-L.jpg"] });
+  assert.equal(fromOpenLibrary("{}"), null);
+  const ax = fromAxesso(JSON.stringify({ productTitle: "Kindle Paperwhite (16 GB)", manufacturer: "Amazon", imageUrlList: ["https://m.media-amazon.com/images/I/a.jpg"], asin: "B0CFPJYX7P" }), "https://www.amazon.com/x/dp/B0CFPJYX7P?ref=1");
+  assert.deepEqual(ax, { name: "Kindle Paperwhite (16 GB)", brand: "Amazon", images: ["https://m.media-amazon.com/images/I/a.jpg"], url: "https://www.amazon.com/dp/B0CFPJYX7P", domain: "amazon.com" });
+  assert.equal(fromAxesso(JSON.stringify({ message: "not found" }), "https://www.amazon.com/dp/B0CFPJYX7P"), null);
 });

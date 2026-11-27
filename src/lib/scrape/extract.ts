@@ -15,6 +15,12 @@ export interface ProductDetails {
   url: string;
   /** "peakdesign.com" */
   domain: string;
+  /** The brand's own logo or the shop's icon, when the page offers one (never for a marketplace, which is not the brand). */
+  logo?: string;
+  /** A book's "brand" is its author; the form labels the field accordingly. */
+  kind?: "book";
+  /** True when the page itself could not be read and this was pieced together from the address (Amazon). The form says so. */
+  partial?: boolean;
 }
 
 const ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ", ndash: "–", mdash: "—", rsquo: "’", lsquo: "‘", reg: "®", trade: "™" };
@@ -160,6 +166,34 @@ function amazon(html: string) {
   return { title, brand, images };
 }
 
+/** What a "prove you are human" page says instead of the product. */
+const WALL = /validateCaptcha|api-services-support@amazon|Enter the characters you see|Type the characters you see|automated access to Amazon data|captcha-delivery\.com|px-captcha|cf-challenge|cf_chl_opt|Checking your browser before|Pardon Our Interruption|unusual traffic from your (computer )?network/i;
+
+/** True when the page is a robot check rather than content. */
+export function isWall(html: string) {
+  return WALL.test(html);
+}
+
+const squash = (text: string) => text.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+/** The brand's logo, or failing that the site's own large icon. Never an SVG or .ico: storage keeps photos-and-PNG types only. */
+function findLogo(html: string, meta: Map<string, string[]>, ld: Json[], product: Json | undefined, pageUrl: string) {
+  const fromLd = (obj: Json | undefined) => (obj ? imagesOf(obj.logo) : []);
+  const brand = product && typeof product.brand === "object" && !Array.isArray(product.brand) ? (product.brand as Json) : undefined;
+  const org = ld.find((o) => typesOf(o).some((t) => t === "organization" || t === "brand" || t === "onlinestore" || t === "store" || t === "corporation"));
+  const icons: { href: string; size: number }[] = [];
+  for (const m of html.matchAll(/<link\b[^>]*>/gi)) {
+    const a = attributes(m[0]);
+    const rel = (a.rel ?? "").toLowerCase();
+    if (!a.href || !/(^|\s)(apple-touch-icon(-precomposed)?|icon)(\s|$)/.test(rel)) continue;
+    const size = Number((a.sizes ?? "").match(/(\d+)x\d+/)?.[1] ?? (rel.includes("apple-touch-icon") ? 180 : 0));
+    if (size >= 64) icons.push({ href: a.href, size });
+  }
+  icons.sort((a, b) => b.size - a.size);
+  const candidates = [...fromLd(brand), ...fromLd(org), ...(meta.get("og:logo") ?? []), ...icons.map((i) => i.href)];
+  return tidyImages(candidates, pageUrl)[0];
+}
+
 /** Marketplaces and app stores: the site is not the brand. */
 const NOT_A_BRAND = /(^|\.)(amazon\.[a-z.]+|ebay\.[a-z.]+|etsy\.com|aliexpress\.com|tokopedia\.com|shopee\.[a-z.]+|lazada\.[a-z.]+|walmart\.com|target\.com|bestbuy\.com|apple\.com|google\.com|youtube\.com)$/;
 
@@ -168,6 +202,7 @@ const NOT_A_BRAND = /(^|\.)(amazon\.[a-z.]+|ebay\.[a-z.]+|etsy\.com|aliexpress\.
  * name (a blocked page, a captcha, an empty shell rendered by JavaScript).
  */
 export function extractProduct(html: string, pageUrl: string): ProductDetails | null {
+  if (isWall(html)) return null;
   const meta = metaTags(html);
   const first = (key: string) => meta.get(key)?.[0] ?? "";
   const ld = jsonLd(html);
@@ -191,11 +226,17 @@ export function extractProduct(html: string, pageUrl: string): ProductDetails | 
   name = name.replace(/\s+/g, " ").trim().slice(0, 80).trim();
   // Pages that answer with a wall instead of the product.
   if (!name || /^(access denied|just a moment|attention required|robot check|page not found|404|403|error|sign in|log in|are you a human)/i.test(name)) return null;
+  // On a marketplace, a page whose only name is the marketplace's own ("Amazon.com") is its home page or a robot check, never a product.
+  if (NOT_A_BRAND.test(host) && (squash(name) === squash(host) || squash(name) === squash(host.split(".")[0]))) return null;
+
+  const isBook = Boolean(product && typesOf(product).includes("book"));
 
   const brand = (
+    (isBook ? textOf(product?.author) : "") ||
     amz?.brand || textOf(product?.brand) || textOf(product?.manufacturer) || first("product:brand") || first("og:brand") ||
     textOf(product?.author) || (NOT_A_BRAND.test(host) ? "" : siteName)
   ).slice(0, 60);
+  const logo = NOT_A_BRAND.test(host) ? undefined : findLogo(html, meta, ld, product, pageUrl);
 
   const images = tidyImages(
     [
@@ -222,7 +263,7 @@ export function extractProduct(html: string, pageUrl: string): ProductDetails | 
     }
   }
 
-  return { name, brand: brand || undefined, images, url, domain: host };
+  return { name, brand: brand || undefined, images, url, domain: host, ...(logo ? { logo } : {}), ...(isBook ? { kind: "book" as const } : {}) };
 }
 
 /** A Shopify store serves every product as JSON at /products/<handle>.js. */
@@ -282,6 +323,116 @@ export function normaliseUrl(input: string) {
     const url = new URL(/^https?:\/\//i.test(text) ? text : `https://${text}`);
     if (!/^https?:$/.test(url.protocol) || !url.hostname.includes(".")) return null;
     return url.toString();
+  } catch {
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Amazon. Its pages are closed to servers more often than not, so a product
+// can also be pieced together from the address: the ASIN in it, the name in
+// its slug, and for a printed book (whose ASIN is its ISBN) the public book
+// catalogues.
+// ---------------------------------------------------------------------------
+
+export const isAmazon = (url: string) => /(^|\.)amazon\.[a-z.]+$/.test(domainOf(url));
+
+/** "B0CFPJYX7P" from /dp/…, /gp/product/…, /gp/aw/d/… and friends. */
+export function amazonAsin(url: string) {
+  try {
+    return new URL(url).pathname.match(/\/(?:dp|gp\/product|gp\/aw\/d|product|d|exec\/obidos\/ASIN|o\/ASIN)\/([A-Z0-9]{10})(?:[/?]|$)/i)?.[1].toUpperCase() ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** A printed book's ASIN is its ISBN-10 (nine digits and a check digit that may be X). */
+export function isIsbn10(asin: string) {
+  if (!/^\d{9}[\dX]$/.test(asin)) return false;
+  const sum = asin.split("").reduce((total, ch, i) => total + (ch === "X" ? 10 : Number(ch)) * (10 - i), 0);
+  return sum % 11 === 0;
+}
+
+/** "Project Hail Mary Andy Weir" from /Project-Hail-Mary-Andy-Weir/dp/0593135202. A starting point the creator will tidy. */
+export function nameFromAmazonSlug(url: string) {
+  try {
+    const first = decodeURIComponent(new URL(url).pathname.split("/").filter(Boolean)[0] ?? "");
+    if (!first || /^(dp|gp|d|product|exec|o|s|b|stores|hz|ap)$/i.test(first) || /^[A-Z0-9]{10}$/.test(first) || !/[a-z]/i.test(first)) return null;
+    const name = first.replace(/[-_+]+/g, " ").replace(/\s+/g, " ").trim().slice(0, 80).trim();
+    return name.length >= 3 ? name : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Where Amazon has long served a product's main picture by ASIN alone. It answers a 1×1 blank when it has none, which the form filters out. */
+export const amazonImageByAsin = (asin: string) => `https://m.media-amazon.com/images/P/${asin}.01._SCLZZZZZZZ_.jpg`;
+export const openLibraryCover = (isbn: string) => `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false`;
+export const googleBooksUrl = (isbn: string) => `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&maxResults=1`;
+export const openLibraryUrl = (isbn: string) => `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`;
+
+export interface BookFacts { title: string; author?: string; images: string[] }
+
+export function fromGoogleBooks(body: string): BookFacts | null {
+  try {
+    const info = (JSON.parse(body) as { items?: { volumeInfo?: { title?: string; authors?: string[]; imageLinks?: { thumbnail?: string; smallThumbnail?: string } } }[] }).items?.[0]?.volumeInfo;
+    if (!info?.title) return null;
+    const thumb = info.imageLinks?.thumbnail ?? info.imageLinks?.smallThumbnail;
+    // zoom=0 asks for the largest scan; edge=curl draws a page curl on it.
+    const cover = thumb ? thumb.replace(/^http:/, "https:").replace(/&edge=curl/, "").replace(/zoom=\d/, "zoom=0") : undefined;
+    return { title: clean(info.title).slice(0, 80), author: info.authors?.length ? clean(info.authors.slice(0, 2).join(", ")).slice(0, 60) : undefined, images: cover ? [cover] : [] };
+  } catch {
+    return null;
+  }
+}
+
+export function fromOpenLibrary(body: string): BookFacts | null {
+  try {
+    const book = Object.values(JSON.parse(body) as Record<string, { title?: string; authors?: { name?: string }[]; cover?: { large?: string; medium?: string } }>)[0];
+    if (!book?.title) return null;
+    const author = (book.authors ?? []).map((a) => a.name).filter(Boolean).slice(0, 2).join(", ");
+    return { title: clean(book.title).slice(0, 80), author: clean(author).slice(0, 60) || undefined, images: [book.cover?.large ?? book.cover?.medium ?? ""].filter(Boolean) };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The product as far as the address alone gives it away, for when Amazon
+ * would not show the page. Null when there is not even a name to start from.
+ */
+export function fromAmazonAddress(pageUrl: string, book: BookFacts | null): ProductDetails | null {
+  const asin = amazonAsin(pageUrl);
+  const name = book?.title ?? nameFromAmazonSlug(pageUrl);
+  if (!name) return null;
+  const origin = new URL(pageUrl).origin;
+  const images = asin
+    ? [...(isIsbn10(asin) ? [openLibraryCover(asin)] : []), amazonImageByAsin(asin), ...(book?.images ?? [])]
+    : book?.images ?? [];
+  return {
+    name, brand: book?.author, images: tidyImages(images, pageUrl), url: asin ? `${origin}/dp/${asin}` : pageUrl.split(/[?#]/)[0],
+    domain: domainOf(pageUrl), partial: true, ...(book || (asin && isIsbn10(asin)) ? { kind: "book" as const } : {}),
+  };
+}
+
+/**
+ * The paid Amazon data service the first Favolist used (Axesso, through
+ * RapidAPI): the dependable route when a key is set. Field names as that
+ * service returns them.
+ */
+export function fromAxesso(body: string, pageUrl: string): ProductDetails | null {
+  try {
+    const p = JSON.parse(body) as { productTitle?: string; imageUrlList?: string[]; manufacturer?: string; soldBy?: string; asin?: string };
+    if (!p.productTitle) return null;
+    const asin = p.asin ?? amazonAsin(pageUrl);
+    const book = Boolean(asin && isIsbn10(asin));
+    return {
+      name: clean(p.productTitle).slice(0, 80).trim(),
+      brand: clean(p.manufacturer).replace(/^(Visit the|Brand:)\s+/i, "").replace(/\s+Store$/i, "").slice(0, 60) || undefined,
+      images: tidyImages(p.imageUrlList ?? [], pageUrl),
+      url: asin ? `${new URL(pageUrl).origin}/dp/${asin}` : pageUrl.split(/[?#]/)[0],
+      domain: domainOf(pageUrl), ...(book ? { kind: "book" as const } : {}),
+    };
   } catch {
     return null;
   }

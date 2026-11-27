@@ -57,13 +57,13 @@ export interface SafeResponse { url: string; status: number; contentType: string
  * fetch must answer within 8 seconds whatever happens); `maxBytes` stops a
  * huge page or a video from being read into memory.
  */
-export async function safeFetch(address: string, opts: { signal: AbortSignal; maxBytes: number; accept: string }): Promise<SafeResponse> {
+export async function safeFetch(address: string, opts: { signal: AbortSignal; maxBytes: number; accept: string; headers?: Record<string, string> }): Promise<SafeResponse> {
   let url = new URL(address);
   for (let hop = 0; hop < 5; hop++) {
     await assertPublic(url);
     let res: Response;
     try {
-      res = await fetch(url, { redirect: "manual", signal: opts.signal, headers: { ...HEADERS, accept: opts.accept }, cache: "no-store" });
+      res = await fetch(url, { redirect: "manual", signal: opts.signal, headers: { ...HEADERS, accept: opts.accept, ...opts.headers }, cache: "no-store" });
     } catch (e) {
       if (opts.signal.aborted) throw new FetchError("timeout", "The site took too long.");
       throw new FetchError("failed", e instanceof Error ? e.message : "Could not connect.");
