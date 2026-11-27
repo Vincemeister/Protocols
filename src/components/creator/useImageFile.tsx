@@ -40,7 +40,8 @@ export function useImageFile(maxSide = 1600) {
   };
 }
 
-async function scaleDown(file: File, maxSide: number): Promise<Blob> {
+/** Scales a picture down to `maxSide` on its longest side and re-encodes it as a JPEG. Throws when the browser cannot read the file. */
+export async function scaleDown(file: File, maxSide: number): Promise<Blob> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement("canvas");
