@@ -8,6 +8,8 @@ import { cx } from "@/components/ui/cx";
 import { reorderProducts, saveList, type FormState } from "@/lib/creator/actions";
 import type { ListProduct, MyList } from "@/lib/creator/data";
 import { ordinal } from "@/lib/format";
+import { ConfirmDelete } from "@/components/me/ConfirmDelete";
+import { deleteList } from "@/lib/me/actions";
 import { CreatorScreen } from "./CreatorScreen";
 import { useImageFile } from "./useImageFile";
 
@@ -85,7 +87,16 @@ export function ListForm({ list, products = [], closeHref, viewHref, saved }: Li
           {list ? (
             <>
               <Button type="submit" variant="primary" size="lg" block disabled={pending} label={pending ? "Saving…" : "Save list"} />
-              {viewHref ? <Button variant="link" size="sm" href={viewHref} label="View the list" /> : null}
+              <div style={{ display: "flex", justifyContent: "center", gap: "var(--space-4)" }}>
+                {viewHref ? <Button variant="link" size="sm" href={viewHref} label="View the list" /> : null}
+                <ConfirmDelete
+                  label="Delete list" title={`Delete ${list.name}?`}
+                  message={products.length
+                    ? `Its ${products.length === 1 ? "product goes" : `${products.length} products go`} with it, reviews and recordings included. This cannot be undone.`
+                    : "This cannot be undone."}
+                  action={deleteList.bind(null, list.id)}
+                />
+              </div>
             </>
           ) : (
             <Button type="submit" variant="primary" size="lg" block disabled={pending} label={pending ? "Creating…" : "Create and add a product"} />

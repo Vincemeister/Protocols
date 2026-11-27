@@ -28,16 +28,18 @@ export function ProductActions({ product }: { product: PublicProduct }) {
 /**
  * Products stacked as cards separated by hairlines, never a grid.
  * `as="profile"` heads each card with the creator and list name (Products and
- * Codes tabs); `as="list"` heads it with its number when the list is numbered.
+ * Codes tabs); `as="list"` heads it with its number when the list is numbered;
+ * `as="mixed"` is for several creators together (feed, saved, search): each
+ * card is headed by its own creator.
  */
-export function ProductFeed({ products, profile, as, numbered }: { products: PublicProduct[]; profile: PublicProfile; as: "profile" | "list"; numbered?: boolean }) {
+export function ProductFeed({ products, profile, as, numbered }: { products: PublicProduct[]; profile?: PublicProfile; as: "profile" | "list" | "mixed"; numbered?: boolean }) {
   return (
     <>
       {products.map((p) => (
         <ProductCard
           key={p.id}
-          creator={as === "profile" ? { name: profile.username, avatar: profile.avatar } : undefined}
-          listName={as === "profile" ? p.list.name : undefined}
+          creator={as === "mixed" ? { name: p.creator.username, avatar: p.creator.avatar } : as === "profile" && profile ? { name: profile.username, avatar: profile.avatar } : undefined}
+          listName={as === "list" ? undefined : p.list.name}
           number={as === "list" && numbered ? ordinal(p.position) : undefined}
           product={{ name: p.name, image: p.image, brand: p.brand }}
           review={p.review}

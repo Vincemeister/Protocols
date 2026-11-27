@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useTransition, type CSSProperties } from "react";
 import { Button, FollowButton, Icon, ProfileHeader, Toast, UserCard, type IconName, type ProfileHeaderProps, type UserCardProps } from "@/components/ui";
 import { useSyncedState } from "@/components/ui/useSyncedState";
@@ -45,9 +46,10 @@ export function ShareIcon({ title, label }: { title: string; label: string }) {
 export function LiveProfileHeader({ profileId, ...props }: ProfileHeaderProps & { profileId: string }) {
   const [, start] = useTransition();
   const { share, toast } = useShare(props.name);
+  const router = useRouter();
   return (
     <>
-      <ProfileHeader {...props} onFollow={(on) => start(() => setFollow(profileId, on))} onShare={share} />
+      <ProfileHeader {...props} onFollow={(on) => start(() => setFollow(profileId, on))} onShare={share} onEdit={() => router.push("/settings/profile")} />
       {toast}
     </>
   );

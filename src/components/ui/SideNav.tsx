@@ -5,7 +5,11 @@ import { Avatar } from "./Avatar";
 import { Icon, type IconName } from "./Icon";
 import { Mark } from "./Mark";
 
-export interface SideNavItem { label: string; icon: IconName; href?: string; current?: boolean }
+export interface SideNavItem {
+  label: string; icon: IconName; href?: string; current?: boolean;
+  /** Beyond index.d.ts (phase 4): an accent dot after the label, as on the bottom bar. */
+  unread?: boolean;
+}
 
 export interface SideNavProps {
   items: SideNavItem[];
@@ -29,6 +33,7 @@ export function SideNav({ items, mark, homeHref = "/", user }: SideNavProps) {
             <>
               <Icon name={it.icon} size="lg" />
               {it.label}
+              {it.unread ? <span aria-label="New" style={{ width: 8, height: 8, borderRadius: "var(--radius-full)", background: "var(--accent)" }} /> : null}
             </>
           );
           return it.href?.startsWith("/") ? (
