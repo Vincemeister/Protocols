@@ -31,6 +31,15 @@ export default async function ProductPage({ params }: { params: Params }) {
         title={list.name} backHref={list.href} backLabel={`Back to ${list.name}`}
         trailing={<ShareIcon title={`${product.name}, reviewed by ${profile.name}`} label="Share product" />}
       />
+      <ForViewer>
+        {(viewer) =>
+          viewer?.profile?.id === profile.id ? (
+            <div className="owner-bar">
+              <Button variant="tertiary" size="sm" icon="pencil" href={`/create/${product.id}`} label="Edit product" />
+            </div>
+          ) : null
+        }
+      </ForViewer>
       <div className="fv-product-image product-hero">
         {product.image ? <img src={product.image} alt={product.name} /> : <Icon name="image" size="lg" />}
       </div>

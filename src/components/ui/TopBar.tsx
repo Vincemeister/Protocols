@@ -26,11 +26,13 @@ export interface TopBarProps {
   // --- Beyond index.d.ts, for the designed screens ---
   /** Where Back goes: renders a link instead of a button. */
   backHref?: string;
+  /** "x" turns Back into Close, as on the first screen of a flow. */
+  backIcon?: IconName;
   /** Anything at the right instead of `action`: a share button with its own behaviour, a "Sign in" link, "2 of 3". */
   trailing?: ReactNode;
 }
 
-export function TopBar({ brand, mark, homeHref = "/", title, backLabel = "Back", onBack, action, backHref, trailing }: TopBarProps) {
+export function TopBar({ brand, mark, homeHref = "/", title, backLabel = "Back", onBack, action, backHref, backIcon = "chevron-left", trailing }: TopBarProps) {
   return (
     <header className="fv-topbar" style={brand && trailing ? { gridTemplateColumns: "1fr auto" } : undefined}>
       {brand ? (
@@ -42,11 +44,11 @@ export function TopBar({ brand, mark, homeHref = "/", title, backLabel = "Back",
         <>
           {backHref ? (
             <Link className="fv-icon-btn" href={backHref} aria-label={backLabel}>
-              <Icon name="chevron-left" />
+              <Icon name={backIcon} />
             </Link>
           ) : (
             <button className="fv-icon-btn" type="button" aria-label={backLabel} onClick={onBack}>
-              <Icon name="chevron-left" />
+              <Icon name={backIcon} />
             </button>
           )}
           <h1 className="fv-topbar-title">{title}</h1>

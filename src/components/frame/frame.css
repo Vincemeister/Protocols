@@ -34,6 +34,9 @@
 .fv-icon-btn[aria-pressed="true"] { color: var(--ink); }
 .fv-icon-btn[aria-pressed="true"] .fv-icon, .fv-btn.is-on .fv-icon { fill: currentColor; }
 
+/* The creator's own controls on a public page of theirs (add, edit). */
+.owner-bar { display: flex; flex-wrap: wrap; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--line); }
+
 /* A2: the list cover with its title. */
 .list-cover { position: relative; height: 200px; overflow: hidden; background: var(--surface-sunken); color: var(--on-image); }
 .list-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -69,7 +72,7 @@
   .app-column .fv-topbar { padding: 0; margin: 0 calc(var(--space-3) * -1); border-bottom: 0; }
   .app-pad { padding: var(--space-6) 0; }
   .app-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); padding: var(--space-6) 0 var(--space-12); }
-  .list-intro, .product-body { padding-left: 0; padding-right: 0; }
+  .list-intro, .product-body, .owner-bar { padding-left: 0; padding-right: 0; }
 }
 @media (min-width: 1200px) {
   .app-aside { display: block; flex: 0 0 var(--rail-aside); position: sticky; top: 0; height: 100vh; align-self: flex-start; overflow-y: auto; }

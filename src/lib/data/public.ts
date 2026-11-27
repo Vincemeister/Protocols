@@ -40,9 +40,10 @@ function toProfile(p: ProfileRow, ix: ReturnType<typeof index>): PublicProfile {
   };
 }
 
-function toList(l: ListRow, owner: ProfileRow, productCount: number, now: Date): PublicList {
+/** `firstImage`: a list without a cover of its own shows its first product's picture (C3: "Or we'll use your first product's picture"). */
+function toList(l: ListRow, owner: ProfileRow, productCount: number, now: Date, firstImage?: string): PublicList {
   return {
-    id: l.id, slug: l.slug, name: l.name, intro: l.intro ?? undefined, cover: l.cover_url ?? undefined, numbered: l.numbered,
+    id: l.id, slug: l.slug, name: l.name, intro: l.intro ?? undefined, cover: l.cover_url ?? firstImage, numbered: l.numbered,
     productCount, updated: ago(l.updated_at, now), updatedExact: exactDate(l.updated_at), href: `/${owner.username}/${l.slug}`,
   };
 }
@@ -94,7 +95,7 @@ export async function getProfilePage(username: string) {
     .sort((a, b) => b.at.localeCompare(a.at)).map((x) => x.p);
   return {
     profile: toProfile(owner, ix),
-    lists: byList.map((x) => toList(x.list, owner, x.products.length, now)),
+    lists: byList.map((x) => toList(x.list, owner, x.products.length, now, x.products.find((p) => p.image)?.image)),
     products,
     // The Codes tab is the Products tab filtered to items with a code; it exists only when there is one.
     codes: products.filter((p) => p.code),
@@ -113,7 +114,7 @@ export async function getListPage(username: string, listSlug: string) {
   const ix = index(ds);
   const now = new Date();
   const products = productsOf(ds, list, owner, ix, now);
-  return { profile: toProfile(owner, ix), list: toList(list, owner, products.length, now), products };
+  return { profile: toProfile(owner, ix), list: toList(list, owner, products.length, now, products.find((p) => p.image)?.image), products };
 }
 
 /** A3: one product with the full review. */
@@ -139,8 +140,8 @@ export async function getSuggestions(exceptUsername?: string) {
   const lists = others.flatMap((owner) => {
     const first = listsOf(ds, owner)[0];
     if (!first) return [];
-    const count = productsOf(ds, first, owner, ix, now).length;
-    return count ? [{ list: toList(first, owner, count, now), creator: toProfile(owner, ix) }] : [];
+    const products = productsOf(ds, first, owner, ix, now);
+    return products.length ? [{ list: toList(first, owner, products.length, now, products.find((p) => p.image)?.image), creator: toProfile(owner, ix) }] : [];
   });
   return { lists: lists.slice(0, 2), people: others.slice(0, 3).map((p) => toProfile(p, ix)) };
 }
